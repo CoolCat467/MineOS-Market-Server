@@ -21,7 +21,6 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3 :: Only",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
     "Topic :: Utilities",
     "Framework :: Trio",
@@ -170,9 +169,9 @@ legacy_tox_ini = """
 
     [gh-actions]
     python =
-        3.10: py310, mypy, pytest
-        3.11: py311, mypy
-        3.12: py312, mypy, pytest
+        3.10: py310, pytest, mypy
+        3.11: py311, pytest
+        3.12: py312, pytest, mypy
 
     [testenv]
     setenv =
