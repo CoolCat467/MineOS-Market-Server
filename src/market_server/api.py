@@ -33,18 +33,26 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
+def parse_int(string: str) -> int | None:
+    """Try to parse int. Return None on failure."""
+    try:
+        return int(string)
+    except ValueError:
+        return None
+
+
 def dict_to_fields(
     dict_: dict[object, T],
 ) -> Generator[tuple[str, T], None, None]:
     """Yield field (exp|Name, exp) tuples."""
     for key, value in dict_.items():
-        if isinstance(key, str):
+        if isinstance(key, str) and parse_int(key) is None:
             yield key, value
             continue
         yield f"[{as_lua(key)}]", value
 
 
-def as_lua(object_: object) -> str:
+def as_lua(object_: object, ignore_none: bool = False) -> str:
     """Return lua representation of python object.
 
     See https://www.lua.org/manual/5.4/manual.html#9 for more details.
@@ -64,39 +72,52 @@ def as_lua(object_: object) -> str:
             fieldlist = ",".join(
                 f"{key}={as_lua(value)}"
                 for key, value in dict_to_fields(object_)
+                if not ignore_none or value is not None
             )
             return f"{{{fieldlist}}}"
+        case list():
+            fieldlist = ",".join(as_lua(value) for value in object_)
+            return f"{{{fieldlist}}}"
+        case tuple():
+            if hasattr(object_, "_asdict"):
+                return as_lua(object_._asdict())
+            raise ValueError(f"Non-named tuple {object_!r}")
         case _:
             raise NotImplementedError(type(object_))
 
 
-def response(**kwargs: object) -> str:
+def response(ignore_none: bool, /, **kwargs: object) -> str:
     """Return lua table from keyword arguments."""
-    return as_lua(kwargs)
+    return as_lua(kwargs, ignore_none=ignore_none)
 
 
 def failure(reason: str, http_code: int = 400) -> tuple[str, int]:
     """Return lua api failure table along with http response code."""
-    return response(success=False, reason=reason), http_code
+    return response(False, success=False, reason=reason), http_code
 
 
 Response = str | tuple[str, int]
 
 
-def success_direct(result: object) -> str:
+def success_direct(result: object, ignore_none: bool = False) -> str:
     """Return lua api success table where you can set result directly."""
-    return response(success=True, result=result)
+    return response(ignore_none, success=True, result=result)
 
 
 def success(**kwargs: object) -> str:
     """Return lua api success table."""
-    return response(success=True, result=kwargs)
+    if kwargs:
+        return response(False, success=True, result=kwargs)
+    return response(False, success=True)
 
 
-def success_schema(response: NamedTuple) -> str:
+def success_schema(response: NamedTuple, ignore_none: bool = True) -> str:
     """Return lua api success table from named tuple."""
     as_dict = {k: v for k, v in response._asdict().items() if v is not None}
-    return success_direct(cast(dict[object, object], as_dict))
+    return success_direct(
+        cast(dict[object, object], as_dict),
+        ignore_none=ignore_none,
+    )
 
 
 if __name__ == "__main__":

@@ -28,12 +28,14 @@ __license__ = "GNU General Public License Version 3"
 import inspect
 import math
 import time
+import traceback
 import uuid
+from collections import deque
 from email import message_from_string
 from email.headerregistry import Address
 from email.policy import default as email_default_policy
 from secrets import token_urlsafe
-from typing import Final, NamedTuple
+from typing import Any, Final, NamedTuple
 
 import trio
 
@@ -193,6 +195,14 @@ def parse_email_address(string: str) -> Address:
     return msg["to"].addresses[0]
 
 
+def parse_int(string: str) -> int | None:
+    """Try to parse int. Return None on failure."""
+    try:
+        return int(string)
+    except ValueError:
+        return None
+
+
 def send_email(address: str, subject: str, message: str) -> None:
     """Sent email to given address."""
     print(
@@ -205,8 +215,22 @@ class Version_2_04:  # noqa: N801
 
     __slots__ = ()
 
-    users_path = trio.Path("records") / "users.json"
-    login_path = trio.Path("records") / "login.json"
+    records_root = trio.Path("records")
+
+    @property
+    def users_path(self) -> trio.Path:
+        """User records path."""
+        return self.records_root / "users.json"
+
+    @property
+    def login_path(self) -> trio.Path:
+        """Login token records path."""
+        return self.records_root / "login.json"
+
+    @property
+    def publications_path(self) -> trio.Path:
+        """Publication records path."""
+        return self.records_root / "publications.json"
 
     ##    def __init__(self, users: database.Records) -> None:
     ##        self.users = users
@@ -316,7 +340,6 @@ class Version_2_04:  # noqa: N801
         }
         users.write_file()
 
-        ##        return api.failure("Invalid current password", 401)
         send_email(
             parsed_email,
             "Submit MineOS account registration",
@@ -389,19 +412,21 @@ MineOS Dev Team""",
         else:
             id_ = table.get_id("name", name)
         if name is None:
-            return api.failure("Invalid current password")
+            return api.failure("Invalid (name or email) or password")
         user = users.get(name)
         if user is None:
-            return api.failure("Invalid current password")
-        if not user["is_verified"]:
-            return api.failure("User is not verified")
+            return api.failure("Invalid (name or email) or password")
         success = await security.compare_hash(
             password,
             user["password"],
             PEPPER,
         )
         if not success:
-            return api.failure("Invalid current password")
+            return api.failure("Invalid (name or email) or password")
+        if not user["is_verified"]:
+            return api.failure(
+                f"Check your e-mail ({user['email']}) and spam folder for message to verify your account",
+            )
         token = self.create_login_cookie_data(name)
         return api.success_schema(
             LoginResponse(
@@ -428,14 +453,11 @@ MineOS Dev Team""",
             name = table["name"][id_]
 
         if name is None:
-            api.failure("Invalid current password")
+            return api.failure("Invalid current password")
 
         user = users.get(name)
         if user is None:
             return api.failure("Invalid current password")
-
-        if not user["is_verified"]:
-            return api.failure("User is not verified")
 
         success = await security.compare_hash(
             current_password,
@@ -455,11 +477,117 @@ MineOS Dev Team""",
         )
         users.write_file()
 
-        return api.success_direct("Updated password")
+        return api.success()
 
-    ##    def cmd_publication(self, file_id: str, language_id: str) -> api.Response:
-    ##        """Return publication details."""
-    ##        return api.success_schema(Publication)
+    def get_dependency(
+        self,
+        file_id: str | int,
+    ) -> tuple[Dependency | None, dict[str, Any]]:
+        """Return (Dependency object from file id, publication record) or (None, None) if not found."""
+        pub_records = database.load(self.publications_path)
+        pub = pub_records.get(str(file_id))
+        if pub is None:
+            return None, None
+        return (
+            Dependency(
+                pub["source_url"],
+                pub["path"],
+                pub["version"],
+                pub.get("publication_name"),
+                pub.get("category_id"),
+            ),
+            pub,
+        )
+
+    def get_publication(
+        self,
+        file_id: str | int,
+        language_id: int,
+    ) -> Publication | str:
+        """Return Publication object from file id or error text if not found."""
+        pub_records = database.load(self.publications_path)
+        pub = pub_records.get(str(file_id))
+        if pub is None:
+            return (
+                f"Publication with specified file ID ({file_id}) doesn't exist"
+            )
+        # TODO: Languages
+        write = (
+            "publication_name",
+            "user_name",
+            "version",
+            "category_id",
+            "source_url",
+            "path",
+            "license_id",
+            "timestamp",
+            "initial_description",
+            "dependencies",
+            "icon_url",
+            "whats_new",
+            "whats_new_version",
+        )
+        translated_description: str = pub["initial_description"]
+
+        all_dependencies_set: set[int] = set()
+        dependencies_data: dict[int, Dependency] = {}
+        if pub["dependencies"]:
+            toplevel_deps: deque[int] = deque(pub["dependencies"])
+
+            while toplevel_deps:
+                dep_file_id = toplevel_deps.popleft()
+                if dep_file_id in all_dependencies_set:
+                    continue
+                all_dependencies_set.add(dep_file_id)
+                dependency, dep_pub = self.get_dependency(dep_file_id)
+                if dependency is None:
+                    print(
+                        f"Publication with specified file ID ({dep_file_id}) doesn't exist",
+                    )
+                    continue
+                dependencies_data[dep_file_id] = dependency
+                if sub_deps := dep_pub["dependencies"]:
+                    toplevel_deps.extend(sub_deps)
+
+        all_dependencies = sorted(all_dependencies_set)
+        dependencies_data = {
+            k: dependencies_data[k] for k in sorted(dependencies_data)
+        }
+
+        average_rating = None  # 0.0
+
+        return Publication(
+            **{k: pub[k] for k in write},
+            file_id=int(file_id),
+            translated_description=translated_description,
+            all_dependencies=all_dependencies,
+            dependencies_data=dependencies_data,
+            average_rating=average_rating,
+        )
+
+    async def cmd_publication(
+        self,
+        file_id: str,
+        language_id: str,
+    ) -> api.Response:
+        """Return publication details."""
+        pub_records = database.load(self.publications_path)
+        pub = pub_records.get(file_id)
+        if pub is None:
+            return api.failure(
+                f"Publication with specified file ID ({file_id}) doesn't exist",
+            )
+        lang_id = parse_int(language_id)
+        if lang_id is None:
+            return api.failure(
+                f"Language with specified ID ({language_id}) isn't supported",
+            )
+
+        publication_or_error = self.get_publication(file_id, lang_id)
+
+        if isinstance(publication_or_error, str):
+            return api.failure(publication_or_error)
+        return api.success_schema(publication_or_error)
 
     async def script(self, script: str, data: dict[str, str]) -> api.Response:
         """Handle script given post data."""
@@ -473,7 +601,11 @@ MineOS Dev Team""",
         arg_spec = inspect.getfullargspec(function)
         argument_names = arg_spec.args[1:]
         if not argument_names:
-            return await function()
+            try:
+                return await function()
+            except Exception as exc:
+                traceback.print_exception(exc)
+                return api.failure("Internal error")
 
         send_arguments: dict[str, str] = {}
         missing = False
@@ -502,19 +634,42 @@ MineOS Dev Team""",
                 " or ".join(group) for group in arguments_or
             )
             return api.failure(f"Missing arguments: {arguments_text}")
-        return await function(**send_arguments)
+        try:
+            return await function(**send_arguments)
+        except Exception as exc:
+            traceback.print_exception(exc)
+            return api.failure("Internal error")
 
 
 async def run() -> None:
     """Run test of server."""
     server = Version_2_04()
+
+    ##    print(
+    ##        await server.script(
+    ##            "register",
+    ##            {
+    ##                "email": "jerald@gmail.com",
+    ##                "name": "jerald",
+    ##                "password": "jerald",
+    ##            },
+    ##        ),
+    ##    )
+    ##    def pprint(value: api.Response) -> None:
+    ##        if isinstance(value, str):
+    ##            text = value
+    ##        else:
+    ##            text, _error_code = value
+    ##        market_api.pretty_print_response(
+    ##            market_api.lua_parser.parse_lua_table(text),
+    ##        )
+
     print(
         await server.script(
-            "register",
+            "publication",
             {
-                "email": "jerald@gmail.com",
-                "name": "jerald",
-                "password": "jerald",
+                "file_id": "73",  # 1936,
+                "language_id": "1",
             },
         ),
     )

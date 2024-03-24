@@ -31,6 +31,8 @@ if TYPE_CHECKING:
     from collections.abc import Generator, Iterable, Iterator
     from pathlib import Path
 
+    from trio import Path as TrioPath
+
 _LOADED: dict[str, Records] = {}
 
 
@@ -39,7 +41,7 @@ class Database(dict[str, Any]):
 
     __slots__ = ("file", "__weakref__")
 
-    def __init__(self, file_path: str | Path) -> None:
+    def __init__(self, file_path: str | Path | TrioPath) -> None:
         """Initialize and set file path."""
         super().__init__()
         self.file = file_path
@@ -124,11 +126,13 @@ class Table:
     def __setitem__(self, column: str, value: Iterable[Any]) -> None:
         """Set column data to value."""
         if column == self._key_name:
-            raise ValueError("column is key type")
-        for key, set_value in zip(self._records, value, strict=True):
-            if set_value is None:
-                continue
-            self._records[key][column] = set_value
+            for old, new in zip(tuple(self._records), value, strict=False):
+                self._records[new] = self._records.pop(old)
+        else:
+            for key, set_value in zip(self._records, value, strict=True):
+                if set_value is None:
+                    continue
+                self._records[key][column] = set_value
 
     def keys(self) -> set[str]:
         """Return the name of every column."""
@@ -190,7 +194,7 @@ class Records(Database):
         return Table(self, element_name)
 
 
-def load(file_path: str | Path) -> Records:
+def load(file_path: str | Path | TrioPath) -> Records:
     """Load database from file path or return already loaded instance."""
     file = path.abspath(file_path)
     if file not in _LOADED:
@@ -203,7 +207,7 @@ def get_loaded() -> set[str]:
     return set(_LOADED)
 
 
-def unload(file_path: str | Path) -> None:
+def unload(file_path: str | Path | TrioPath) -> None:
     """If database loaded, write file and unload."""
     file = path.abspath(file_path)
     if file not in get_loaded():
