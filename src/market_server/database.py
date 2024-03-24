@@ -121,7 +121,7 @@ class Table:
             return tuple(None for _ in range(len(self)))
         if column == self._key_name:
             return tuple(self._records.keys())
-        return tuple([row.get(column) for row in self._records.values()])
+        return tuple(row.get(column) for row in self._records.values())
 
     def __setitem__(self, column: str, value: Iterable[Any]) -> None:
         """Set column data to value."""

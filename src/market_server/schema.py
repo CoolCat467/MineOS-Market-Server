@@ -30,7 +30,7 @@ import math
 import time
 import traceback
 import uuid
-from collections import deque
+from collections import Counter, deque
 from email import message_from_string
 from email.headerregistry import Address
 from email.policy import default as email_default_policy
@@ -228,15 +228,24 @@ class Version_2_04:  # noqa: N801
         return self.records_root / "login.json"
 
     @property
+    def ids_path(self) -> trio.Path:
+        """ID records path."""
+        return self.records_root / "ids.json"
+
+    @property
     def publications_path(self) -> trio.Path:
         """Publication records path."""
         return self.records_root / "publications.json"
 
+    @property
+    def reviews_path(self) -> trio.Path:
+        """Review records path."""
+        return self.records_root / "reviews.json"
+
     ##    def __init__(self, users: database.Records) -> None:
     ##        self.users = users
 
-    @classmethod
-    def create_login_cookie_data(cls, username: str) -> str:
+    def create_login_cookie_data(self, username: str) -> str:
         """Generate UUID associated with a specific user.
 
         Only one instance of an account should be able
@@ -244,11 +253,22 @@ class Version_2_04:  # noqa: N801
         sessions. This will make remembering instances easier
         """
         # Get login database
-        logins = database.load(cls.login_path)
+        logins = database.load(self.login_path)
 
         # Make new random code until it does not exist
         while (code := str(uuid.uuid4())) in logins:
             continue
+
+        # Delete old tokens
+        table = logins.table("token")
+        tokens = table["token"]
+        delete: list[str] = []
+        for index, user in enumerate(table["user"]):
+            if user != username:
+                continue
+            delete.append(tokens[index])
+        for token in delete:
+            del logins[token]
 
         # Make logins expire after a while
         expires = int(time.time()) + 2628000  # Good for 1 month
@@ -261,14 +281,13 @@ class Version_2_04:  # noqa: N801
         logins.write_file()
         return code
 
-    @classmethod
-    def get_login_from_cookie_data(cls, code: str) -> str | None:
+    def get_login_from_cookie_data(self, code: str) -> str | None:
         """Get username from cookie data.
 
         If cookie data is invalid return None
         """
         # Get login database
-        logins = database.load(cls.login_path)
+        logins = database.load(self.login_path)
 
         # Attempt to get entry for code. Using get instead of
         # "in" search and then index means is faster
@@ -290,11 +309,26 @@ class Version_2_04:  # noqa: N801
         """Return server statistics data."""
         await trio.lowlevel.checkpoint()
         users = database.load(self.users_path)
+        publications = database.load(self.publications_path)
+        review_records = database.load(self.reviews_path)
+
         table = users.table("name")
         last: str | None = None
         if table["name"]:
             last = table["name"][-1]
-        stats = Statistics(len(users), 0, 0, 0, last, "")
+
+        review_count = 0
+        for reviews in review_records.values():
+            review_count += len(reviews)
+
+        stats = Statistics(
+            len(users),
+            len(publications),
+            review_count,
+            0,
+            last,
+            "",
+        )
         return api.success_schema(stats)
 
     async def cmd_register(
@@ -499,6 +533,175 @@ MineOS Dev Team""",
             pub,
         )
 
+    async def cmd_review(
+        self,
+        token: str,
+        file_id: str,
+        rating: str,
+        comment: str,
+    ) -> api.Response:
+        """Add a review for a given publication."""
+        await trio.lowlevel.checkpoint()
+        username = self.get_login_from_cookie_data(token)
+        if username is None:
+            return api.failure("Token is invalid or expired")
+
+        pub_records = database.load(self.publications_path)
+
+        publication = pub_records.get(str(file_id))
+        if publication is None:
+            return api.failure(
+                f"Publication with specified file ID ({file_id}) doesn't exist",
+            )
+
+        rating_value = parse_int(rating)
+        if rating_value is None or rating_value < 1 or rating_value > 5:
+            return api.failure(
+                "Rating should be in range of 1 to 5 inclusive",
+            )
+
+        review_length = len(comment)
+        if review_length < 2 or review_length > 1000:
+            return api.failure(
+                "Comment length too small/big. Minimum 2 Maximum 1000.",
+            )
+
+        review_records = database.load(self.reviews_path)
+
+        reviews = review_records.get(file_id, {})
+
+        # Remove previous reviews, otherwise users would be able
+        # to manipulate global average by spamming.
+        delete_ids: list[int] = []
+        for review_id, review in reviews.items():
+            if review["username"] == username:
+                delete_ids.append(str(review_id))
+        for delete_id in delete_ids:
+            del reviews[delete_id]
+
+        # Get ID for new review
+        id_records = database.load(self.ids_path)
+        new_review_id = id_records.get("review", 0)
+        id_records["review"] = new_review_id + 1
+        id_records.write_file()
+
+        # Add new review
+        reviews[str(new_review_id)] = {
+            "username": username,
+            "rating": rating_value,
+            "comment": comment,
+            "timestamp": math.floor(time.time()),
+            "votes": {},
+        }
+
+        # Save changes
+        review_records[file_id] = reviews
+        review_records.write_file()
+
+        return api.success()
+
+    def review_id_to_file_id(
+        self,
+        review_id: int,
+    ) -> str | None:
+        """Return file_id where given review_id is located or None."""
+        review_records = database.load(self.reviews_path)
+        search = str(review_id)
+        for file_id, reviews in review_records.items():
+            if search in reviews:
+                return file_id
+        return None
+
+    async def cmd_review_vote(
+        self,
+        token: str,
+        review_id: str,
+        helpful: str,
+    ) -> None:
+        """Vote if a review is helpful or not."""
+        review_id_int = parse_int(review_id)
+        if review_id_int is None:
+            return api.failure("`review_id` is invalid")
+
+        helpful_int = parse_int(helpful)
+        if helpful_int is None or helpful_int not in (0, 1):
+            return api.failure("`helpful` is invalid, either 0 or 1")
+
+        username = self.get_login_from_cookie_data(token)
+        if username is None:
+            return api.failure("Token is invalid or expired")
+
+        review_records = database.load(self.reviews_path)
+        file_id = self.review_id_to_file_id(review_id_int)
+        if file_id is None:
+            return api.failure(
+                f"Review with specified file ID ({review_id}) doesn't exist",
+            )
+        review_records[file_id][str(review_id_int)]["votes"][username] = bool(
+            helpful_int,
+        )
+        review_records.write_file()
+        return api.success()
+
+    async def cmd_reviews(
+        self,
+        file_id: str,
+        offset: str | None,
+        count: str | None,
+    ) -> api.Response:
+        """Get reviews for given file id."""
+        offset_int = parse_int(offset or 0)
+        if offset_int is None or offset_int < 0:
+            return api.failure("Invalid offset")
+
+        review_records = database.load(self.reviews_path)
+
+        reviews = review_records.get(file_id)
+        if not reviews or offset_int > len(reviews):
+            return api.success_direct([])
+
+        count_int = parse_int(count or len(reviews))
+        if count_int is None or count_int < 1:
+            return api.failure("Invalid count")
+        count_int = min(count_int, len(reviews))
+
+        keys = sorted(reviews)[offset_int:count_int]
+        review_data: list[Review] = []
+        for review_id in keys:
+            review = reviews[review_id]
+            vote_data = Counter(review["votes"].values())
+            votes = ReviewVotes(
+                total=sum(vote_data.values()),
+                positive=vote_data[True],
+                negative=vote_data[False],
+            )
+            review_data.append(
+                Review(
+                    **{
+                        k: review[k]
+                        for k in ("rating", "comment", "timestamp")
+                    },
+                    user_name=review["username"],
+                    id=review_id,
+                    votes=votes,
+                ),
+            )
+
+        return api.success_direct(review_data)
+
+    def get_average_rating(
+        self,
+        file_id: str | int,
+    ) -> float | None:
+        """Return average rating for given publication."""
+        review_records = database.load(self.reviews_path)
+        reviews = review_records.get(file_id)
+        if not reviews:
+            return None
+        table = database.Table(reviews, "review_id")
+        ratings = table["rating"]
+        return sum(ratings) / len(ratings)
+
     def get_publication(
         self,
         file_id: str | int,
@@ -541,12 +744,12 @@ MineOS Dev Team""",
                 all_dependencies_set.add(dep_file_id)
                 dependency, dep_pub = self.get_dependency(dep_file_id)
                 if dependency is None:
-                    print(
-                        f"Publication with specified file ID ({dep_file_id}) doesn't exist",
-                    )
+                    ##print(
+                    ##    f"Publication with specified file ID ({dep_file_id}) doesn't exist",
+                    ##)
                     continue
                 dependencies_data[dep_file_id] = dependency
-                if sub_deps := dep_pub["dependencies"]:
+                if sub_deps := dep_pub.get("dependencies"):
                     toplevel_deps.extend(sub_deps)
 
         all_dependencies = sorted(all_dependencies_set)
@@ -554,7 +757,7 @@ MineOS Dev Team""",
             k: dependencies_data[k] for k in sorted(dependencies_data)
         }
 
-        average_rating = None  # 0.0
+        average_rating = self.get_average_rating(file_id)
 
         return Publication(
             **{k: pub[k] for k in write},
@@ -589,6 +792,10 @@ MineOS Dev Team""",
             return api.failure(publication_or_error)
         return api.success_schema(publication_or_error)
 
+    def index(self) -> list[str]:
+        """Return list of valid scripts."""
+        return [a[4:] for a in dir(self) if a.startswith("cmd_")]
+
     async def script(self, script: str, data: dict[str, str]) -> api.Response:
         """Handle script given post data."""
         await trio.lowlevel.checkpoint()
@@ -609,18 +816,14 @@ MineOS Dev Team""",
 
         send_arguments: dict[str, str] = {}
         missing = False
-        arguments_or: list[list[str]] = []
+        arguments: list[tuple[bool, str]] = []
         for name in argument_names:
             annotation = arg_spec.annotations[name]
 
             required = True
             if "None" in annotation:
                 required = False
-                if not arguments_or:
-                    arguments_or.append([])
-                arguments_or[-1].append(name)
-            else:
-                arguments_or.append([name])
+            arguments.append((required, name))
 
             if name in data:
                 send_arguments[name] = data[name]
@@ -630,9 +833,25 @@ MineOS Dev Team""",
                 send_arguments[name] = None
 
         if missing:
-            arguments_text = ", ".join(
-                " or ".join(group) for group in arguments_or
-            )
+            groups = []
+            last_required = True
+            for required, name in arguments:
+                if last_required != required or not groups:
+                    groups.append([required, name])
+                else:  # last == current and not empty
+                    groups[-1].append(name)
+                last_required = required
+            argument_results: list[str] = []
+            for idx, group in enumerate(groups):
+                required, *arg_names = group
+                if not required and idx == 0:
+                    result = " or ".join(arg_names)
+                elif required:
+                    result = ", ".join(arg_names)
+                else:
+                    result = ", ".join(f"[{v}]" for v in arg_names)
+                argument_results.append(result)
+            arguments_text = ", ".join(argument_results)
             return api.failure(f"Missing arguments: {arguments_text}")
         try:
             return await function(**send_arguments)
@@ -645,6 +864,28 @@ async def run() -> None:
     """Run test of server."""
     server = Version_2_04()
 
+    original = {
+        "verify",
+        "delete",
+        "change_password",
+        "review",
+        "update",
+        "upload",
+        "dialogs",
+        "message",
+        "messages",
+        "review_vote",
+        "publication",
+        "statistics",
+        "reviews",
+        "login",
+        "register",
+        "publications",
+    }
+    handled = set(server.index()) | {"verify"}
+    unhandled = sorted(original - handled)
+    print(f"{unhandled = }")
+
     ##    print(
     ##        await server.script(
     ##            "register",
@@ -655,6 +896,7 @@ async def run() -> None:
     ##            },
     ##        ),
     ##    )
+    ##
     ##    def pprint(value: api.Response) -> None:
     ##        if isinstance(value, str):
     ##            text = value
@@ -663,37 +905,76 @@ async def run() -> None:
     ##        market_api.pretty_print_response(
     ##            market_api.lua_parser.parse_lua_table(text),
     ##        )
-
+    ##
     print(
         await server.script(
-            "publication",
-            {
-                "file_id": "73",  # 1936,
-                "language_id": "1",
-            },
+            "statistics",
+            {},
         ),
     )
-
-
-##    print(
-##        await server.script(
-##            "login",
-##            {"name": "test", "password": "test"},
-##        ),
-##    )
-##    print(
-##        await server.script(
-##            "login",
-##            {"email": "test@gmail.com", "password": "test"},
-##        ),
-##    )
-##    print(
-##        await server.script(
-##            "change_password",
-##            {"email": "test@gmail.com", "current_password": "test2", "new_password": "test"},
-##        ),
-##    )
-##    print(await server.script("statistics", {}))
+    ##    pprint(
+    ##        await server.script(
+    ##            "publication",
+    ##            {
+    ##                "file_id": "73",  # 1936, 73
+    ##                "language_id": "1",
+    ##            },
+    ##        ),
+    ##    )
+    ##    pprint(
+    ##        await server.script(
+    ##            "login",
+    ##            {"name": "test", "password": "test"},
+    ##        ),
+    ##    )
+    ##    pprint(
+    ##        await server.script(
+    ##            "review",
+    ##            {
+    ##                "token": token,
+    ##                "file_id": "1936",
+    ##                "comment": "This is a comment text",
+    ##                "rating": 5,
+    ##            }
+    ##        )
+    ##    )
+    ##    pprint(
+    ##        await server.script(
+    ##            "review",
+    ##            {
+    ##                "token": token,
+    ##                "file_id": "73",
+    ##                "comment": "This is a comment text",
+    ##                "rating": 5,
+    ##            }
+    ##        )
+    ##    )
+    ##    pprint(
+    ##        await server.script(
+    ##            "reviews",
+    ##            {
+    ##                "file_id": "73", # 1936
+    ##            }
+    ##        )
+    ##    )
+    ##    pprint(
+    ##        await server.script(
+    ##            "review_vote",
+    ##            {
+    ##                "token": token,
+    ##                "review_id": "1",
+    ##                "helpful": "1",
+    ##            }
+    ##        )
+    ##    )
+    ##    pprint(
+    ##        await server.script(
+    ##            "reviews",
+    ##            {
+    ##                "file_id": "73",
+    ##            }
+    ##        )
+    ##    )
 
 
 if __name__ == "__main__":
