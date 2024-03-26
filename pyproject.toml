@@ -28,8 +28,13 @@ classifiers = [
 ]
 keywords = ["minecraft", "mineos", "api", "server", "lua"]
 dependencies = [
+    "hypercorn[trio]~=0.16.0",
+    "quart~=0.19.4",
+    "quart-trio~=0.11.1",
     "trio~=0.25.0",
-    "httpx~=0.27.0",
+    "Werkzeug~=3.0.1",
+    'exceptiongroup >= 1.2.0; python_version < "3.11"',
+    'tomli >= 2.0.1; python_version < "3.11"',
 ]
 
 [tool.setuptools.dynamic]
