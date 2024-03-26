@@ -37,7 +37,7 @@ from typing import Any, Final, TypeVar, cast
 import trio
 from hypercorn.config import Config
 from hypercorn.trio import serve
-from quart import request
+from quart import Response, request
 from quart.templating import stream_template
 from quart_trio import QuartTrio
 from werkzeug.exceptions import HTTPException
@@ -200,7 +200,7 @@ app: Final = QuartTrio(  # pylint: disable=invalid-name
 schema_v_2_04 = schema.Version_2_04()
 
 
-@app.route("/MineOSAPI/<version>/<script>.php", methods=("POST", "GET"))
+@app.route("/MineOSAPI/<version>/<script>.php", methods=("POST", "GET"))  # type: ignore[type-var]
 async def handle_script(
     version: str,
     script: str,
@@ -229,13 +229,13 @@ async def handle_script(
             )
         multi_dict = await request.form
         form = multi_dict.to_dict()
-        data = ChainMap(form, request.args)
+        data = dict(ChainMap(form, request.args))
         return await schema_v_2_04.script(script, data)
     return api.failure("Invalid version")
 
 
 @app.get("/")
-async def handle_root() -> AsyncIterator[str]:
+async def handle_root() -> Response:
     """Send root file."""
     return await app.send_static_file("root.html")
 

@@ -550,7 +550,7 @@ def jinja_super_block() -> str:
 
 
 def jinja_number_plural(
-    numeric_value: str,
+    numeric_value: int | str,
     word: str,
 ) -> str:
     """Return word pluralized given numeric variable.

@@ -35,7 +35,7 @@ from email import message_from_string
 from email.headerregistry import Address
 from email.policy import default as email_default_policy
 from secrets import token_urlsafe
-from typing import Any, Final, NamedTuple
+from typing import Any, Final, NamedTuple, cast
 
 import trio
 
@@ -81,8 +81,8 @@ class Statistics(NamedTuple):
     publications_count: int
     reviews_count: int
     messages_count: int
-    last_registered_user: str
-    most_popular_user: str
+    last_registered_user: str | None
+    most_popular_user: str | None
 
 
 class LoginResponse(NamedTuple):
@@ -182,7 +182,7 @@ class Publication(NamedTuple):
 
     icon_url: str | None = None
 
-    average_rating: float = 0
+    average_rating: float | None = None
     whats_new: str | None = None
     whats_new_version: float | None = None
 
@@ -197,7 +197,7 @@ def parse_email_address(string: str) -> Address | None:
     return value
 
 
-def parse_int(string: str) -> int | None:
+def parse_int(string: str | int) -> int | None:
     """Try to parse int. Return None on failure."""
     try:
         return int(string)
@@ -329,7 +329,7 @@ class Version_2_04:  # noqa: N801
             review_count,
             0,
             last,
-            "",
+            None,
         )
         return api.success_schema(stats)
 
@@ -350,6 +350,11 @@ class Version_2_04:  # noqa: N801
             )
 
         address = Address() if not email else parse_email_address(email)
+
+        if address is None:
+            return api.failure(
+                "Invalid email address",
+            )
 
         if address.domain not in ALLOWED_EMAIL_PROVIDERS:
             allowed = ", ".join(ALLOWED_EMAIL_PROVIDERS)
@@ -447,7 +452,7 @@ MineOS Dev Team""",
                 name = table["name"][id_]
         else:
             id_ = table.get_id("name", name)
-        if name is None:
+        if name is None or id_ is None:
             return api.failure("Invalid (name or email) or password")
         user = users.get(name)
         if user is None:
@@ -523,7 +528,7 @@ MineOS Dev Team""",
         pub_records = database.load(self.publications_path)
         pub = pub_records.get(str(file_id))
         if pub is None:
-            return None, None
+            return None, {}
         return (
             Dependency(
                 pub["source_url"],
@@ -574,7 +579,7 @@ MineOS Dev Team""",
 
         # Remove previous reviews, otherwise users would be able
         # to manipulate global average by spamming.
-        delete_ids: list[int] = []
+        delete_ids: list[str] = []
         for review_id, review in reviews.items():
             if review["username"] == username:
                 delete_ids.append(str(review_id))
@@ -619,7 +624,7 @@ MineOS Dev Team""",
         token: str,
         review_id: str,
         helpful: str,
-    ) -> None:
+    ) -> api.Response:
         """Vote if a review is helpful or not."""
         review_id_int = parse_int(review_id)
         if review_id_int is None:
@@ -697,12 +702,12 @@ MineOS Dev Team""",
     ) -> float | None:
         """Return average rating for given publication."""
         review_records = database.load(self.reviews_path)
-        reviews = review_records.get(file_id)
+        reviews = review_records.get(str(file_id))
         if not reviews:
             return None
         table = database.Table(reviews, "review_id")
         ratings = table["rating"]
-        return sum(ratings) / len(ratings)
+        return sum(map(int, ratings)) / len(ratings)
 
     def get_publication(
         self,
@@ -827,12 +832,12 @@ MineOS Dev Team""",
         argument_names = arg_spec.args[1:]
         if not argument_names:
             try:
-                return await function()
+                return cast(api.Response, await function())
             except Exception as exc:
                 traceback.print_exception(exc)
                 return api.failure("Internal server error", 500)
 
-        send_arguments: dict[str, str] = {}
+        send_arguments: dict[str, str | None] = {}
         missing = False
         arguments: list[tuple[bool, str]] = []
         for name in argument_names:
@@ -851,7 +856,7 @@ MineOS Dev Team""",
                 send_arguments[name] = None
 
         if missing:
-            groups = []
+            groups: list[list[bool | str]] = []
             last_required = True
             for required, name in arguments:
                 if last_required != required or not groups:
@@ -861,7 +866,9 @@ MineOS Dev Team""",
                 last_required = required
             argument_results: list[str] = []
             for idx, group in enumerate(groups):
-                required, *arg_names = group
+                assert isinstance(group[0], bool)
+                required = bool(group[0])
+                arg_names = cast(list[str], group[1:])
                 if not required and idx == 0:
                     result = " or ".join(arg_names)
                 elif required:
@@ -872,7 +879,7 @@ MineOS Dev Team""",
             arguments_text = ", ".join(argument_results)
             return api.failure(f"Missing arguments: {arguments_text}")
         try:
-            return await function(**send_arguments)
+            return cast(api.Response, await function(**send_arguments))
         except Exception as exc:
             traceback.print_exception(exc)
             return api.failure("Internal server error", 500)
@@ -923,7 +930,7 @@ async def run() -> None:
         else:
             text, _error_code = value
         market_api.pretty_print_response(
-            market_api.lua_parser.parse_lua_table(text),
+            market_api.lua_parser.parse_lua_table(text),  # type: ignore[arg-type]
         )
 
     ##
