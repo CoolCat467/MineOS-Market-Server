@@ -29,6 +29,7 @@ import socket
 import sys
 import time
 import traceback
+from collections import ChainMap
 from collections.abc import AsyncIterator, Awaitable, Callable, Iterable
 from os import getenv, makedirs, path
 from typing import Any, Final, TypeVar, cast
@@ -227,7 +228,8 @@ async def handle_script(
                 message="User successfully verified!",
             )
         multi_dict = await request.form
-        data = multi_dict.to_dict()
+        form = multi_dict.to_dict()
+        data = ChainMap(form, request.args)
         return await schema_v_2_04.script(script, data)
     return api.failure("Invalid version")
 
