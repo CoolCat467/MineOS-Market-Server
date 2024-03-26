@@ -33,15 +33,18 @@ dependencies = [
 ]
 
 [tool.setuptools.dynamic]
-version = {attr = "market_server.__init__.__version__"}
+version = {attr = "market_server.server.__version__"}
 
 [project.urls]
 "Homepage" = "https://github.com/CoolCat467/MineOS-Market-Server"
 "Source" = "https://github.com/CoolCat467/MineOS-Market-Server"
 "Bug Tracker" = "https://github.com/CoolCat467/MineOS-Market-Server/issues"
 
+[project.scripts]
+mineos_market_server = "market_server.server:run"
+
 [tool.setuptools.package-data]
-market_api = ["py.typed"]
+market_server = ["py.typed"]
 
 [tool.mypy]
 mypy_path = "src"

@@ -1,4 +1,4 @@
-"""Scanner Web Server - Website to talk to SANE scanners.
+"""Market Server - MineOS App Market Server.
 
 Copyright (C) 2024  CoolCat467
 
@@ -20,8 +20,8 @@ from __future__ import annotations
 
 __title__ = "MineOS Market Webserver"
 __author__ = "CoolCat467"
-__version__ = "3.0.0"
-__license__ = "GPLv3"
+__license__ = "GNU General Public License Version 3"
+__version__ = "1.0.0"
 
 
 import functools
@@ -46,7 +46,6 @@ if sys.version_info < (3, 11):
     from exceptiongroup import BaseExceptionGroup
 else:
     import tomllib
-
 
 from market_server import api, database, schema
 
@@ -201,13 +200,15 @@ schema_v_2_04 = schema.Version_2_04()
 
 
 @app.route("/MineOSAPI/<version>/<script>.php", methods=("POST", "GET"))
-async def handle_script(version: str, script: str) -> str:
+async def handle_script(
+    version: str,
+    script: str,
+) -> AsyncIterator[str] | api.Response:
     """Handle script endpoint."""
     if version == "2.04":
         if script == "verify":
             verify_token = request.args.get("token")
             if verify_token is None:
-                ##                return api.failure("Where is token...")
                 return await stream_template(
                     "verify.html.jinja",
                     page_title="Verification was unsuccessful",
@@ -215,13 +216,11 @@ async def handle_script(version: str, script: str) -> str:
                 )
             verified = schema_v_2_04.verify(verify_token)
             if not verified:
-                ##                return api.failure("User with specified token doesn't exist!")
                 return await stream_template(
                     "verify.html.jinja",
                     page_title="Verification was unsuccessful",
                     message="User with specified token doesn't exist!",
                 )
-            ##            return api.success_direct("User successfully verified!")
             return await stream_template(
                 "verify.html.jinja",
                 page_title="Verification was successful",
@@ -231,6 +230,12 @@ async def handle_script(version: str, script: str) -> str:
         data = multi_dict.to_dict()
         return await schema_v_2_04.script(script, data)
     return api.failure("Invalid version")
+
+
+@app.get("/")
+async def handle_root() -> AsyncIterator[str]:
+    """Send root file."""
+    return await app.send_static_file("root.html")
 
 
 async def serve_async(app: QuartTrio, config_obj: Config) -> None:
@@ -391,5 +396,5 @@ use_reloader = false
         database.unload_all()
 
 
-##if __name__ == "__main__":
-##    run()
+if __name__ == "__main__":
+    run()

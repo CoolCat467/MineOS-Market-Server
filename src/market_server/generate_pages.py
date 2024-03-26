@@ -185,6 +185,47 @@ def template(
         (
             htmlgen.tag(
                 "link",
+                rel="apple-touch-icon",
+                sizes="180x180",
+                href="/apple-touch-icon.png",
+            ),
+            htmlgen.tag(
+                "link",
+                rel="icon",
+                type_="image/png",
+                sizes="32x32",
+                href="/favicon-32x32.png",
+            ),
+            htmlgen.tag(
+                "link",
+                rel="icon",
+                type_="image/png",
+                sizes="16x16",
+                href="/favicon-16x16.png",
+            ),
+            htmlgen.tag(
+                "link",
+                rel="manifest",
+                href="/site.webmanifest",
+            ),
+            htmlgen.tag(
+                "link",
+                rel="mask-icon",
+                href="/safari-pinned-tab.svg",
+                color="#5bbad5",
+            ),
+            htmlgen.tag(
+                "meta",
+                name="msapplication-TileColor",
+                content="#da532c",
+            ),
+            htmlgen.tag(
+                "meta",
+                name="theme-color",
+                content="#ffffff",
+            ),
+            htmlgen.tag(
+                "link",
                 rel="stylesheet",
                 type_="text/css",
                 href="/style.css",
@@ -299,6 +340,20 @@ def generate_verify_page() -> str:
     body = htmlgen.contain_in_box(content)
     return template(
         htmlgen.jinja_expression("page_title"),
+        body,
+    )
+
+
+@save_static_as("root.html")
+def generate_root_page() -> str:
+    """Generate root page."""
+    content = htmlgen.create_link(
+        "/MineOSAPI/2.04/statistics.php",
+        "View Statistics",
+    )
+    body = htmlgen.contain_in_box(content)
+    return template(
+        server.__title__,
         body,
     )
 

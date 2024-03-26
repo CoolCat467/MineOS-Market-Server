@@ -22,5 +22,9 @@ from __future__ import annotations
 
 __title__ = "Market Server"
 __author__ = "CoolCat467"
-__version__ = "0.0.0"
 __license__ = "GNU General Public License Version 3"
+
+from market_server.server import run
+
+if __name__ == "__main__":
+    run()

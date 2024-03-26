@@ -187,12 +187,14 @@ class Publication(NamedTuple):
     whats_new_version: float | None = None
 
 
-def parse_email_address(string: str) -> Address:
+def parse_email_address(string: str) -> Address | None:
     """Parse email address from string."""
     msg = message_from_string(f"To: {string}", policy=email_default_policy)
     if not msg["to"]:
         return None
-    return msg["to"].addresses[0]
+    value = msg["to"].addresses[0]
+    assert isinstance(value, Address)
+    return value
 
 
 def parse_int(string: str) -> int | None:
@@ -792,6 +794,22 @@ MineOS Dev Team""",
             return api.failure(publication_or_error)
         return api.success_schema(publication_or_error)
 
+    async def cmd_publications(
+        self,
+        category_id: str,
+        order_by: str | None,
+        order_direction: str | None,
+        offset: str | None,
+        count: str | None,
+        search: str | None,
+        file_ids: str | None,
+    ) -> api.Response:
+        """Search for a publication."""
+        category = parse_int(category_id)
+        if category is None or category < 0:
+            return api.failure("Invalid category")
+        raise NotImplementedError
+
     def index(self) -> list[str]:
         """Return list of valid scripts."""
         return [a[4:] for a in dir(self) if a.startswith("cmd_")]
@@ -812,7 +830,7 @@ MineOS Dev Team""",
                 return await function()
             except Exception as exc:
                 traceback.print_exception(exc)
-                return api.failure("Internal error")
+                return api.failure("Internal server error", 500)
 
         send_arguments: dict[str, str] = {}
         missing = False
@@ -857,7 +875,7 @@ MineOS Dev Team""",
             return await function(**send_arguments)
         except Exception as exc:
             traceback.print_exception(exc)
-            return api.failure("Internal error")
+            return api.failure("Internal server error", 500)
 
 
 async def run() -> None:
@@ -897,18 +915,27 @@ async def run() -> None:
     ##        ),
     ##    )
     ##
-    ##    def pprint(value: api.Response) -> None:
-    ##        if isinstance(value, str):
-    ##            text = value
-    ##        else:
-    ##            text, _error_code = value
-    ##        market_api.pretty_print_response(
-    ##            market_api.lua_parser.parse_lua_table(text),
-    ##        )
+    import market_api
+
+    def pprint(value: api.Response) -> None:
+        if isinstance(value, str):
+            text = value
+        else:
+            text, _error_code = value
+        market_api.pretty_print_response(
+            market_api.lua_parser.parse_lua_table(text),
+        )
+
     ##
-    print(
+    ##    print(
+    ##        await server.script(
+    ##            "statistics",
+    ##            {},
+    ##        ),
+    ##    )
+    pprint(
         await server.script(
-            "statistics",
+            "publications",
             {},
         ),
     )
