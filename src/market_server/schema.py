@@ -922,16 +922,17 @@ async def run() -> None:
     ##        ),
     ##    )
     ##
-    import market_api
-
-    def pprint(value: api.Response) -> None:
-        if isinstance(value, str):
-            text = value
-        else:
-            text, _error_code = value
-        market_api.pretty_print_response(
-            market_api.lua_parser.parse_lua_table(text),  # type: ignore[arg-type]
-        )
+    pprint = print
+    ##    import market_api
+    ##
+    ##    def pprint(value: api.Response) -> None:
+    ##        if isinstance(value, str):
+    ##            text = value
+    ##        else:
+    ##            text, _error_code = value
+    ##        market_api.pretty_print_response(
+    ##            market_api.lua_parser.parse_lua_table(text),
+    ##        )
 
     ##
     ##    print(
