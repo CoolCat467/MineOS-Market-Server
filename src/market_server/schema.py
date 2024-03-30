@@ -32,6 +32,7 @@ import traceback
 import uuid
 from collections import Counter, deque
 from email import message_from_string
+from email.errors import HeaderParseError
 from email.headerregistry import Address
 from email.policy import default as email_default_policy
 from secrets import token_urlsafe
@@ -189,11 +190,17 @@ class Publication(NamedTuple):
 
 def parse_email_address(string: str) -> Address | None:
     """Parse email address from string."""
-    msg = message_from_string(f"To: {string}", policy=email_default_policy)
-    if not msg["to"]:
+    try:
+        msg = message_from_string(f"To: {string}", policy=email_default_policy)
+        to = msg["to"]
+    except (IndexError, HeaderParseError):
         return None
-    value = msg["to"].addresses[0]
+    if not to:
+        return None
+    value = to.addresses[0]
     assert isinstance(value, Address)
+    if not value.username or not value.domain:
+        return None
     return value
 
 
