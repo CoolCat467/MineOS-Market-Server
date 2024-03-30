@@ -347,13 +347,112 @@ def generate_verify_page() -> str:
 @save_static_as("root.html")
 def generate_root_page() -> str:
     """Generate root page."""
-    content = htmlgen.create_link(
-        "/MineOSAPI/2.04/statistics.php",
-        "View Statistics",
+    content = htmlgen.bullet_list(
+        (
+            htmlgen.create_link(
+                "/MineOSAPI/2.04/statistics.php",
+                "View Statistics",
+            ),
+            htmlgen.create_link(
+                "/debug",
+                "Debug",
+            ),
+        ),
     )
     body = htmlgen.contain_in_box(content)
     return template(
         server.__title__,
+        body,
+    )
+
+
+@save_static_as("debug.html")
+def generate_debug_page() -> str:
+    """Generate debug page."""
+    form_contents = "<br>\n".join(
+        (
+            htmlgen.input_field(
+                "script",
+                "Script",
+                attrs={"required": ""},
+            ),
+            "\n".join(
+                (
+                    htmlgen.wrap_tag(
+                        "textarea",
+                        "",
+                        block=False,
+                        name="post_data",
+                        id_="post_area",
+                        rows=5,
+                        cols=80,
+                    ),
+                    htmlgen.wrap_tag(
+                        "label",
+                        "Post Data",
+                        block=False,
+                        for_="post_area",
+                    ),
+                ),
+            ),
+        ),
+    )
+    form = htmlgen.form("debug_form", form_contents, "Post", "Debug Form")
+    body = htmlgen.contain_in_box(form)
+    return template(
+        "Debug Form",
+        body,
+    )
+
+
+@save_template_as("debug_post")
+def generate_debug_post_page() -> str:
+    """Generate debug page."""
+    code = htmlgen.jinja_expression("response_code")
+    response = htmlgen.contain_in_box(
+        htmlgen.jinja_expression("response"),
+        f"Response (code {code})",
+    )
+    form_contents = "<br>\n".join(
+        (
+            htmlgen.input_field(
+                "script",
+                "Script",
+                attrs={
+                    "value": htmlgen.jinja_expression("script_autofill"),
+                    "required": "",
+                },
+            ),
+            "\n".join(
+                (
+                    htmlgen.wrap_tag(
+                        "textarea",
+                        htmlgen.jinja_expression("post_autofill"),
+                        block=False,
+                        name="post_data",
+                        id_="post_area",
+                        rows=5,
+                        cols=80,
+                    ),
+                    htmlgen.wrap_tag(
+                        "label",
+                        "Post Data",
+                        block=False,
+                        for_="post_area",
+                    ),
+                ),
+            ),
+        ),
+    )
+    form = htmlgen.form("debug_form", form_contents, "Post", "Debug Form")
+    body = "\n".join(
+        (
+            htmlgen.contain_in_box(form),
+            response,
+        ),
+    )
+    return template(
+        "Debug Response",
         body,
     )
 

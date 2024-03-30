@@ -106,7 +106,7 @@ class SearchPublication(NamedTuple):
     category_id: int
     reviews_count: int
 
-    icon_url: str = ""
+    icon_url: str | None = None
 
     average_rating: float | None = None
     popularity: float | None = None
@@ -205,6 +205,45 @@ def parse_int(string: str | int) -> int | None:
         return None
 
 
+def parse_table(string: str) -> dict[str, Any]:
+    """Parse encoded table."""
+
+    def set_key(dict_: dict[str, Any], keys: list[str], value: str) -> None:
+        key = keys[0].removesuffix("]")
+        if len(keys) == 1:
+            dict_[key] = value
+            return
+        dict_.setdefault(key, {})
+        set_key(dict_[key], keys[1:], value)
+
+    root: dict[str, Any] = {}
+    for part in string.split("&"):
+        if "=" not in part:
+            continue
+        key_data, value = part.split("=", 1)
+        set_key(root, key_data.split("["), value)
+
+    return root
+
+
+def parse_int_list(string: str) -> list[int]:
+    """Parse integer list.
+
+    ex `[0]=27&[1]=49` -> [27, 49]
+    ex `[3]=27&[1]=49` -> [49, 27]
+    """
+    table = parse_table(string)
+    result: list[int] = []
+    if "" not in table:
+        return result
+    for key in sorted(table[""].keys()):
+        parsed = parse_int(table[""][key])
+        if parsed is None:
+            continue
+        result.append(parsed)
+    return result
+
+
 def send_email(address: str, subject: str, message: str) -> None:
     """Sent email to given address."""
     print(
@@ -245,6 +284,10 @@ class Version_2_04:  # noqa: N801
     def __init__(self, root_path: str | trio.Path) -> None:
         """Initialize records path."""
         self.records_root = trio.Path(root_path) / "records"
+
+    def __repr__(self) -> str:
+        """Return representation of self."""
+        return f"{self.__class__.__name__}(root_path = {self.records_root.parent!r})"
 
     def create_login_cookie_data(self, username: str) -> str:
         """Generate UUID associated with a specific user.
@@ -306,21 +349,26 @@ class Version_2_04:  # noqa: N801
         assert isinstance(value, str) or value is None
         return value
 
+    def get_total_reviews_count(self) -> int:
+        """Return the total number of reviews."""
+        review_records = database.load(self.reviews_path)
+        review_count = 0
+        for reviews in review_records.values():
+            review_count += len(reviews)
+        return review_count
+
     async def cmd_statistics(self) -> str:
         """Return server statistics data."""
         await trio.lowlevel.checkpoint()
         users = database.load(self.users_path)
         publications = database.load(self.publications_path)
-        review_records = database.load(self.reviews_path)
 
         table = users.table("name")
         last: str | None = None
         if table["name"]:
             last = table["name"][-1]
 
-        review_count = 0
-        for reviews in review_records.values():
-            review_count += len(reviews)
+        review_count = self.get_total_reviews_count()
 
         stats = Statistics(
             len(users),
@@ -798,6 +846,27 @@ MineOS Dev Team""",
             return api.failure(publication_or_error)
         return api.success_schema(publication_or_error)
 
+    def get_review_count(
+        self,
+        file_id: str | int,
+    ) -> int | None:
+        """Return ReviewVotes or None if file id doesn't exist."""
+        review_records = database.load(self.reviews_path)
+        reviews = review_records.get(str(file_id))
+        if not reviews:
+            return None
+        return len(reviews)
+
+    def get_publication_popularity(
+        self,
+        file_id: str | int,
+    ) -> float:
+        """Return `popularity` value for given publication."""
+        average_rating = self.get_average_rating(file_id) or 5
+        review_count = self.get_review_count(file_id) or 0
+        count_id = max(1, self.get_total_reviews_count())
+        return (review_count * average_rating) / count_id
+
     async def cmd_publications(
         self,
         category_id: str,
@@ -812,7 +881,101 @@ MineOS Dev Team""",
         category = parse_int(category_id)
         if category is None or category < 0:
             return api.failure("Invalid category")
-        raise NotImplementedError
+
+        if order_by not in {"popularity", "rating", "name", "date", None}:
+            return api.failure(
+                "Invalid order by, valid is popularity, rating, name, or date.",
+            )
+        if order_by is None:
+            order_by = "date"
+
+        descending = order_direction != "asc"
+
+        offset_value = parse_int(offset or 0)
+        if offset_value is None:
+            return api.failure("Invalid offset")
+
+        count_value: int | None = None
+        if count is not None:
+            count_value = parse_int(count)
+        if count_value is not None and count_value < 1:
+            return api.failure("count is less than one")
+
+        get_files: list[int] | None = None
+        if file_ids is not None:
+            get_files = parse_int_list(file_ids) or None
+
+        pub_records = database.load(self.publications_path)
+        table = pub_records.table("file_id")
+
+        # Get record ids of files that match
+        category_records: dict[str, dict[str, str]] = {}
+        pub_file_ids = table["file_id"]
+        for index, cat_id in enumerate(table["category_id"]):
+            if cat_id == category:
+                file_id = pub_file_ids[index]
+                category_records[file_id] = pub_records[file_id]
+
+        obtain_files = set(category_records.keys())
+        if get_files is not None:
+            obtain_files &= set(map(str, get_files))
+
+        if order_by == "popularity":
+            match_ids = sorted(
+                obtain_files,
+                key=self.get_publication_popularity,
+                reverse=descending,
+            )
+        elif order_by == "rating":
+            match_ids = sorted(
+                obtain_files,
+                key=lambda f: self.get_average_rating(f) or 0,
+                reverse=descending,
+            )
+        elif order_by == "name":
+            match_ids = sorted(
+                obtain_files,
+                key=lambda f: category_records[f]["publication_name"],
+                reverse=descending,
+            )
+        else:
+            match_ids = sorted(
+                obtain_files,
+                key=lambda f: category_records[f]["timestamp"],
+                reverse=descending,
+            )
+
+        if count_value is None:
+            count_value = len(match_ids)
+
+        offset_value = max(0, min(len(match_ids) - 1, offset_value))
+        count_value = max(len(match_ids), min(0, count_value))
+
+        matches: list[SearchPublication] = []
+        for file_id in match_ids[offset_value:count_value]:
+            publication = pub_records.get(file_id)
+            if publication is None:
+                continue
+            matches.append(
+                SearchPublication(
+                    int(file_id),
+                    **{
+                        k: publication.get(k)
+                        for k in (
+                            "publication_name",
+                            "user_name",
+                            "version",
+                            "category_id",
+                            "icon_url",
+                        )
+                    },
+                    reviews_count=self.get_review_count(file_id) or 0,
+                    average_rating=self.get_average_rating(file_id),
+                    popularity=self.get_publication_popularity(file_id),
+                ),
+            )
+
+        return api.success_direct(matches, True)
 
     def index(self) -> list[str]:
         """Return list of valid scripts."""
@@ -887,6 +1050,7 @@ MineOS Dev Team""",
 async def run() -> None:
     """Run test of server."""
     server = Version_2_04(await trio.Path(__file__).parent.absolute())
+    print(f"{server = }")
 
     original = {
         "verify",
@@ -921,17 +1085,20 @@ async def run() -> None:
     ##        ),
     ##    )
     ##
-    pprint = print
-    ##    import market_api
-    ##
-    ##    def pprint(value: api.Response) -> None:
-    ##        if isinstance(value, str):
-    ##            text = value
-    ##        else:
-    ##            text, _error_code = value
-    ##        market_api.pretty_print_response(
-    ##            market_api.lua_parser.parse_lua_table(text),
-    ##        )
+    try:
+        import market_api
+
+        def pprint(value: api.Response) -> None:
+            if isinstance(value, str):
+                text = value
+            else:
+                text, _error_code = value
+            market_api.pretty_print_response(
+                market_api.lua_parser.parse_lua_table(text),
+            )
+
+    except ImportError:
+        pprint = print
 
     ##
     ##    print(
@@ -943,7 +1110,10 @@ async def run() -> None:
     pprint(
         await server.script(
             "publications",
-            {},
+            {
+                "category_id": "2",
+                "order_direction": "asc",
+            },
         ),
     )
     ##    pprint(

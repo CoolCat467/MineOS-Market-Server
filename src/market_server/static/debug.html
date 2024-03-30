@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MineOS Market Webserver</title>
+    <title>Debug Form</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -15,12 +15,17 @@
   </head>
   <body>
     <div class="content">
-      <h1>MineOS Market Webserver</h1>
+      <h1>Debug Form</h1>
       <div class="box">
-        <ul>
-          <li><a href="/MineOSAPI/2.04/statistics.php">View Statistics</a></li>
-          <li><a href="/debug">Debug</a></li>
-        </ul>
+        <b>Debug Form</b>
+        <form name="debug_form" method="post">
+          <input id="script" name="script" required="">
+          <label for="script">Script</label><br>
+          <textarea name="post_data" id="post_area" rows="5" cols="80"></textarea>
+          <label for="post_area">Post Data</label>
+          <br>
+          <input type="submit" id="debug_form_submit_button" name="debug_form_submit_button" value="Post">
+        </form>
       </div>
     </div>
     <footer>

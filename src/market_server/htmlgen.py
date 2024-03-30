@@ -223,7 +223,9 @@ def input_field(
                 )
     lines.append(tag("input", **args))
     if field_title is not None:
-        lines.append(wrap_tag("label", field_title, False, for_=field_id))
+        lines.append(
+            wrap_tag("label", field_title, block=False, for_=field_id),
+        )
     return "\n".join(lines)
 
 

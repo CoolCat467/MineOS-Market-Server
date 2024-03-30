@@ -48,7 +48,7 @@ if sys.version_info < (3, 11):
 else:
     import tomllib
 
-from market_server import api, database, schema
+from market_server import api, database, htmlgen, schema
 
 HOME: Final = trio.Path(getenv("HOME", path.expanduser("~")))
 XDG_DATA_HOME: Final = trio.Path(
@@ -238,6 +238,89 @@ async def handle_script(
 async def handle_root() -> Response:
     """Send root file."""
     return await app.send_static_file("root.html")
+
+
+@app.get("/debug")
+async def handle_debug_get() -> Response:
+    """Send debug file."""
+    return await app.send_static_file("debug.html")
+
+
+try:
+    import market_api
+
+    def pretty_format(text: str) -> str:
+        """Pretty format text."""
+        return market_api.pretty_format_response(
+            market_api.lua_parser.parse_lua_table(text),
+        )
+
+except ImportError:
+
+    def pretty_format(text: str) -> None:
+        """Pretty format text."""
+        return text
+
+
+@app.post("/debug")
+async def handle_debug_post() -> Response:
+    """Send debug file."""
+    multi_dict = await request.form
+    form = multi_dict.to_dict()
+    script = form.get("script")
+    if not script:
+        return (
+            await stream_template(
+                "error_page.html.jinja",
+                page_title="No script given",
+                error_body="No script name submitted.",
+                return_link="/debug",
+            ),
+            400,
+        )
+    post_data = form.get("post_data")
+    if post_data is None:
+        return (
+            await stream_template(
+                "error_page.html.jinja",
+                page_title="No post data given",
+                error_body="No post data name submitted.",
+                return_link="/debug",
+            ),
+            400,
+        )
+    lines = form.get("post_data", "").splitlines()
+    arguments = dict(
+        map(str.strip, line.split("=", 1)) if "=" in line else (line, "")
+        for line in lines
+    )
+
+    raw_response = await schema_v_2_04.script(script, arguments)
+    response_code = 200
+    if isinstance(raw_response, tuple):
+        response, response_code = raw_response
+    else:
+        response = raw_response
+
+    post_autofill = "\n".join(f"{k}={v}" for k, v in arguments.items())
+
+    response_lines = pretty_format(response).splitlines()
+
+    response_html = htmlgen.wrap_tag(
+        "textarea",
+        "\n".join(line.replace(" ", "&nbsp;") for line in response_lines),
+        readonly="",
+        rows=len(response_lines),
+        cols=90,
+    )
+
+    return await stream_template(
+        "debug_post.html.jinja",
+        response_code=response_code,
+        response=response_html,
+        script_autofill=script,
+        post_autofill=post_autofill,
+    )
 
 
 async def serve_async(app: QuartTrio, config_obj: Config) -> None:
