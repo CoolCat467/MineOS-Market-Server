@@ -280,7 +280,7 @@ def select_box(
     return contain_in_box("<br>\n" + radios, box_title)
 
 
-def bullet_list(values: list[str], **kwargs: TagArg) -> str:
+def bullet_list(values: Iterable[str], **kwargs: TagArg) -> str:
     """Return HTML bulleted list from values."""
     display = "\n".join(wrap_tag("li", v, block=False) for v in values)
     return wrap_tag("ul", display, block=True, **kwargs)

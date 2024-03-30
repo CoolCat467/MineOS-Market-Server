@@ -1098,7 +1098,9 @@ async def run() -> None:
             )
 
     except ImportError:
-        pprint = print
+
+        def pprint(value: api.Response) -> None:
+            print(value)
 
     ##
     ##    print(

@@ -252,7 +252,9 @@ try:
     def pretty_format(text: str) -> str:
         """Pretty format text."""
         obj = cast(object, market_api.lua_parser.parse_lua_table(text))
-        return market_api.pretty_format_response(obj)
+        value = market_api.pretty_format_response(obj)
+        assert isinstance(value, str)
+        return value
 
 except ImportError:
 
