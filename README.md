@@ -52,6 +52,6 @@ address of the machine running the webserver.
 When it asks `software`, tell them `other`.
 For my installation, I ended up [installing it with pip](https://pypi.org/project/certbot/).
 5) Install the [certbot duckdns plugin](https://github.com/infinityofspace/certbot_dns_duckdns) for certbot
-6) Either run certbot from duckdns plugin's README or run [/scripts/cert_create.sh](https://github.com/CoolCat467/MineOS-Market-Server/blob/scripts/cert_create.sh) with your details.
-7) Setup autorenewal from [certbot wiki](https://eff-certbot.readthedocs.io/en/latest/using.html#setting-up-automated-renewal) or look at [/scripts/cert_renew.sh](https://github.com/CoolCat467/MineOS-Market-Server/blob/scripts/cert_renew.sh)
+6) Either run certbot from duckdns plugin's README or run [/scripts/cert_create.sh](https://github.com/CoolCat467/MineOS-Market-Server/blob/main/scripts/cert_create.sh) with your details.
+7) Setup autorenewal from [certbot wiki](https://eff-certbot.readthedocs.io/en/latest/using.html#setting-up-automated-renewal) or look at [/scripts/cert_renew.sh](https://github.com/CoolCat467/MineOS-Market-Server/blob/main/scripts/cert_renew.sh)
 8) Uncomment SSL lines in the webserver configuration file (see section above) and edit as needed for your particular setup.
