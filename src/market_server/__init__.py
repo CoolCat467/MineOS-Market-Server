@@ -26,5 +26,5 @@ __license__ = "GNU General Public License Version 3"
 
 from market_server.server import run
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     run()

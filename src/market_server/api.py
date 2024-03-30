@@ -120,5 +120,5 @@ def success_schema(response: NamedTuple, ignore_none: bool = True) -> str:
     )
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     print(f"{__title__}\nProgrammed by {__author__}.\n")
