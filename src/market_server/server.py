@@ -251,19 +251,20 @@ try:
 
     def pretty_format(text: str) -> str:
         """Pretty format text."""
-        return market_api.pretty_format_response(
-            market_api.lua_parser.parse_lua_table(text),
-        )
+        obj = cast(object, market_api.lua_parser.parse_lua_table(text))
+        return market_api.pretty_format_response(obj)
 
 except ImportError:
 
-    def pretty_format(text: str) -> None:
+    def pretty_format(text: str) -> str:
         """Pretty format text."""
         return text
 
 
-@app.post("/debug")
-async def handle_debug_post() -> Response:
+@app.post("/debug")  # type: ignore[type-var]
+async def handle_debug_post() -> (
+    tuple[AsyncIterator[str], int] | AsyncIterator[str]
+):
     """Send debug file."""
     multi_dict = await request.form
     form = multi_dict.to_dict()
@@ -290,10 +291,10 @@ async def handle_debug_post() -> Response:
             400,
         )
     lines = form.get("post_data", "").splitlines()
-    arguments = dict(
-        map(str.strip, line.split("=", 1)) if "=" in line else (line, "")
-        for line in lines
-    )
+    arguments: dict[str, str] = {}
+    for line in lines:
+        data = tuple(map(str.strip, line.split("=", 1)))
+        arguments[data[0]] = data[-1]
 
     raw_response = await schema_v_2_04.script(script, arguments)
     response_code = 200
