@@ -12,7 +12,7 @@ Python MineOS App Market Server Reimplementation
 <!-- END BADGIE TIME -->
 
 ## Description
-Python re-implementation of the server side of the MineOS App Market
+Python re-implementation of the server side of the [MineOS](https://github.com/IgorTimofeev/MineOS) App Market
 
 ## Installation
 Ensure Python 3 is installed on your computer, and use pip to
