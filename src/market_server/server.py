@@ -197,7 +197,7 @@ app: Final = QuartTrio(  # pylint: disable=invalid-name
 )
 
 
-schema_v_2_04 = schema.Version_2_04()
+schema_v_2_04 = schema.Version_2_04(app.root_path)
 
 
 @app.route("/MineOSAPI/<version>/<script>.php", methods=("POST", "GET"))  # type: ignore[type-var]

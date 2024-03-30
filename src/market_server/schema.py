@@ -215,9 +215,7 @@ def send_email(address: str, subject: str, message: str) -> None:
 class Version_2_04:  # noqa: N801
     """API version 2.04."""
 
-    __slots__ = ()
-
-    records_root = trio.Path("records")
+    __slots__ = ("records_root",)
 
     @property
     def users_path(self) -> trio.Path:
@@ -244,8 +242,9 @@ class Version_2_04:  # noqa: N801
         """Review records path."""
         return self.records_root / "reviews.json"
 
-    ##    def __init__(self, users: database.Records) -> None:
-    ##        self.users = users
+    def __init__(self, root_path: str | trio.Path) -> None:
+        """Initialize records path."""
+        self.records_root = trio.Path(root_path) / "records"
 
     def create_login_cookie_data(self, username: str) -> str:
         """Generate UUID associated with a specific user.
@@ -887,7 +886,7 @@ MineOS Dev Team""",
 
 async def run() -> None:
     """Run test of server."""
-    server = Version_2_04()
+    server = Version_2_04(await trio.Path(__file__).parent.absolute())
 
     original = {
         "verify",
