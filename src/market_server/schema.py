@@ -923,9 +923,16 @@ MineOS Dev Team""",
                 file_id = pub_file_ids[index]
                 category_records[file_id] = pub_records[file_id]
 
-        obtain_files = set(category_records.keys())
+        obtain_files: set[str] = set(category_records.keys())
         if get_files is not None:
             obtain_files &= set(map(str, get_files))
+
+        if search:
+            obtain_files = {
+                fid
+                for fid in obtain_files
+                if search in pub_records.get(fid, {}).get("publication_name")
+            }
 
         if order_by == "popularity":
             match_ids = sorted(
