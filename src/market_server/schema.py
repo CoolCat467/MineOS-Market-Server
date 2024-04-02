@@ -607,14 +607,6 @@ MineOS Dev Team""",
         if username is None:
             return api.failure("Token is invalid or expired")
 
-        pub_records = database.load(self.publications_path)
-
-        publication = pub_records.get(str(file_id))
-        if publication is None:
-            return api.failure(
-                f"Publication with specified file ID ({file_id}) doesn't exist",
-            )
-
         rating_value = parse_int(rating)
         if rating_value is None or rating_value < 1 or rating_value > 5:
             return api.failure(
@@ -625,6 +617,19 @@ MineOS Dev Team""",
         if review_length < 2 or review_length > 1000:
             return api.failure(
                 "Comment length too small/big. Minimum 2 Maximum 1000.",
+            )
+
+        pub_records = database.load(self.publications_path)
+
+        publication = pub_records.get(str(file_id))
+        if publication is None:
+            return api.failure(
+                f"Publication with specified file ID ({file_id}) doesn't exist",
+            )
+
+        if publication["user_name"] == username:
+            return api.failure(
+                "Cannot leave a review for a publication you created",
             )
 
         review_records = database.load(self.reviews_path)
@@ -698,6 +703,12 @@ MineOS Dev Team""",
             return api.failure(
                 f"Review with specified file ID ({review_id}) doesn't exist",
             )
+
+        if review_records[file_id][str(review_id_int)]["username"] == username:
+            return api.failure(
+                "Cannot vote on a comment you made",
+            )
+
         review_records[file_id][str(review_id_int)]["votes"][username] = bool(
             helpful_int,
         )
