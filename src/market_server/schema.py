@@ -35,12 +35,47 @@ from email import message_from_string
 from email.errors import HeaderParseError
 from email.headerregistry import Address
 from email.policy import default as email_default_policy
+from enum import IntEnum
 from secrets import token_urlsafe
-from typing import Any, Final, NamedTuple, cast
+from typing import TYPE_CHECKING, Any, Final, NamedTuple, cast
 
 import trio
+from httpx import URL, InvalidURL
 
 from market_server import api, database, security
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
+
+LICENSES: Final = {
+    1: "MIT",
+    2: "GNU GPLv3",
+    3: "GNU AGPLv3",
+    4: "GNU LGPLv3",
+    5: "Apache Licence 2.0",
+    6: "Mozilla Public License 2.0",
+    7: "The Unlicense",
+}
+
+
+class PUBLICATION_CATEGORY(IntEnum):  # noqa: N801
+    """Publication category enums."""
+
+    Applications = 1
+    Libraries = 2
+    Scripts = 3
+    Wallpapers = 4
+
+
+RESERVED_NAMES: Final = {
+    "true",
+    "false",
+    "null",
+    # If imported cannot use because vote users not given (see ReviewVotes)
+    "total",
+    "positive",
+    "negative",
+}
 
 ALLOWED_EMAIL_PROVIDERS: Final = {
     "gmail.com",
@@ -130,6 +165,39 @@ class Message(NamedTuple):
     text: str
     user_name: str
     timestamp: int
+
+
+class UploadDependency(NamedTuple):
+    """Dependency argument item from Upload/Update Publication."""
+
+    publication_name: str | None
+    path: str | None
+    source_url: str | None
+
+    @classmethod
+    def parse_table_entry(
+        cls,
+        entry: dict[str, str | object],
+    ) -> Self | None:
+        """Parse dependency input table entry or return None."""
+        publication_name = entry.get("publication_name")
+        if not isinstance(publication_name, str):
+            publication_name = None
+        path = entry.get("path")
+        if not isinstance(path, str):
+            path = None
+        source_url = entry.get("source_url")
+        if not isinstance(source_url, str):
+            source_url = None
+
+        if not any((publication_name, path, source_url)):
+            return None
+
+        return cls(
+            publication_name=publication_name,
+            path=path,
+            source_url=source_url,
+        )
 
 
 class Dependency(NamedTuple):
@@ -396,6 +464,9 @@ class Version_2_04:  # noqa: N801
         """Change password given email, current password, and new password."""
         await trio.lowlevel.checkpoint()
 
+        if name in RESERVED_NAMES:
+            return api.failure(f"Name {name!r} is reserved")
+
         users = database.load(self.users_path)
 
         if name in users:
@@ -640,20 +711,27 @@ MineOS Dev Team""",
         # to manipulate global average by spamming.
         delete_ids: list[str] = []
         for review_id, review in reviews.items():
-            if review["username"] == username:
+            if review["user_name"] == username:
                 delete_ids.append(str(review_id))
         for delete_id in delete_ids:
             del reviews[delete_id]
 
         # Get ID for new review
         id_records = database.load(self.ids_path)
-        new_review_id = id_records.get("review", 0)
+        new_review_id = id_records.get("review", None)
+        if new_review_id is None:
+            new_review_id = -1
+            for _file_id, review_data in review_records.items():
+                for key in map(int, review_data.keys()):
+                    if key > new_review_id:
+                        new_review_id = key
+            new_review_id += 1
         id_records["review"] = new_review_id + 1
         id_records.write_file()
 
         # Add new review
         reviews[str(new_review_id)] = {
-            "username": username,
+            "user_name": username,
             "rating": rating_value,
             "comment": comment,
             "timestamp": math.floor(time.time()),
@@ -685,6 +763,7 @@ MineOS Dev Team""",
         helpful: str,
     ) -> api.Response:
         """Vote if a review is helpful or not."""
+        await trio.lowlevel.checkpoint()
         review_id_int = parse_int(review_id)
         if review_id_int is None:
             return api.failure("`review_id` is invalid")
@@ -704,7 +783,10 @@ MineOS Dev Team""",
                 f"Review with specified file ID ({review_id}) doesn't exist",
             )
 
-        if review_records[file_id][str(review_id_int)]["username"] == username:
+        if (
+            review_records[file_id][str(review_id_int)]["user_name"]
+            == username
+        ):
             return api.failure(
                 "Cannot vote on a comment you made",
             )
@@ -722,6 +804,7 @@ MineOS Dev Team""",
         count: str | None,
     ) -> api.Response:
         """Get reviews for given file id."""
+        await trio.lowlevel.checkpoint()
         offset_int = parse_int(offset or 0)
         if offset_int is None or offset_int < 0:
             return api.failure("Invalid offset")
@@ -741,7 +824,25 @@ MineOS Dev Team""",
         review_data: list[Review] = []
         for review_id in keys:
             review = reviews[review_id]
-            vote_data = Counter(review["votes"].values())
+            # Deep copy because deletes
+            votes = dict(review["votes"].items())
+
+            # Handle imported data
+            if "total" in votes:
+                del votes["total"]
+            add_positive = 0
+            if "positive" in votes:
+                add_positive = votes["positive"]
+                del votes["positive"]
+            add_negative = 0
+            if "negative" in votes:
+                add_negative = votes["negative"]
+                del votes["negative"]
+
+            vote_data = Counter(votes.values())
+            vote_data[True] += add_positive
+            vote_data[False] += add_negative
+
             votes = ReviewVotes(
                 total=sum(vote_data.values()),
                 positive=vote_data[True],
@@ -753,7 +854,7 @@ MineOS Dev Team""",
                         k: review[k]
                         for k in ("rating", "comment", "timestamp")
                     },
-                    user_name=review["username"],
+                    user_name=review["user_name"],
                     id=review_id,
                     votes=votes,
                 ),
@@ -786,7 +887,6 @@ MineOS Dev Team""",
             return (
                 f"Publication with specified file ID ({file_id}) doesn't exist"
             )
-        # TODO: Languages
         write = (
             "publication_name",
             "user_name",
@@ -802,6 +902,7 @@ MineOS Dev Team""",
             "whats_new",
             "whats_new_version",
         )
+        # TODO: Languages
         translated_description: str = pub["initial_description"]
 
         all_dependencies_set: set[int] = set()
@@ -846,6 +947,7 @@ MineOS Dev Team""",
         language_id: str,
     ) -> api.Response:
         """Return publication details."""
+        await trio.lowlevel.checkpoint()
         pub_records = database.load(self.publications_path)
         pub = pub_records.get(file_id)
         if pub is None:
@@ -896,6 +998,7 @@ MineOS Dev Team""",
         file_ids: str | None,
     ) -> api.Response:
         """Search for a publication."""
+        await trio.lowlevel.checkpoint()
         category = parse_int(category_id)
         if category is None or category < 0:
             return api.failure("Invalid category")
@@ -1002,6 +1105,215 @@ MineOS Dev Team""",
 
         return api.success_direct(matches, True)
 
+    async def cmd_update(
+        self,
+        token: str,
+        file_id: str,
+        name: str,
+        source_url: str,
+        path: str,
+        description: str,
+        category_id: str,
+        dependencies: str,
+        license_id: str,
+    ) -> api.Response:
+        """Handle updating a publication."""
+        await trio.lowlevel.checkpoint()
+        return await self.publication_edit(
+            token=token,
+            name=name,
+            source_url=source_url,
+            path=path,
+            description=description,
+            category_id=category_id,
+            raw_dependencies=dependencies,
+            license_id=license_id,
+            new=False,
+            raw_file_id=file_id,
+        )
+
+    async def cmd_upload(
+        self,
+        token: str,
+        name: str,
+        source_url: str,
+        path: str,
+        description: str,
+        category_id: str,
+        dependencies: str,
+        license_id: str,
+    ) -> api.Response:
+        """Handle uploading a new publication."""
+        await trio.lowlevel.checkpoint()
+        return await self.publication_edit(
+            token=token,
+            name=name,
+            source_url=source_url,
+            path=path,
+            description=description,
+            category_id=category_id,
+            raw_dependencies=dependencies,
+            license_id=license_id,
+            new=True,
+            raw_file_id=None,
+        )
+
+    async def publication_edit(
+        self,
+        token: str,
+        name: str,
+        source_url: str,
+        path: str,
+        description: str,
+        category_id: str,
+        raw_dependencies: str,
+        license_id: str,
+        new: bool = True,
+        raw_file_id: str | None = None,
+    ) -> api.Response:
+        """Handle uploading or updating a publication."""
+        await trio.lowlevel.checkpoint()
+
+        if not new and raw_file_id is None:
+            raise RuntimeError("If not new, raw_file_id should be valid!")
+
+        username = self.get_login_from_cookie_data(token)
+        if username is None:
+            return api.failure("Token is invalid or expired")
+
+        if len(name) > 32:
+            return api.failure("Name is too long (max 32 characters)")
+        if len(name) < 2:
+            return api.failure("Name is too short (min 2 characters)")
+
+        if len(description) < 2:
+            return api.failure("Description is too short")
+        if len(description) > 1024:
+            return api.failure("Description is too long")
+
+        category = parse_int(category_id)
+        if category is None or category not in PUBLICATION_CATEGORY:
+            return api.failure("Invalid category_id (must be in domain [1,4])")
+
+        if (
+            category
+            in {
+                PUBLICATION_CATEGORY.Applications,
+                PUBLICATION_CATEGORY.Wallpapers,
+            }
+            and path != "Main.lua"
+        ):
+            return api.failure(
+                "Path must be `Main.lua` for Applications and Wallpapers categories.",
+            )
+        if len(path) < 2:
+            return api.failure("Path is too small.")
+
+        license_ = parse_int(license_id)
+        if license_ not in LICENSES:
+            return api.failure("license_id is invalid")
+
+        try:
+            url = URL(source_url)
+        except InvalidURL as exc:
+            error = exc.args[0]
+            return api.failure(f"Invalid source_url ({error})")
+
+        if url.scheme not in {"http", "https"}:
+            return api.failure(
+                "Invalid source_url (scheme must be http or https)",
+            )
+
+        if len(url.host) > 253:
+            return api.failure(
+                "Invalid source_url (full domain name max size is 253 characters)",
+            )
+
+        if "." not in url.host:
+            return api.failure("Invalid source_url (must have domain suffix)")
+        temp_domain_parts = url.host.split(".")
+        if not all(temp_domain_parts):
+            return api.failure("Invalid source_url (invalid domain label(s))")
+        if not all(len(p) < 64 for p in temp_domain_parts):
+            return api.failure("Invalid source_url (invalid domain label(s))")
+
+        src_url = url.copy_with()
+
+        icon_url: str | None = None
+
+        parsed_dependencies_table = parse_table(raw_dependencies).get("", {})
+        print(f"{parsed_dependencies_table = }")
+        dependencies_data: list[UploadDependency] = []
+        for _entry_id, entry_data in parsed_dependencies_table.items():
+            parsed_entry = UploadDependency.parse_table_entry(entry_data)
+            if not parsed_entry:
+                continue
+            if parsed_entry.path == "Icon.pic":
+                icon_url = parsed_entry.source_url
+            dependencies_data.append(parsed_entry)
+        print(f"{dependencies_data = }")
+
+        publications = database.load(self.publications_path)
+        table = publications.table("file_id")
+
+        exists_id = table.get_id("publication_name", name)
+        exists_file_id: str | None = None
+        if exists_id is not None:
+            exists_file_id = table["file_id"][exists_id]
+        if exists_file_id is not None and exists_file_id != raw_file_id:
+            return api.failure(
+                f"Publication with name {name!r} already exists!",
+            )
+
+        if new:
+            # Get ID for new publication
+            id_records = database.load(self.ids_path)
+            new_publication_id = id_records.get("publication", None)
+            if new_publication_id is None:
+                new_publication_id = max(map(int, publications.keys()))
+            id_records["publication"] = new_publication_id + 1
+            id_records.write_file()
+
+            file_id = new_publication_id
+        else:
+            file_id = parse_int(raw_file_id)
+            if file_id is None:
+                return api.failure("file_id is invalid")
+            existing_publication = publications.get(str(file_id))
+            if existing_publication is None:
+                return api.failure(
+                    f"Publication with id {file_id} doesn't exist!",
+                )
+            if existing_publication["user_name"] != username:
+                return api.failure(f"You don't own publication {file_id}!")
+
+        publication = publications.get(str(file_id), {})
+        print(f"{publication = }")
+        # dependencies_data
+
+        version = 1.00
+        dependency_file_ids: list[int] = []
+
+        ##        publication.update(
+        publication = {
+            "publication_name": name,
+            "user_name": username,
+            "version": version,
+            "category_id": category,
+            "source_url": str(src_url),
+            "path": path,
+            "license_id": license_,
+            "timestamp": math.floor(time.time()),
+            "initial_description": description,
+            "dependencies": dependency_file_ids or None,
+            "icon_url": icon_url,
+            "whats_new": None,
+            "whats_new_version": None,
+        }
+        ##        )
+
+        raise NotImplementedError
+
     def index(self) -> list[str]:
         """Return list of valid scripts."""
         return [a[4:] for a in dir(self) if a.startswith("cmd_")]
@@ -1033,12 +1345,13 @@ MineOS Dev Team""",
             required = True
             if "None" in annotation:
                 required = False
-            arguments.append((required, name))
+                arguments.append((required, name))
 
             if name in data:
                 send_arguments[name] = data[name]
             elif required:
                 missing = True
+                arguments.append((required, name))
             else:
                 send_arguments[name] = None
 
@@ -1127,85 +1440,118 @@ async def run() -> None:
         def pprint(value: api.Response) -> None:
             print(value)
 
-    ##
-    ##    print(
-    ##        await server.script(
-    ##            "statistics",
-    ##            {},
-    ##        ),
-    ##    )
-    pprint(
-        await server.script(
-            "publications",
-            {
-                "category_id": "2",
-                "order_direction": "asc",
-            },
-        ),
-    )
     ##    pprint(
     ##        await server.script(
-    ##            "publication",
+    ##            "upload",
     ##            {
-    ##                "file_id": "73",  # 1936, 73
-    ##                "language_id": "1",
+    ##                "token": "26e140ab-4bfa-46d2-a9ce-cc8024b8e48e",
+    ##                "name": "test_publication",
+    ##                "source_url": "http://example.com",
+    ##                "path": "Main.lua",
+    ##                "description": "This is a test publication to make sure it works.",
+    ##                "category_id": "1",
+    ##                "dependencies": "[0][source_url]=https://example.com&[0][path]=Icon.pic",
+    ##                "license_id": "2",
+    ##            }
+    ##        )
+    ##    )
+    ##    pprint(
+    ##        await server.script(
+    ##            "update",
+    ##            {
+    ##                "token": "ecs",
+    ##                "file_id": "103",
+    ##                "name": "JSON",
+    ##                "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Libraries/JSON.lua",
+    ##                "path": "Main.lua",
+    ##                "dependencies": "{}",
+    ##                "description": "This library allows you to encode/decode Lua tables to/from string JSON result. Mostly used in web applications.",
+    ##                "category_id": "2",
+    ##                "license_id": "1",
     ##            },
     ##        ),
     ##    )
     ##    pprint(
     ##        await server.script(
-    ##            "login",
-    ##            {"name": "test", "password": "test"},
+    ##            "statistics",
+    ##            {},
     ##        ),
     ##    )
     ##    pprint(
     ##        await server.script(
-    ##            "review",
+    ##            "publications",
     ##            {
-    ##                "token": token,
-    ##                "file_id": "1936",
-    ##                "comment": "This is a comment text",
-    ##                "rating": 5,
-    ##            }
-    ##        )
+    ##                "category_id": "2",
+    ##                "search": "JSON",
+    ####                "order_direction": "asc",
+    ##            },
+    ##        ),
     ##    )
-    ##    pprint(
-    ##        await server.script(
-    ##            "review",
-    ##            {
-    ##                "token": token,
-    ##                "file_id": "73",
-    ##                "comment": "This is a comment text",
-    ##                "rating": 5,
-    ##            }
-    ##        )
-    ##    )
-    ##    pprint(
-    ##        await server.script(
-    ##            "reviews",
-    ##            {
-    ##                "file_id": "73", # 1936
-    ##            }
-    ##        )
-    ##    )
-    ##    pprint(
-    ##        await server.script(
-    ##            "review_vote",
-    ##            {
-    ##                "token": token,
-    ##                "review_id": "1",
-    ##                "helpful": "1",
-    ##            }
-    ##        )
-    ##    )
-    ##    pprint(
-    ##        await server.script(
-    ##            "reviews",
-    ##            {
-    ##                "file_id": "73",
-    ##            }
-    ##        )
-    ##    )
+    pprint(
+        await server.script(
+            "publication",
+            {
+                "file_id": "1045",  # 1936, 73, 103, 1045
+                "language_id": "1",
+            },
+        ),
+    )
+
+
+##    pprint(
+##        await server.script(
+##            "login",
+##            {"name": "test", "password": "test"},
+##        ),
+##    )
+##    pprint(
+##        await server.script(
+##            "review",
+##            {
+##                "token": token,
+##                "file_id": "1936",
+##                "comment": "This is a comment text",
+##                "rating": 5,
+##            }
+##        )
+##    )
+##    pprint(
+##        await server.script(
+##            "review",
+##            {
+##                "token": "26e140ab-4bfa-46d2-a9ce-cc8024b8e48e",
+##                "file_id": "73",
+##                "comment": "This is a comment text",
+##                "rating": 5,
+##            }
+##        )
+##    )
+##    pprint(
+##        await server.script(
+##            "reviews",
+##            {
+##                "file_id": "73", # 1936, 73, 103
+##            }
+##        )
+##    )
+##    pprint(
+##        await server.script(
+##            "review_vote",
+##            {
+##                "token": token,
+##                "review_id": "1",
+##                "helpful": "1",
+##            }
+##        )
+##    )
+##    pprint(
+##        await server.script(
+##            "reviews",
+##            {
+##                "file_id": "73",
+##            }
+##        )
+##    )
 
 
 if __name__ == "__main__":
