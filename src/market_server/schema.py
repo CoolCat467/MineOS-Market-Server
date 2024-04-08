@@ -74,7 +74,6 @@ RESERVED_NAMES: Final = {
     # If imported cannot use because vote users not given (see ReviewVotes)
     "total",
     "positive",
-    "negative",
 }
 
 ALLOWED_EMAIL_PROVIDERS: Final = {
@@ -215,7 +214,6 @@ class ReviewVotes(NamedTuple):
 
     total: int = 0
     positive: int = 0
-    negative: int = 0
 
 
 class Review(NamedTuple):
@@ -828,16 +826,15 @@ MineOS Dev Team""",
             votes_data = dict(review["votes"].items())
 
             # Handle imported data
+            imported_total = 0
             if "total" in votes_data:
+                imported_total = votes_data["total"]
                 del votes_data["total"]
             add_positive = 0
             if "positive" in votes_data:
                 add_positive = votes_data["positive"]
                 del votes_data["positive"]
-            add_negative = 0
-            if "negative" in votes_data:
-                add_negative = votes_data["negative"]
-                del votes_data["negative"]
+            add_negative = imported_total - add_positive
 
             vote_data = Counter(votes_data.values())
             vote_data[True] += add_positive
@@ -846,7 +843,6 @@ MineOS Dev Team""",
             votes = ReviewVotes(
                 total=sum(vote_data.values()),
                 positive=vote_data[True],
-                negative=vote_data[False],
             )
             review_data.append(
                 Review(
@@ -1535,7 +1531,7 @@ async def run() -> None:
 ##        await server.script(
 ##            "reviews",
 ##            {
-##                "file_id": "73", # 1936, 73, 103
+##                "file_id": "103", # 1936, 73, 103
 ##            }
 ##        )
 ##    )
