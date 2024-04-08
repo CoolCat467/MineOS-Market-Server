@@ -825,21 +825,21 @@ MineOS Dev Team""",
         for review_id in keys:
             review = reviews[review_id]
             # Deep copy because deletes
-            votes = dict(review["votes"].items())
+            votes_data = dict(review["votes"].items())
 
             # Handle imported data
-            if "total" in votes:
-                del votes["total"]
+            if "total" in votes_data:
+                del votes_data["total"]
             add_positive = 0
-            if "positive" in votes:
-                add_positive = votes["positive"]
-                del votes["positive"]
+            if "positive" in votes_data:
+                add_positive = votes_data["positive"]
+                del votes_data["positive"]
             add_negative = 0
-            if "negative" in votes:
-                add_negative = votes["negative"]
-                del votes["negative"]
+            if "negative" in votes_data:
+                add_negative = votes_data["negative"]
+                del votes_data["negative"]
 
-            vote_data = Counter(votes.values())
+            vote_data = Counter(votes_data.values())
             vote_data[True] += add_positive
             vote_data[False] += add_negative
 
@@ -1276,9 +1276,11 @@ MineOS Dev Team""",
 
             file_id = new_publication_id
         else:
-            file_id = parse_int(raw_file_id)
-            if file_id is None:
+            assert raw_file_id is not None
+            parsed_file_id = parse_int(raw_file_id)
+            if parsed_file_id is None:
                 return api.failure("file_id is invalid")
+            file_id = parsed_file_id
             existing_publication = publications.get(str(file_id))
             if existing_publication is None:
                 return api.failure(
@@ -1432,7 +1434,10 @@ async def run() -> None:
             else:
                 text, _error_code = value
             market_api.pretty_print_response(
-                market_api.lua_parser.parse_lua_table(text),
+                cast(
+                    dict[str, Any],
+                    market_api.lua_parser.parse_lua_table(text),
+                ),
             )
 
     except ImportError:
