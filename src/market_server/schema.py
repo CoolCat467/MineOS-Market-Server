@@ -691,7 +691,7 @@ MineOS Dev Team""",
         pub_records = database.load(self.publications_path)
 
         publication = pub_records.get(str(file_id))
-        if publication is None:
+        if publication is None or publication.get("category_id") is None:
             return api.failure(
                 f"Publication with specified file ID ({file_id}) doesn't exist",
             )
@@ -879,7 +879,7 @@ MineOS Dev Team""",
         """Return Publication object from file id or error text if not found."""
         pub_records = database.load(self.publications_path)
         pub = pub_records.get(str(file_id))
-        if pub is None:
+        if pub is None or pub.get("category_id") is None:
             return (
                 f"Publication with specified file ID ({file_id}) doesn't exist"
             )
@@ -946,7 +946,7 @@ MineOS Dev Team""",
         await trio.lowlevel.checkpoint()
         pub_records = database.load(self.publications_path)
         pub = pub_records.get(file_id)
-        if pub is None:
+        if pub is None or pub.get("category_id") is None:
             return api.failure(
                 f"Publication with specified file ID ({file_id}) doesn't exist",
             )
@@ -960,7 +960,7 @@ MineOS Dev Team""",
 
         if isinstance(publication_or_error, str):
             return api.failure(publication_or_error)
-        return api.success_schema(publication_or_error)
+        return api.success_schema(publication_or_error, ignore_none=True)
 
     def get_review_count(
         self,
@@ -1109,9 +1109,10 @@ MineOS Dev Team""",
         source_url: str,
         path: str,
         description: str,
-        category_id: str,
-        dependencies: str,
         license_id: str,
+        dependencies: str,
+        category_id: str,
+        whats_new: str | None = None,
     ) -> api.Response:
         """Handle updating a publication."""
         await trio.lowlevel.checkpoint()
@@ -1121,9 +1122,10 @@ MineOS Dev Team""",
             source_url=source_url,
             path=path,
             description=description,
-            category_id=category_id,
-            raw_dependencies=dependencies,
             license_id=license_id,
+            raw_dependencies=dependencies,
+            category_id=category_id,
+            whats_new=whats_new,
             new=False,
             raw_file_id=file_id,
         )
@@ -1135,9 +1137,10 @@ MineOS Dev Team""",
         source_url: str,
         path: str,
         description: str,
-        category_id: str,
-        dependencies: str,
         license_id: str,
+        dependencies: str,
+        category_id: str,
+        whats_new: str | None = None,
     ) -> api.Response:
         """Handle uploading a new publication."""
         await trio.lowlevel.checkpoint()
@@ -1147,12 +1150,106 @@ MineOS Dev Team""",
             source_url=source_url,
             path=path,
             description=description,
-            category_id=category_id,
-            raw_dependencies=dependencies,
             license_id=license_id,
+            raw_dependencies=dependencies,
+            category_id=category_id,
+            whats_new=whats_new,
             new=True,
             raw_file_id=None,
         )
+
+    def get_new_publication_id(self) -> int:
+        """Get ID for new publication."""
+        id_records = database.load(self.ids_path)
+        new_publication_id = id_records.get("publication", None)
+        if new_publication_id is None:
+            publications = database.load(self.publications_path)
+            new_publication_id = max(map(int, publications.keys())) + 1
+        id_records["publication"] = new_publication_id + 1
+        id_records.write_file()
+
+        return new_publication_id
+
+    def publication_dependency_edit(
+        self,
+        dependency: UploadDependency,
+        username: str,
+    ) -> tuple[tuple[str | None, dict[str, str | float]], api.Response | None]:
+        """Upload or edit publication dependency.
+
+        Return ("file_id" | None (needs new file id), updated_dependancy), <api error response> | None
+        """
+        publications = database.load(self.publications_path)
+        table = publications.table("file_id")
+
+        file_id: str | None = None
+
+        # Try to get file id from source url
+        match_id = table.get_id("source_url", dependency.source_url)
+        if match_id is not None:
+            file_id = table["file_id"][match_id]
+        # If that fails, try to get from publication name
+        if file_id is None:
+            match_id = table.get_id(
+                "publication_name",
+                dependency.publication_name,
+            )
+            if match_id is not None:
+                file_id = table["publication_name"][match_id]
+
+        new_publication = False
+        # If that fails too, we need a new publication ID.
+        if file_id is None:
+            new_publication = True
+
+        if file_id is None:
+            publication = {}
+        else:
+            publication = publications.get(str(file_id), {})
+
+        full_dependancy = {
+            "source_url": dependency.source_url,
+            "path": dependency.path,
+            "publication_name": dependency.publication_name,
+            "category_id": publication.get("category_id"),
+            "user_name": publication.get("user_name", username),
+        }
+        full_dep_owner = full_dependancy["user_name"]
+
+        if (
+            full_dep_owner != username
+            and full_dependancy["category_id"] is None
+        ):
+            return ("", {}), api.failure(
+                f"Cannot specify null category dependency {file_id!r} (owned by {full_dep_owner!r}, not {username!r})",
+            )
+
+        modified = False
+        for key, value in full_dependancy.items():
+            if publication.get(key) != value:
+                modified = True
+                break
+
+        if (
+            not new_publication
+            and modified
+            and full_dependancy["user_name"] != username
+        ):
+            return ("", {}), api.failure(
+                f"Cannot modify dependency {file_id!r} (owned by {full_dep_owner!r}, not {username!r})",
+            )
+
+        if modified:
+            full_dependancy.update(
+                {
+                    "version": round(
+                        publication.get("version", 0.99) + 0.01,
+                        2,
+                    ),
+                    "timestamp": math.floor(time.time()),
+                },
+            )
+        return (file_id, full_dependancy), None
 
     async def publication_edit(
         self,
@@ -1161,9 +1258,10 @@ MineOS Dev Team""",
         source_url: str,
         path: str,
         description: str,
-        category_id: str,
-        raw_dependencies: str,
         license_id: str,
+        raw_dependencies: str,
+        category_id: str,
+        whats_new: str | None = None,
         new: bool = True,
         raw_file_id: str | None = None,
     ) -> api.Response:
@@ -1186,6 +1284,9 @@ MineOS Dev Team""",
             return api.failure("Description is too short")
         if len(description) > 1024:
             return api.failure("Description is too long")
+
+        if whats_new is not None and len(whats_new) > 1024:
+            return api.failure("whats_new is too long")
 
         category = parse_int(category_id)
         if category is None or category not in PUBLICATION_CATEGORY:
@@ -1238,7 +1339,6 @@ MineOS Dev Team""",
         icon_url: str | None = None
 
         parsed_dependencies_table = parse_table(raw_dependencies).get("", {})
-        print(f"{parsed_dependencies_table = }")
         dependencies_data: list[UploadDependency] = []
         for _entry_id, entry_data in parsed_dependencies_table.items():
             parsed_entry = UploadDependency.parse_table_entry(entry_data)
@@ -1247,7 +1347,6 @@ MineOS Dev Team""",
             if parsed_entry.path == "Icon.pic":
                 icon_url = parsed_entry.source_url
             dependencies_data.append(parsed_entry)
-        print(f"{dependencies_data = }")
 
         publications = database.load(self.publications_path)
         table = publications.table("file_id")
@@ -1261,17 +1360,7 @@ MineOS Dev Team""",
                 f"Publication with name {name!r} already exists!",
             )
 
-        if new:
-            # Get ID for new publication
-            id_records = database.load(self.ids_path)
-            new_publication_id = id_records.get("publication", None)
-            if new_publication_id is None:
-                new_publication_id = max(map(int, publications.keys()))
-            id_records["publication"] = new_publication_id + 1
-            id_records.write_file()
-
-            file_id = new_publication_id
-        else:
+        if not new:
             assert raw_file_id is not None
             parsed_file_id = parse_int(raw_file_id)
             if parsed_file_id is None:
@@ -1285,32 +1374,135 @@ MineOS Dev Team""",
             if existing_publication["user_name"] != username:
                 return api.failure(f"You don't own publication {file_id}!")
 
-        publication = publications.get(str(file_id), {})
-        print(f"{publication = }")
-        # dependencies_data
+        publication = {} if new else publications.get(str(file_id), {})
 
-        version = 1.00
-        dependency_file_ids: list[int] = []
+        # 1.12 + 0.01 = 1.1300000000000001 and gets worse so round.
+        version = round(publication.get("version", 0.99) + 0.01, 2)
 
-        ##        publication.update(
-        publication = {
-            "publication_name": name,
-            "user_name": username,
-            "version": version,
-            "category_id": category,
-            "source_url": str(src_url),
-            "path": path,
-            "license_id": license_,
-            "timestamp": math.floor(time.time()),
-            "initial_description": description,
-            "dependencies": dependency_file_ids or None,
-            "icon_url": icon_url,
-            "whats_new": None,
-            "whats_new_version": None,
-        }
-        ##        )
+        # Do NOT write ANYTHING unless all dependencies are ok, we have to be able to roll back changes.
+        deps_to_write: list[tuple[str | None, dict[str, str | float]]] = []
+        for dependency in dependencies_data:
+            dep_write_data, api_response = self.publication_dependency_edit(
+                dependency,
+                username,
+            )
+            if api_response is not None:
+                return api_response
+            deps_to_write.append(dep_write_data)
 
-        raise NotImplementedError
+        # Now it should be ok to write data
+        if new:
+            file_id = self.get_new_publication_id()
+
+        # Update dependency publications
+        dependency_file_ids: set[int] = set()
+        for dep_file_id, dep_publication_changes in deps_to_write:
+            if dep_file_id is None:
+                dep_file_id = self.get_new_publication_id()
+
+            dep_pub_existing = publications.get(str(dep_file_id), {})
+            dep_pub_existing.update(dep_publication_changes)
+
+            publications[str(dep_file_id)] = dep_pub_existing
+
+            dependency_file_ids.add(int(dep_file_id))
+        # Delete unreferenced null category dependencies
+        for old_dep_file_id in publication.get("dependencies", []):
+            old_dep = publications.get(str(old_dep_file_id))
+            if old_dep is None:
+                continue
+            # Keep still used ones
+            if int(old_dep_file_id) in dependency_file_ids:
+                continue
+            # Don't delete other user's projects
+            if old_dep.get("user_name") != username:
+                continue
+            # Only null category ids
+            if old_dep.get("category_id") is None:
+                del publications[str(old_dep_file_id)]
+
+        # Update publication data
+        publication.update(
+            {
+                "publication_name": name,
+                "user_name": username,
+                "version": version,
+                "category_id": category,
+                "source_url": str(src_url),
+                "path": path,
+                "license_id": license_,
+                "timestamp": math.floor(time.time()),
+                "initial_description": description,
+                "dependencies": sorted(dependency_file_ids) or None,
+                "icon_url": icon_url,
+                "whats_new": whats_new,
+                "whats_new_version": version if whats_new else None,
+            },
+        )
+        publications[str(file_id)] = publication
+
+        # Finally fully write everything
+        publications.write_file()
+
+        return api.success(file_id=int(file_id))
+
+    async def cmd_delete(
+        self,
+        token: str,
+        file_id: str,
+    ) -> api.Response:
+        """Handle deleting a publication."""
+        await trio.lowlevel.checkpoint()
+
+        username = self.get_login_from_cookie_data(token)
+        if username is None:
+            return api.failure("Token is invalid or expired")
+
+        publications = database.load(self.publications_path)
+
+        parsed_file_id = parse_int(file_id)
+        if parsed_file_id is None:
+            return api.failure("file_id is invalid")
+        existing_publication = publications.get(str(parsed_file_id))
+        if existing_publication is None:
+            return api.failure(
+                f"Publication with id {file_id} doesn't exist!",
+            )
+        if existing_publication["user_name"] != username:
+            return api.failure(f"You don't own publication {file_id}!")
+
+        # Make sure user can't break other people's dependencies
+        # We don't want a leftpad incident
+        table = publications.table("file_id")
+        for id_, dependencies in enumerate(table["dependencies"]):
+            if dependencies is None:
+                continue
+            if parsed_file_id in dependencies:
+                breaks_id = table["file_id"][id_]
+                breaks_name = table["user_name"][id_] or "the author"
+                return api.failure(
+                    f"Not allowed to delete publication {parsed_file_id!r}, "
+                    f"would break publication {breaks_id!r} which depends on "
+                    f"{parsed_file_id!r}. Please message {breaks_name!r} and "
+                    "have them remove your project as a dependency.",
+                )
+        # If here, does not break any other projects.
+        # Now delete null category dependencies used exclusively by this
+        # publication.
+        for dep_id in existing_publication.get("dependencies", []):
+            dep = publications.get(str(dep_id))
+            if dep is None:
+                continue
+            # Don't delete other user's projects
+            if dep.get("user_name") != username:
+                continue
+            # Only null category ids
+            if dep.get("category_id") is None:
+                del publications[str(dep_id)]
+        del publications[str(parsed_file_id)]
+
+        publications.write_file()
+        return api.success()
 
     def index(self) -> list[str]:
         """Return list of valid scripts."""
@@ -1441,21 +1633,22 @@ async def run() -> None:
         def pprint(value: api.Response) -> None:
             print(value)
 
-    ##    pprint(
-    ##        await server.script(
-    ##            "upload",
-    ##            {
-    ##                "token": "26e140ab-4bfa-46d2-a9ce-cc8024b8e48e",
-    ##                "name": "test_publication",
-    ##                "source_url": "http://example.com",
-    ##                "path": "Main.lua",
-    ##                "description": "This is a test publication to make sure it works.",
-    ##                "category_id": "1",
-    ##                "dependencies": "[0][source_url]=https://example.com&[0][path]=Icon.pic",
-    ##                "license_id": "2",
-    ##            }
-    ##        )
-    ##    )
+    ##pprint(
+    ##    await server.script(
+    ##        "delete",
+    ##        {
+    ##            "token": "26e140ab-4bfa-46d2-a9ce-cc8024b8e48e",
+    ##            "name": "test_publication",
+    ##            "source_url": "http://example.com",
+    ##            "path": "Main.lua",
+    ##            "description": "This is a test publication to make sure it works.",
+    ##            "category_id": "1",
+    ##            "dependencies": "[0][source_url]=https://example.com/image.pic&[0][path]=Icon.pic",
+    ##            "license_id": "2",
+    ##            "file_id": "2331",
+    ##        },
+    ##    ),
+    ##)
     ##    pprint(
     ##        await server.script(
     ##            "update",
@@ -1472,12 +1665,12 @@ async def run() -> None:
     ##            },
     ##        ),
     ##    )
-    ##    pprint(
-    ##        await server.script(
-    ##            "statistics",
-    ##            {},
-    ##        ),
-    ##    )
+    pprint(
+        await server.script(
+            "statistics",
+            {},
+        ),
+    )
     ##    pprint(
     ##        await server.script(
     ##            "publications",
@@ -1488,17 +1681,17 @@ async def run() -> None:
     ##            },
     ##        ),
     ##    )
-    pprint(
-        await server.script(
-            "publication",
-            {
-                "file_id": "1045",  # 1936, 73, 103, 1045
-                "language_id": "1",
-            },
-        ),
-    )
 
 
+##    pprint(
+##        await server.script(
+##            "publication",
+##            {
+##                "file_id": "2329",  # 1936, 73, 103, 1045
+##                "language_id": "1",
+##            },
+##        ),
+##    )
 ##    pprint(
 ##        await server.script(
 ##            "login",
