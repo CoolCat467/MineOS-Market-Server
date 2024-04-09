@@ -28,7 +28,8 @@ import time
 from os import path
 
 import trio
-from ciastore import csvrecords, database
+
+from market_server import database
 
 
 async def backup_database() -> None:
@@ -73,54 +74,10 @@ async def backup_database() -> None:
         database.unload(backup_name)
 
 
-async def backup_csv() -> None:
-    """Backup records from csvrecords module."""
-    async with trio.open_nursery() as nursery:
-        for csvrecord_name in csvrecords.get_loaded():
-            # Get folder and filename
-            folder = path.dirname(csvrecord_name)
-            orig_filename = path.basename(csvrecord_name)
-
-            # Attempt to get list of [{filename}, {file end}]
-            file_parts = orig_filename.rsplit(".", 1)
-            if len(file_parts) == 2:
-                # End exists
-                name, end = file_parts
-                # If is already a backup, do not backup the backup.
-                # If this happens that is bad.
-                if "bak" in end:
-                    continue
-                end = f"{end}.bak"
-            else:
-                # If end not exist, just make it a backup file
-                name = file_parts[0]
-                end = "bak"
-
-            # We have now gotten name and end, add time stamp to name
-            name = time.strftime(f"{name}_(%Y_%m_%d)")
-            filename = f"{name}.{end}"
-
-            # Get full path of backup file
-            backup_name = path.join(folder, "backup", filename)
-
-            # Load up file to take backup of and new backup file
-            instance = csvrecords.load(csvrecord_name, None)
-            backup = csvrecords.load(backup_name, instance.key_name)
-
-            # Add contents of original to backup
-            backup.clear()
-            backup.update(instance)
-
-            # Unload backup file which triggers it to write,
-            # including creating folders if it has to
-            nursery.start_soon(csvrecords.unload, backup_name)
-
-
 async def backup() -> None:
     """Backup all records."""
     logging.info("Performing backup")
     await backup_database()
-    await backup_csv()
     logging.info("Backup complete")
 
 

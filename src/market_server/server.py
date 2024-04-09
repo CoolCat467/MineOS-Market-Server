@@ -48,7 +48,7 @@ if sys.version_info < (3, 11):
 else:
     import tomllib
 
-from market_server import api, database, htmlgen, schema
+from market_server import api, backups, database, htmlgen, schema
 
 HOME: Final = trio.Path(getenv("HOME", path.expanduser("~")))
 XDG_DATA_HOME: Final = trio.Path(
@@ -324,6 +324,12 @@ async def handle_debug_post() -> (
         script_autofill=script,
         post_autofill=post_autofill,
     )
+
+
+@app.before_serving
+async def startup() -> None:
+    """Schedule backups."""
+    app.add_background_task(backups.periodic_backups)
 
 
 async def serve_async(app: QuartTrio, config_obj: Config) -> None:
