@@ -24,23 +24,32 @@ pip install git+https://github.com/CoolCat467/MineOS-Market-Server.git
 
 ## Configuration
 Configuration file locations follow the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html).
-Main configuration file lives at `$XDG_CONFIG_HOME/mineos_market_webserver/config.toml`, or `$HOME/.local/share/mineos_market_webserver/config.toml` if unset.
+Main configuration file lives at `$XDG_CONFIG_HOME/mineos_market_webserver/config.toml`, or `$HOME/.config/mineos_market_webserver/config.toml` if unset.
 In the main configuration file you can change things like what port(s)
 the webserver is hosted on, hypercorn configuration, and enabling
 SSL support!
 
+Database records live in `$XDG_DATA_HOME/mineos_market_webserver/records/`, or `$HOME/.local/share/mineos_market_webserver/records/` if unset.
+`ids.json` is for remembering what the next ID for publications and reviews should be.
+`login.json` is for remembering login token -> username associations that expire after some time.
+`messages.json` is for remembering messages sent between users.
+`publications.json` is for remembering publication data.
+`reviews.json` is for remembering reviews on publications and votes on reviews.
+`users.json` is for remembering user data. Passwords are hashed with sha3_256.
 
 ## Usage
 Run the server:
 ```console
 mineos_market_server
 ```
-Go to URL `http://<IP_of_host>:3004`
+Go to URL `http://<IP_of_host>:3004`, or whatever port you have set in the main configuration file.
+
+Important Note: If you don't enable SSL support, login credentials are sent to server in clear text!
 
 
 ## Enabling SSL Support
-If you would like to enable SSL support on the local network, it's a bit
-tricky but it's doable, successfully tested in production, and completely free!
+If you would like to enable SSL support, it's a bit tricky but it's doable,
+successfully tested in production, and completely free!
 1) Make sure your internet router is set to have the machine running
 the webserver to have a static ip address. This does not need to be
 a publicly accessible ip address.
