@@ -354,6 +354,11 @@ class Version_2_04:  # noqa: N801
         """Review records path."""
         return self.records_root / "reviews.json"
 
+    @property
+    def messages_path(self) -> trio.Path:
+        """Message records path."""
+        return self.records_root / "messages.json"
+
     def __init__(self, root_path: str | trio.Path) -> None:
         """Initialize records path."""
         self.records_root = trio.Path(root_path) / "records"
@@ -422,13 +427,28 @@ class Version_2_04:  # noqa: N801
         assert isinstance(value, str) or value is None
         return value
 
-    def get_total_reviews_count(self) -> int:
-        """Return the total number of reviews."""
+    def get_total_reviews_count(self) -> tuple[int, str | None]:
+        """Return the total number of reviews and most popular user."""
         review_records = database.load(self.reviews_path)
-        review_count = 0
+        review_users = Counter()
         for reviews in review_records.values():
-            review_count += len(reviews)
-        return review_count
+            review_users.update(
+                database.Table(reviews, "review_id")["user_name"],
+            )
+        most_common = review_users.most_common(1)
+        most_popular: str | None = None
+        if most_common:
+            most_popular = most_common[0][0]
+        return sum(review_users.values()), most_popular
+
+    def get_total_messages_count(self) -> int:
+        """Return total number of messages."""
+        messages = database.load(self.messages_path)
+        message_count = 0
+        for _to, from_users in messages.items():
+            for _from, timestamps in from_users.items():
+                message_count += len(timestamps)
+        return message_count
 
     async def cmd_statistics(self) -> str:
         """Return server statistics data."""
@@ -441,15 +461,16 @@ class Version_2_04:  # noqa: N801
         if table["name"]:
             last = table["name"][-1]
 
-        review_count = self.get_total_reviews_count()
+        review_count, most_poplular_user = self.get_total_reviews_count()
+        messages_count = self.get_total_messages_count()
 
         stats = Statistics(
             len(users),
             len(publications),
             review_count,
-            0,
+            messages_count,
             last,
-            None,
+            most_poplular_user,
         )
         return api.success_schema(stats)
 
@@ -1504,6 +1525,141 @@ MineOS Dev Team""",
         publications.write_file()
         return api.success()
 
+    async def cmd_message(
+        self,
+        token: str,
+        user_name: str,
+        text: str,
+    ) -> api.Response:
+        """Send message to user_name from account associated with token."""
+        await trio.lowlevel.checkpoint()
+
+        from_username = self.get_login_from_cookie_data(token)
+        if from_username is None:
+            return api.failure("Token is invalid or expired")
+
+        to_username = user_name
+
+        if not text:
+            return api.failure("Text is blank")
+
+        users = database.load(self.users_path)
+        to_user = users.get(to_username)
+        if to_user is None or not to_user.get("is_verified"):
+            return api.failure(f"User {to_username!r} does not exist!")
+
+        message_db = database.load(self.messages_path)
+        to_user_messages = message_db.get(to_username, {})
+        from_messages = to_user_messages.get(from_username, {})
+
+        message_entry = {"text": text, "is_read": False}
+
+        # Write message
+        timestamp = math.floor(time.time())
+        if timestamp in from_messages:
+            return api.failure("Please wait before sending another message.")
+        from_messages[timestamp] = message_entry
+        to_user_messages[from_username] = from_messages
+        message_db[to_username] = to_user_messages
+        # Save
+        message_db.write_file()
+
+        send_email(
+            to_user["email"],
+            f"You have received a message from {from_username}",
+            f"""{from_username} sent you a message in MineOS: {text}
+
+
+To reply to a message, open the App Market app, log in to your MineOS account,
+and open the messages tab.
+
+
+Sincerely yours,
+Timofeev Igor, Cheremisenov Fedor
+MineOS Dev Team""",
+        )
+
+        return api.success()
+
+    async def cmd_messages(
+        self,
+        token: str,
+        user_name: str,
+    ) -> api.Response:
+        """Send message to user_name from account associated with token."""
+        await trio.lowlevel.checkpoint()
+
+        username = self.get_login_from_cookie_data(token)
+        if username is None:
+            return api.failure("Token is invalid or expired")
+
+        message_db = database.load(self.messages_path)
+
+        recieved_messages = message_db.get(username, {})
+        from_user = recieved_messages.get(user_name, {})
+
+        if not from_user:
+            return api.success_direct([])
+
+        messages: list[Message] = []
+        for timestamp in sorted(from_user):
+            message_entry = from_user[timestamp]
+            messages.append(
+                Message(
+                    text=message_entry["text"],
+                    user_name=user_name,
+                    timestamp=timestamp,
+                ),
+            )
+            message_entry["is_read"] = True
+            from_user[timestamp] = message_entry
+        # Save messages marked as read
+        recieved_messages[user_name] = from_user
+        message_db[username] = recieved_messages
+        # Write changes
+        message_db.write_file()
+
+        return api.success_direct(messages)
+
+    async def cmd_dialogs(self, token: str) -> api.Response:
+        """Return notifications from account associated with token."""
+        await trio.lowlevel.checkpoint()
+
+        username = self.get_login_from_cookie_data(token)
+        if username is None:
+            return api.failure("Token is invalid or expired")
+
+        message_db = database.load(self.messages_path)
+        users = database.load(self.users_path)
+        users_table = users.table("username")
+
+        recieved_messages = message_db.get(username, {})
+
+        notifications: list[Notification] = []
+        for from_username, thread in recieved_messages.items():
+            timestamp = max(thread)
+            last_thread_entry = thread[timestamp]
+
+            # TODO: Follow thread and find who responded last.
+            last_message_user_name = from_username
+            last_message_user_id = users_table.get_id(
+                "username",
+                last_message_user_name,
+            )
+
+            notifications.append(
+                Notification(
+                    dialog_user_name=from_username,
+                    timestamp=timestamp,
+                    text=last_thread_entry["text"],
+                    last_message_is_read=last_thread_entry["is_read"],
+                    last_message_user_name=last_message_user_name,
+                    last_message_user_id=last_message_user_id,
+                ),
+            )
+
+        return api.success_direct(notifications)
+
     def index(self) -> list[str]:
         """Return list of valid scripts."""
         return [a[4:] for a in dir(self) if a.startswith("cmd_")]
@@ -1600,7 +1756,7 @@ async def run() -> None:
     }
     handled = set(server.index()) | {"verify"}
     unhandled = sorted(original - handled)
-    print(f"{unhandled = }")
+    print(f"\n{unhandled = }\n")
 
     ##    print(
     ##        await server.script(
@@ -1671,18 +1827,37 @@ async def run() -> None:
             {},
         ),
     )
-    ##    pprint(
-    ##        await server.script(
-    ##            "publications",
-    ##            {
-    ##                "category_id": "2",
-    ##                "search": "JSON",
-    ####                "order_direction": "asc",
-    ##            },
-    ##        ),
-    ##    )
 
 
+##    pprint(
+##        await server.script(
+##            "message",
+##            {
+##                "token": "ecs",
+##                "user_name": "test",
+##                "text": "This is comment data and hellos."
+##            },
+##        ),
+##    )
+##    pprint(
+##        await server.script(
+##            "dialogs",#"messages",
+##            {
+##                "token": "26e140ab-4bfa-46d2-a9ce-cc8024b8e48e",
+##                "user_name": "ECS",
+##            },
+##        ),
+##    )
+##    pprint(
+##        await server.script(
+##            "publications",
+##            {
+##                "category_id": "2",
+##                "search": "JSON",
+####                "order_direction": "asc",
+##            },
+##        ),
+##    )
 ##    pprint(
 ##        await server.script(
 ##            "publication",
