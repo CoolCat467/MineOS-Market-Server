@@ -430,7 +430,7 @@ class Version_2_04:  # noqa: N801
     def get_total_reviews_count(self) -> tuple[int, str | None]:
         """Return the total number of reviews and most popular user."""
         review_records = database.load(self.reviews_path)
-        review_users = Counter()
+        review_users: Counter[str] = Counter()
         for reviews in review_records.values():
             review_users.update(
                 database.Table(reviews, "review_id")["user_name"],
@@ -1001,7 +1001,7 @@ MineOS Dev Team""",
         """Return `popularity` value for given publication."""
         average_rating = self.get_average_rating(file_id) or 5
         review_count = self.get_review_count(file_id) or 0
-        count_id = max(1, self.get_total_reviews_count())
+        count_id = max(1, self.get_total_reviews_count()[0])
         return (review_count * average_rating) / count_id
 
     async def cmd_publications(
@@ -1186,6 +1186,7 @@ MineOS Dev Team""",
         if new_publication_id is None:
             publications = database.load(self.publications_path)
             new_publication_id = max(map(int, publications.keys())) + 1
+        assert isinstance(new_publication_id, int)
         id_records["publication"] = new_publication_id + 1
         id_records.write_file()
 
@@ -1419,7 +1420,8 @@ MineOS Dev Team""",
         dependency_file_ids: set[int] = set()
         for dep_file_id, dep_publication_changes in deps_to_write:
             if dep_file_id is None:
-                dep_file_id = self.get_new_publication_id()
+                dep_file_id = str(self.get_new_publication_id())
+            assert dep_file_id is not None
 
             dep_pub_existing = publications.get(str(dep_file_id), {})
             dep_pub_existing.update(dep_publication_changes)
@@ -1646,6 +1648,7 @@ MineOS Dev Team""",
                 "username",
                 last_message_user_name,
             )
+            assert last_message_user_id is not None
 
             notifications.append(
                 Notification(
