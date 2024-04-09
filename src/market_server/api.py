@@ -25,7 +25,7 @@ __author__ = "CoolCat467"
 __license__ = "GNU General Public License Version 3"
 
 
-from typing import TYPE_CHECKING, NamedTuple, TypeVar, cast
+from typing import TYPE_CHECKING, NamedTuple, TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -70,17 +70,19 @@ def as_lua(object_: object, ignore_none: bool = False) -> str:
             return repr(object_)
         case dict():
             fieldlist = ",".join(
-                f"{key}={as_lua(value)}"
+                f"{key}={as_lua(value, ignore_none)}"
                 for key, value in dict_to_fields(object_)
-                if not ignore_none or value is not None
+                if (value is not None) or (not ignore_none)
             )
             return f"{{{fieldlist}}}"
         case list():
-            fieldlist = ",".join(as_lua(value) for value in object_)
+            fieldlist = ",".join(
+                as_lua(value, ignore_none) for value in object_
+            )
             return f"{{{fieldlist}}}"
         case tuple():
             if hasattr(object_, "_asdict"):
-                return as_lua(object_._asdict())
+                return as_lua(object_._asdict(), ignore_none)
             raise ValueError(f"Non-named tuple {object_!r}")
         case _:
             raise NotImplementedError(type(object_))
@@ -113,9 +115,8 @@ def success(**kwargs: object) -> str:
 
 def success_schema(response: NamedTuple, ignore_none: bool = True) -> str:
     """Return lua api success table from named tuple."""
-    as_dict = {k: v for k, v in response._asdict().items() if v is not None}
     return success_direct(
-        cast(dict[object, object], as_dict),
+        response,
         ignore_none=ignore_none,
     )
 
