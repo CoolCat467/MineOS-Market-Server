@@ -197,7 +197,7 @@ app: Final = QuartTrio(  # pylint: disable=invalid-name
 )
 
 
-schema_v_2_04 = schema.Version_2_04(app.root_path)
+schema_v_2_04 = schema.Version_2_04(DATA_PATH)
 
 
 @app.route("/MineOSAPI/<version>/<script>.php", methods=("POST", "GET"))  # type: ignore[type-var]
@@ -354,7 +354,8 @@ def server_market(
     if not path.exists(logs_path):
         makedirs(logs_path)
 
-    print(f"Logs Path: {str(logs_path)!r}\n")
+    print(f"Logs Path: {str(logs_path)!r}")
+    print(f"Records Path: {str(DATA_PATH / 'records')!r}\n")
 
     try:
         # Hypercorn config setup

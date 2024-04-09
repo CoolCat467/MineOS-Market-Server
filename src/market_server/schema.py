@@ -1557,10 +1557,10 @@ MineOS Dev Team""",
         message_entry = {"text": text, "is_read": False}
 
         # Write message
-        timestamp = math.floor(time.time())
-        if timestamp in from_messages:
+        timestamp_str = str(math.floor(time.time()))
+        if timestamp_str in from_messages:
             return api.failure("Please wait before sending another message.")
-        from_messages[timestamp] = message_entry
+        from_messages[timestamp_str] = message_entry
         to_user_messages[from_username] = from_messages
         message_db[to_username] = to_user_messages
         # Save
@@ -1604,8 +1604,8 @@ MineOS Dev Team""",
             return api.success_direct([])
 
         messages: list[Message] = []
-        for timestamp in sorted(from_user):
-            message_entry = from_user[timestamp]
+        for timestamp in sorted(map(int, from_user)):
+            message_entry = from_user[str(timestamp)]
             messages.append(
                 Message(
                     text=message_entry["text"],
@@ -1614,7 +1614,7 @@ MineOS Dev Team""",
                 ),
             )
             message_entry["is_read"] = True
-            from_user[timestamp] = message_entry
+            from_user[str(timestamp)] = message_entry
         # Save messages marked as read
         recieved_messages[user_name] = from_user
         message_db[username] = recieved_messages
@@ -1639,8 +1639,8 @@ MineOS Dev Team""",
 
         notifications: list[Notification] = []
         for from_username, thread in recieved_messages.items():
-            timestamp = max(thread)
-            last_thread_entry = thread[timestamp]
+            timestamp = max(map(int, thread))
+            last_thread_entry = thread[str(timestamp)]
 
             # TODO: Follow thread and find who responded last.
             last_message_user_name = from_username
@@ -1648,7 +1648,8 @@ MineOS Dev Team""",
                 "username",
                 last_message_user_name,
             )
-            assert last_message_user_id is not None
+            if last_message_user_id is None:
+                last_message_user_id = -1
 
             notifications.append(
                 Notification(
@@ -1734,198 +1735,5 @@ MineOS Dev Team""",
             return api.failure("Internal server error", 500)
 
 
-async def run() -> None:
-    """Run test of server."""
-    server = Version_2_04(await trio.Path(__file__).parent.absolute())
-    print(f"{server = }")
-
-    original = {
-        "verify",
-        "delete",
-        "change_password",
-        "review",
-        "update",
-        "upload",
-        "dialogs",
-        "message",
-        "messages",
-        "review_vote",
-        "publication",
-        "statistics",
-        "reviews",
-        "login",
-        "register",
-        "publications",
-    }
-    handled = set(server.index()) | {"verify"}
-    unhandled = sorted(original - handled)
-    print(f"\n{unhandled = }\n")
-
-    ##    print(
-    ##        await server.script(
-    ##            "register",
-    ##            {
-    ##                "email": "jerald@gmail.com",
-    ##                "name": "jerald",
-    ##                "password": "jerald",
-    ##            },
-    ##        ),
-    ##    )
-    ##
-    try:
-        import market_api
-
-        def pprint(value: api.Response) -> None:
-            if isinstance(value, str):
-                text = value
-            else:
-                text, _error_code = value
-            market_api.pretty_print_response(
-                cast(
-                    dict[str, Any],
-                    market_api.lua_parser.parse_lua_table(text),
-                ),
-            )
-
-    except ImportError:
-
-        def pprint(value: api.Response) -> None:
-            print(value)
-
-    ##pprint(
-    ##    await server.script(
-    ##        "delete",
-    ##        {
-    ##            "token": "26e140ab-4bfa-46d2-a9ce-cc8024b8e48e",
-    ##            "name": "test_publication",
-    ##            "source_url": "http://example.com",
-    ##            "path": "Main.lua",
-    ##            "description": "This is a test publication to make sure it works.",
-    ##            "category_id": "1",
-    ##            "dependencies": "[0][source_url]=https://example.com/image.pic&[0][path]=Icon.pic",
-    ##            "license_id": "2",
-    ##            "file_id": "2331",
-    ##        },
-    ##    ),
-    ##)
-    ##    pprint(
-    ##        await server.script(
-    ##            "update",
-    ##            {
-    ##                "token": "ecs",
-    ##                "file_id": "103",
-    ##                "name": "JSON",
-    ##                "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Libraries/JSON.lua",
-    ##                "path": "Main.lua",
-    ##                "dependencies": "{}",
-    ##                "description": "This library allows you to encode/decode Lua tables to/from string JSON result. Mostly used in web applications.",
-    ##                "category_id": "2",
-    ##                "license_id": "1",
-    ##            },
-    ##        ),
-    ##    )
-    pprint(
-        await server.script(
-            "statistics",
-            {},
-        ),
-    )
-
-
-##    pprint(
-##        await server.script(
-##            "message",
-##            {
-##                "token": "ecs",
-##                "user_name": "test",
-##                "text": "This is comment data and hellos."
-##            },
-##        ),
-##    )
-##    pprint(
-##        await server.script(
-##            "dialogs",#"messages",
-##            {
-##                "token": "26e140ab-4bfa-46d2-a9ce-cc8024b8e48e",
-##                "user_name": "ECS",
-##            },
-##        ),
-##    )
-##    pprint(
-##        await server.script(
-##            "publications",
-##            {
-##                "category_id": "2",
-##                "search": "JSON",
-####                "order_direction": "asc",
-##            },
-##        ),
-##    )
-##    pprint(
-##        await server.script(
-##            "publication",
-##            {
-##                "file_id": "2329",  # 1936, 73, 103, 1045
-##                "language_id": "1",
-##            },
-##        ),
-##    )
-##    pprint(
-##        await server.script(
-##            "login",
-##            {"name": "test", "password": "test"},
-##        ),
-##    )
-##    pprint(
-##        await server.script(
-##            "review",
-##            {
-##                "token": token,
-##                "file_id": "1936",
-##                "comment": "This is a comment text",
-##                "rating": 5,
-##            }
-##        )
-##    )
-##    pprint(
-##        await server.script(
-##            "review",
-##            {
-##                "token": "26e140ab-4bfa-46d2-a9ce-cc8024b8e48e",
-##                "file_id": "73",
-##                "comment": "This is a comment text",
-##                "rating": 5,
-##            }
-##        )
-##    )
-##    pprint(
-##        await server.script(
-##            "reviews",
-##            {
-##                "file_id": "103", # 1936, 73, 103
-##            }
-##        )
-##    )
-##    pprint(
-##        await server.script(
-##            "review_vote",
-##            {
-##                "token": token,
-##                "review_id": "1",
-##                "helpful": "1",
-##            }
-##        )
-##    )
-##    pprint(
-##        await server.script(
-##            "reviews",
-##            {
-##                "file_id": "73",
-##            }
-##        )
-##    )
-
-
 if __name__ == "__main__":
     print(f"{__title__}\nProgrammed by {__author__}.\n")
-    trio.run(run)
