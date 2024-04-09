@@ -1,7 +1,3 @@
-# Server records and logs
-records/
-logs/
-
 # Ruff
 .ruff_cache
 
