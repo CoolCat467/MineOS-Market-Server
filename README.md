@@ -30,12 +30,12 @@ the webserver is hosted on, hypercorn configuration, and enabling
 SSL support!
 
 Database records live in `$XDG_DATA_HOME/mineos_market_webserver/records/`, or `$HOME/.local/share/mineos_market_webserver/records/` if unset.
-`ids.json` is for remembering what the next ID for publications and reviews should be.
-`login.json` is for remembering login token -> username associations that expire after some time.
-`messages.json` is for remembering messages sent between users.
-`publications.json` is for remembering publication data.
-`reviews.json` is for remembering reviews on publications and votes on reviews.
-`users.json` is for remembering user data. Passwords are hashed with sha3_256.
+- `ids.json` is for remembering what the next ID for publications and reviews should be.
+- `login.json` is for remembering login token -> username associations that expire after some time.
+- `messages.json` is for remembering messages sent between users.
+- `publications.json` is for remembering publication data.
+- `reviews.json` is for remembering reviews on publications and votes on reviews.
+- `users.json` is for remembering user data. Passwords are hashed with sha3_256.
 
 ## Usage
 Run the server:
