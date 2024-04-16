@@ -88,5 +88,5 @@ async def periodic_backups() -> None:
         await backup()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: nocover
     print(f"{__title__}\nProgrammed by {__author__}.\n")
