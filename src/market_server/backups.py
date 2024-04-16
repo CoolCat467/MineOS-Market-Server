@@ -54,7 +54,7 @@ async def backup_database() -> None:
             name = file_parts[0]
             end = "bak"
 
-        # We have now gotten name and end, add time stamp to name
+        # We have now gotten name and end, add timestamp to name
         name = time.strftime(f"{name}_(%Y_%m_%d)")
         filename = f"{name}.{end}"
 
@@ -62,16 +62,15 @@ async def backup_database() -> None:
         backup_name = path.join(folder, "backup", filename)
 
         # Load up file to take backup of and new backup file
-        instance = database.load(database_name)
-        backup = database.load(backup_name)
+        async with database.Database(backup_name, auto_load=False) as backup:
+            instance = database.load(database_name)
 
-        # Add contents of original to backup
-        backup.clear()
-        backup.update(instance)
+            # Add contents of original to backup
+            backup.clear()
+            backup.update(instance)
 
         # Unload backup file which triggers it to write,
         # including creating folders if it has to
-        database.unload(backup_name)
 
 
 async def backup() -> None:
