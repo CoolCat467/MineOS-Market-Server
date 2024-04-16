@@ -27,11 +27,15 @@ import json
 from os import makedirs, path
 from typing import TYPE_CHECKING, Any
 
+import trio
+
 if TYPE_CHECKING:
     from collections.abc import Generator, Iterable, Iterator
     from pathlib import Path
+    from types import TracebackType
 
-    from trio import Path as TrioPath
+    from typing_extensions import Self
+
 
 _LOADED: dict[str, Records] = {}
 
@@ -41,39 +45,98 @@ class Database(dict[str, Any]):
 
     __slots__ = ("file", "__weakref__")
 
-    def __init__(self, file_path: str | Path | TrioPath) -> None:
-        """Initialize and set file path."""
+    def __init__(
+        self,
+        file_path: str | Path | trio.Path,
+        auto_load: bool = True,
+    ) -> None:
+        """Initialize and set file path.
+
+        If auto_load is True, automatically load file contents synchronously
+        if file exists.
+        """
         super().__init__()
         self.file = file_path
 
-        if path.exists(self.file):
+        if auto_load and path.exists(self.file):
             self.reload_file()
 
     def reload_file(self) -> None:
-        """Reload database file."""
+        """Reload database file.
+
+        Will raise FileNotFoundError in the event file does not exist.
+        """
         with open(self.file, "rb") as file:
             self.update(json.load(file))
 
+    async def reload_async(self) -> None:
+        """Reload database file asynchronously.
+
+        Does not decode json data if file is empty.
+        Will raise FileNotFoundError in the event file does not exist.
+        """
+        async with await trio.open_file(self.file, "rb") as file:
+            data = await file.read()
+            if not data:
+                return
+            self.update(json.loads(data))
+
     def write_file(self) -> None:
-        """Write database file."""
+        """Write database file.
+
+        May raise PermissionError in the event of insufficiant permissions.
+        """
         folder = path.dirname(self.file)
         if not path.exists(folder):
             makedirs(folder, exist_ok=False)
         with open(self.file, "w", encoding="utf-8") as file:
             json.dump(self, file, separators=(",", ":"))
 
+    async def write_async(self) -> None:
+        """Write database file asynchronously.
 
-##    def __aenter__(self) -> Self:
-##        return self
-##
-##     def __aexit__(
-##        self,
-##        exc_type: type[BaseException] | None,
-##        exc_value: BaseException | None,
-##        traceback: TracebackType | None,
-##    ) -> None:
-##        """Context manager exit."""
-##        self.write_file()
+        May raise PermissionError in the event of insufficiant permissions.
+        """
+        folder = trio.Path(self.file).parent
+        if not await folder.exists():
+            await folder.mkdir(parents=True, exist_ok=False)
+        async with await trio.open_file(
+            self.file,
+            "w",
+            encoding="utf-8",
+        ) as file:
+            await file.write(json.dumps(self, separators=(",", ":")))
+
+    def __enter__(self) -> Self:
+        """Enter context manager."""
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        """Context manager exit."""
+        self.write_file()
+
+    async def __aenter__(self) -> Self:
+        """Enter async context manager.
+
+        Automatically reloads file if it exists.
+        """
+        if await trio.Path(self.file).exists():
+            await self.reload_async()
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        """Async context manager exit."""
+        await self.write_async()
 
 
 class Table:
@@ -134,12 +197,16 @@ class Table:
                     continue
                 self._records[key][column] = set_value
 
-    def keys(self) -> set[str]:
+    def _raw_keys(self) -> set[str]:
         """Return the name of every column."""
-        keys = {self._key_name}
+        keys = set()
         for row in self._records.values():
             keys |= set(row.keys())
         return keys
+
+    def keys(self) -> set[str]:
+        """Return the name of every column."""
+        return self._raw_keys() | {self._key_name}
 
     def __iter__(self) -> Iterator[str]:
         """Return iterator for column names."""
@@ -155,22 +222,27 @@ class Table:
     def items(self) -> tuple[tuple[str, Any], ...]:
         """Return tuples of column names and columns."""
         items = []
-        for key in self.keys():
+        for key in sorted(self.keys()):
             items.append((key, self[key]))
         return tuple(items)
 
-    def column_and_rows(self) -> Generator[tuple[str | Any, ...], None, None]:
-        """Yield tuple of column row and then rows in column order."""
-        columns = tuple(self.keys() - {self._key_name})
-        yield (self._key_name, *columns)
+    def _rows(
+        self,
+        columns: list[str],
+    ) -> Generator[tuple[Any, ...], None, None]:
+        """Yield columns in order from each row."""
         for key, value in self._records.items():
             yield (key, *tuple(value.get(col) for col in columns))
 
     def rows(self) -> Generator[tuple[Any, ...], None, None]:
         """Yield each row."""
-        gen = self.column_and_rows()
-        _ = next(gen)
-        yield from gen
+        yield from self._rows(sorted(self.keys()))
+
+    def column_and_rows(self) -> Generator[tuple[str | Any, ...], None, None]:
+        """Yield tuple of column row and then rows in column order."""
+        columns = sorted(self._raw_keys())
+        yield (self._key_name, *columns)
+        yield from self._rows(columns)
 
     def __len__(self) -> int:
         """Return number of records."""
@@ -194,11 +266,21 @@ class Records(Database):
         return Table(self, element_name)
 
 
-def load(file_path: str | Path | TrioPath) -> Records:
+def load(file_path: str | Path | trio.Path) -> Records:
     """Load database from file path or return already loaded instance."""
     file = path.abspath(file_path)
     if file not in _LOADED:
         _LOADED[file] = Records(file)
+    return _LOADED[file]
+
+
+async def async_load(file_path: str | Path | trio.Path) -> Records:
+    """Load database from file path or return already loaded instance."""
+    await trio.lowlevel.checkpoint()
+    file = path.abspath(file_path)
+    if file not in _LOADED:
+        _LOADED[file] = Records(file, auto_load=False)
+        await _LOADED[file].reload_async()
     return _LOADED[file]
 
 
@@ -207,7 +289,7 @@ def get_loaded() -> set[str]:
     return set(_LOADED)
 
 
-def unload(file_path: str | Path | TrioPath) -> None:
+def unload(file_path: str | Path | trio.Path) -> None:
     """If database loaded, write file and unload."""
     file = path.abspath(file_path)
     if file not in get_loaded():
@@ -217,7 +299,24 @@ def unload(file_path: str | Path | TrioPath) -> None:
     del _LOADED[file]
 
 
+async def async_unload(file_path: str | Path | trio.Path) -> None:
+    """If database loaded, write file and unload."""
+    file = path.abspath(file_path)
+    if file not in get_loaded():
+        return
+    database = load(file)
+    await database.write_async()
+    del _LOADED[file]
+
+
 def unload_all() -> None:
     """Unload all loaded databases."""
     for file_path in get_loaded():
         unload(file_path)
+
+
+async def async_unload_all() -> None:
+    """Unload all loaded databases."""
+    async with trio.open_nursery() as nursery:
+        for file_path in get_loaded():
+            nursery.start_soon(async_unload, file_path)
