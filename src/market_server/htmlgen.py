@@ -1,6 +1,26 @@
-"""HTML Generation - Generate HTML & CSS programmatically."""
+"""HTML Generation - Generate HTML & CSS programmatically.
+
+Copyright (C) 2022-2024  CoolCat467
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
 
 from __future__ import annotations
+
+__title__ = "HTML Generation"
+__author__ = "CoolCat467"
+__license__ = "GNU General Public License Version 3"
 
 from typing import TYPE_CHECKING
 
@@ -174,7 +194,7 @@ def contain_in_box(inside: str, name: str | None = None) -> str:
     if name is not None:
         inside = "\n".join(
             (
-                wrap_tag("span", name),
+                wrap_tag("span", name, block=False),
                 tag("br"),
                 inside,
             ),
@@ -223,9 +243,10 @@ def input_field(
                 )
     lines.append(tag("input", **args))
     if field_title is not None:
-        lines.append(
-            wrap_tag("label", field_title, block=False, for_=field_id),
-        )
+        lines.append(wrap_tag("label", field_title, False, for_=field_id))
+    # If label should be before, reverse.
+    if field_type in {"number"}:
+        return "\n".join(reversed(lines))
     return "\n".join(lines)
 
 
@@ -251,7 +272,11 @@ def select_dict(
             # Otherwise user can define field type.
             attributes = dict(value_data)  # type: ignore[arg-type]
             field_type = attributes.pop("type", "radio")
-        if "value" in attributes and attributes["value"] == default:
+        if (
+            field_type == "radio"
+            and "value" in attributes
+            and attributes["value"] == default
+        ):
             attributes["checked"] = "checked"
         lines.append(
             input_field(
@@ -537,8 +562,6 @@ def jinja_block(
 
 def jinja_extends(template_filename: str | Iterable[str]) -> str:
     """Return jinja extends statement from given template filename."""
-    # Using if else instead of ternary because it makes it confusing from
-    # a types perspective and less readable
     if isinstance(template_filename, str):
         filename = template_filename
     else:

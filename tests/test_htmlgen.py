@@ -187,9 +187,7 @@ def test_contain_in_box_named() -> None:
     assert (
         htmlgen.contain_in_box("inside different", "Names here")
         == """<div class="box">
-  <span>
-    Names here
-  </span>
+  <span>Names here</span>
   <br>
   inside different
 </div>"""
@@ -254,9 +252,7 @@ def test_select_box() -> None:
             box_title="click to add title",
         )
         == """<div class="box">
-  <span>
-    click to add title
-  </span>
+  <span>click to add title</span>
   <br>
   <br>
   <input type="radio" id="name_here_0" name="name_here" value="seven">
