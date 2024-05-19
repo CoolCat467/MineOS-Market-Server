@@ -278,23 +278,33 @@ def parse_int(string: str | int) -> int | None:
         return None
 
 
-def parse_table(string: str) -> dict[str, Any]:
-    """Parse encoded table."""
+def parse_table(string: str, limit: int | None = None) -> dict[str, Any]:
+    """Parse encoded table from string.
 
-    def set_key(dict_: dict[str, Any], keys: list[str], value: str) -> None:
+    If limit is not None, limits how many recursive layers in to go at most.
+    """
+
+    def set_key(
+        dict_: dict[str, Any],
+        keys: list[str],
+        value: str,
+        n: int | None = None,
+    ) -> None:
+        if n is not None and n < 0:
+            return
         key = keys[0].removesuffix("]")
         if len(keys) == 1:
             dict_[key] = value
             return
         dict_.setdefault(key, {})
-        set_key(dict_[key], keys[1:], value)
+        set_key(dict_[key], keys[1:], value, None if n is None else n - 1)
 
     root: dict[str, Any] = {}
     for part in string.split("&"):
         if "=" not in part:
             continue
         key_data, value = part.split("=", 1)
-        set_key(root, key_data.split("["), value)
+        set_key(root, key_data.split("["), value, limit)
 
     return root
 
@@ -305,7 +315,7 @@ def parse_int_list(string: str) -> list[int]:
     ex `[0]=27&[1]=49` -> [27, 49]
     ex `[3]=27&[1]=49` -> [49, 27]
     """
-    table = parse_table(string)
+    table = parse_table(string, 1)
     result: list[int] = []
     if "" not in table:
         return result
@@ -367,7 +377,7 @@ class Version_2_04:  # noqa: N801
         """Return representation of self."""
         return f"{self.__class__.__name__}(root_path = {self.records_root.parent!r})"
 
-    def create_login_cookie_data(self, username: str) -> str:
+    async def create_login_cookie_data(self, username: str) -> str:
         """Generate UUID associated with a specific user.
 
         Only one instance of an account should be able
@@ -375,7 +385,7 @@ class Version_2_04:  # noqa: N801
         sessions. This will make remembering instances easier
         """
         # Get login database
-        logins = database.load(self.login_path)
+        logins = await database.load_async(self.login_path)
 
         # Make new random code until it does not exist
         while (code := str(uuid.uuid4())) in logins:
@@ -400,16 +410,16 @@ class Version_2_04:  # noqa: N801
             "user": username,
             "expires": expires,
         }
-        logins.write_file()
+        await logins.write_async()
         return code
 
-    def get_login_from_cookie_data(self, code: str) -> str | None:
+    async def get_login_from_cookie_data(self, code: str) -> str | None:
         """Get username from cookie data.
 
         If cookie data is invalid return None
         """
         # Get login database
-        logins = database.load(self.login_path)
+        logins = await database.load_async(self.login_path)
 
         # Attempt to get entry for code. Using get instead of
         # "in" search and then index means is faster
@@ -420,14 +430,14 @@ class Version_2_04:  # noqa: N801
         # If expires not exist in entry or time expired, is bad and delete entry
         if entry.get("expires", 0) < int(time.time()):
             del logins[code]
-            logins.write_file()
+            await logins.write_async()
             return None
         # Otherwise attempt to return username field or is bad because malformed
         value = entry.get("user", None)
         assert isinstance(value, str) or value is None
         return value
 
-    def get_total_reviews_count(self) -> tuple[int, str | None]:
+    def get_total_reviews_count_sync(self) -> tuple[int, str | None]:
         """Return the total number of reviews and most popular user."""
         review_records = database.load(self.reviews_path)
         review_users: Counter[str] = Counter()
@@ -441,9 +451,9 @@ class Version_2_04:  # noqa: N801
             most_popular = most_common[0][0]
         return sum(review_users.values()), most_popular
 
-    def get_total_messages_count(self) -> int:
+    async def get_total_messages_count(self) -> int:
         """Return total number of messages."""
-        messages = database.load(self.messages_path)
+        messages = await database.load_async(self.messages_path)
         message_count = 0
         for _to, from_users in messages.items():
             for _from, timestamps in from_users.items():
@@ -452,17 +462,16 @@ class Version_2_04:  # noqa: N801
 
     async def cmd_statistics(self) -> str:
         """Return server statistics data."""
-        await trio.lowlevel.checkpoint()
-        users = database.load(self.users_path)
-        publications = database.load(self.publications_path)
+        users = await database.load_async(self.users_path)
+        publications = await database.load_async(self.publications_path)
 
         table = users.table("name")
         last: str | None = None
         if table["name"]:
             last = table["name"][-1]
 
-        review_count, most_poplular_user = self.get_total_reviews_count()
-        messages_count = self.get_total_messages_count()
+        review_count, most_poplular_user = self.get_total_reviews_count_sync()
+        messages_count = await self.get_total_messages_count()
 
         stats = Statistics(
             len(users),
@@ -486,7 +495,7 @@ class Version_2_04:  # noqa: N801
         if name in RESERVED_NAMES:
             return api.failure(f"Name {name!r} is reserved")
 
-        users = database.load(self.users_path)
+        users = await database.load_async(self.users_path)
 
         if name in users:
             return api.failure(
@@ -523,7 +532,7 @@ class Version_2_04:  # noqa: N801
             "timestamp": math.floor(time.time()),
             "verify_token": token_urlsafe(37),
         }
-        users.write_file()
+        await users.write_async()
 
         send_email(
             parsed_email,
@@ -553,12 +562,12 @@ MineOS Dev Team""",
             f"Check your e-mail ({email}) and spam folder message to submit your MineOS account",
         )
 
-    def verify(
+    async def verify(
         self,
         verify_token: str,
     ) -> bool:
         """Return if successful verifying user."""
-        users = database.load(self.users_path)
+        users = await database.load_async(self.users_path)
 
         table = users.table("name")
         id_ = table.get_id("verify_token", verify_token)
@@ -574,7 +583,7 @@ MineOS Dev Team""",
                 "verify_token": None,
             },
         )
-        users.write_file()
+        await users.write_async()
 
         return True
 
@@ -588,7 +597,7 @@ MineOS Dev Team""",
         await trio.lowlevel.checkpoint()
         if email is None and name is None:
             return api.failure("Missing arguments: email or name, password")
-        users = database.load(self.users_path)
+        users = await database.load_async(self.users_path)
         table = users.table("name")
         if name is None:
             id_ = table.get_id("email", email)
@@ -612,7 +621,7 @@ MineOS Dev Team""",
             return api.failure(
                 f"Check your e-mail ({user['email']}) and spam folder for message to verify your account",
             )
-        token = self.create_login_cookie_data(name)
+        token = await self.create_login_cookie_data(name)
         return api.success_schema(
             LoginResponse(
                 id=id_,
@@ -629,8 +638,7 @@ MineOS Dev Team""",
         new_password: str,
     ) -> api.Response:
         """Change password given email, current password, and new password."""
-        await trio.lowlevel.checkpoint()
-        users = database.load(self.users_path)
+        users = await database.load_async(self.users_path)
         table = users.table("name")
         id_ = table.get_id("email", email)
         name: str | None = None
@@ -660,16 +668,16 @@ MineOS Dev Team""",
                 ),
             },
         )
-        users.write_file()
+        await users.write_async()
 
         return api.success()
 
-    def get_dependency(
+    async def get_dependency(
         self,
         file_id: str | int,
     ) -> tuple[Dependency | None, dict[str, Any]]:
         """Return (Dependency object from file id, publication record) or (None, None) if not found."""
-        pub_records = database.load(self.publications_path)
+        pub_records = await database.load_async(self.publications_path)
         pub = pub_records.get(str(file_id))
         if pub is None:
             return None, {}
@@ -692,8 +700,7 @@ MineOS Dev Team""",
         comment: str,
     ) -> api.Response:
         """Add a review for a given publication."""
-        await trio.lowlevel.checkpoint()
-        username = self.get_login_from_cookie_data(token)
+        username = await self.get_login_from_cookie_data(token)
         if username is None:
             return api.failure("Token is invalid or expired")
 
@@ -709,7 +716,7 @@ MineOS Dev Team""",
                 "Comment length too small/big. Minimum 2 Maximum 1000.",
             )
 
-        pub_records = database.load(self.publications_path)
+        pub_records = await database.load_async(self.publications_path)
 
         publication = pub_records.get(str(file_id))
         if publication is None or publication.get("category_id") is None:
@@ -722,7 +729,7 @@ MineOS Dev Team""",
                 "Cannot leave a review for a publication you created",
             )
 
-        review_records = database.load(self.reviews_path)
+        review_records = await database.load_async(self.reviews_path)
 
         reviews = review_records.get(file_id, {})
 
@@ -736,7 +743,7 @@ MineOS Dev Team""",
             del reviews[delete_id]
 
         # Get ID for new review
-        id_records = database.load(self.ids_path)
+        id_records = await database.load_async(self.ids_path)
         new_review_id = id_records.get("review", None)
         if new_review_id is None:
             new_review_id = -1
@@ -746,7 +753,7 @@ MineOS Dev Team""",
                         new_review_id = key
             new_review_id += 1
         id_records["review"] = new_review_id + 1
-        id_records.write_file()
+        await id_records.write_async()
 
         # Add new review
         reviews[str(new_review_id)] = {
@@ -759,16 +766,16 @@ MineOS Dev Team""",
 
         # Save changes
         review_records[file_id] = reviews
-        review_records.write_file()
+        await review_records.write_async()
 
         return api.success()
 
-    def review_id_to_file_id(
+    async def review_id_to_file_id(
         self,
         review_id: int,
     ) -> str | None:
         """Return file_id where given review_id is located or None."""
-        review_records = database.load(self.reviews_path)
+        review_records = await database.load_async(self.reviews_path)
         search = str(review_id)
         for file_id, reviews in review_records.items():
             if search in reviews:
@@ -791,12 +798,12 @@ MineOS Dev Team""",
         if helpful_int is None or helpful_int not in (0, 1):
             return api.failure("`helpful` is invalid, either 0 or 1")
 
-        username = self.get_login_from_cookie_data(token)
+        username = await self.get_login_from_cookie_data(token)
         if username is None:
             return api.failure("Token is invalid or expired")
 
-        review_records = database.load(self.reviews_path)
-        file_id = self.review_id_to_file_id(review_id_int)
+        review_records = await database.load_async(self.reviews_path)
+        file_id = await self.review_id_to_file_id(review_id_int)
         if file_id is None:
             return api.failure(
                 f"Review with specified file ID ({review_id}) doesn't exist",
@@ -813,7 +820,7 @@ MineOS Dev Team""",
         review_records[file_id][str(review_id_int)]["votes"][username] = bool(
             helpful_int,
         )
-        review_records.write_file()
+        await review_records.write_async()
         return api.success()
 
     async def cmd_reviews(
@@ -828,7 +835,7 @@ MineOS Dev Team""",
         if offset_int is None or offset_int < 0:
             return api.failure("Invalid offset")
 
-        review_records = database.load(self.reviews_path)
+        review_records = await database.load_async(self.reviews_path)
 
         reviews = review_records.get(file_id)
         if not reviews or offset_int > len(reviews):
@@ -879,7 +886,7 @@ MineOS Dev Team""",
 
         return api.success_direct(review_data)
 
-    def get_average_rating(
+    def get_average_rating_sync(
         self,
         file_id: str | int,
     ) -> float | None:
@@ -892,13 +899,13 @@ MineOS Dev Team""",
         ratings = table["rating"]
         return sum(map(int, ratings)) / len(ratings)
 
-    def get_publication(
+    async def get_publication(
         self,
         file_id: str | int,
         language_id: int,
     ) -> Publication | str:
         """Return Publication object from file id or error text if not found."""
-        pub_records = database.load(self.publications_path)
+        pub_records = await database.load_async(self.publications_path)
         pub = pub_records.get(str(file_id))
         if pub is None or pub.get("category_id") is None:
             return (
@@ -932,7 +939,7 @@ MineOS Dev Team""",
                 if dep_file_id in all_dependencies_set:
                     continue
                 all_dependencies_set.add(dep_file_id)
-                dependency, dep_pub = self.get_dependency(dep_file_id)
+                dependency, dep_pub = await self.get_dependency(dep_file_id)
                 if dependency is None:
                     ##print(
                     ##    f"Publication with specified file ID ({dep_file_id}) doesn't exist",
@@ -947,7 +954,7 @@ MineOS Dev Team""",
             k: dependencies_data[k] for k in sorted(dependencies_data)
         }
 
-        average_rating = self.get_average_rating(file_id)
+        average_rating = self.get_average_rating_sync(file_id)
 
         return Publication(
             **{k: pub[k] for k in write},
@@ -964,8 +971,7 @@ MineOS Dev Team""",
         language_id: str,
     ) -> api.Response:
         """Return publication details."""
-        await trio.lowlevel.checkpoint()
-        pub_records = database.load(self.publications_path)
+        pub_records = await database.load_async(self.publications_path)
         pub = pub_records.get(file_id)
         if pub is None or pub.get("category_id") is None:
             return api.failure(
@@ -977,13 +983,13 @@ MineOS Dev Team""",
                 f"Language with specified ID ({language_id}) isn't supported",
             )
 
-        publication_or_error = self.get_publication(file_id, lang_id)
+        publication_or_error = await self.get_publication(file_id, lang_id)
 
         if isinstance(publication_or_error, str):
             return api.failure(publication_or_error)
         return api.success_schema(publication_or_error, ignore_none=True)
 
-    def get_review_count(
+    def get_review_count_sync(
         self,
         file_id: str | int,
     ) -> int | None:
@@ -994,14 +1000,14 @@ MineOS Dev Team""",
             return None
         return len(reviews)
 
-    def get_publication_popularity(
+    def get_publication_popularity_sync(
         self,
         file_id: str | int,
     ) -> float:
         """Return `popularity` value for given publication."""
-        average_rating = self.get_average_rating(file_id) or 5
-        review_count = self.get_review_count(file_id) or 0
-        count_id = max(1, self.get_total_reviews_count()[0])
+        average_rating = self.get_average_rating_sync(file_id) or 5
+        review_count = self.get_review_count_sync(file_id) or 0
+        count_id = max(1, self.get_total_reviews_count_sync()[0])
         return (review_count * average_rating) / count_id
 
     async def cmd_publications(
@@ -1043,7 +1049,7 @@ MineOS Dev Team""",
         if file_ids is not None:
             get_files = parse_int_list(file_ids) or None
 
-        pub_records = database.load(self.publications_path)
+        pub_records = await database.load_async(self.publications_path)
         table = pub_records.table("file_id")
 
         # Get record ids of files that match
@@ -1068,13 +1074,13 @@ MineOS Dev Team""",
         if order_by == "popularity":
             match_ids = sorted(
                 obtain_files,
-                key=self.get_publication_popularity,
+                key=self.get_publication_popularity_sync,
                 reverse=descending,
             )
         elif order_by == "rating":
             match_ids = sorted(
                 obtain_files,
-                key=lambda f: self.get_average_rating(f) or 0,
+                key=lambda f: self.get_average_rating_sync(f) or 0,
                 reverse=descending,
             )
         elif order_by == "name":
@@ -1114,9 +1120,9 @@ MineOS Dev Team""",
                             "icon_url",
                         )
                     },
-                    reviews_count=self.get_review_count(file_id) or 0,
-                    average_rating=self.get_average_rating(file_id),
-                    popularity=self.get_publication_popularity(file_id),
+                    reviews_count=self.get_review_count_sync(file_id) or 0,
+                    average_rating=self.get_average_rating_sync(file_id),
+                    popularity=self.get_publication_popularity_sync(file_id),
                 ),
             )
 
@@ -1136,7 +1142,6 @@ MineOS Dev Team""",
         whats_new: str | None = None,
     ) -> api.Response:
         """Handle updating a publication."""
-        await trio.lowlevel.checkpoint()
         return await self.publication_edit(
             token=token,
             name=name,
@@ -1164,7 +1169,6 @@ MineOS Dev Team""",
         whats_new: str | None = None,
     ) -> api.Response:
         """Handle uploading a new publication."""
-        await trio.lowlevel.checkpoint()
         return await self.publication_edit(
             token=token,
             name=name,
@@ -1179,20 +1183,20 @@ MineOS Dev Team""",
             raw_file_id=None,
         )
 
-    def get_new_publication_id(self) -> int:
+    async def get_new_publication_id(self) -> int:
         """Get ID for new publication."""
-        id_records = database.load(self.ids_path)
+        id_records = await database.load_async(self.ids_path)
         new_publication_id = id_records.get("publication", None)
         if new_publication_id is None:
-            publications = database.load(self.publications_path)
+            publications = await database.load_async(self.publications_path)
             new_publication_id = max(map(int, publications.keys())) + 1
         assert isinstance(new_publication_id, int)
         id_records["publication"] = new_publication_id + 1
-        id_records.write_file()
+        await id_records.write_async()
 
         return new_publication_id
 
-    def publication_dependency_edit(
+    async def publication_dependency_edit(
         self,
         dependency: UploadDependency,
         username: str,
@@ -1201,7 +1205,7 @@ MineOS Dev Team""",
 
         Return ("file_id" | None (needs new file id), updated_dependancy), <api error response> | None
         """
-        publications = database.load(self.publications_path)
+        publications = await database.load_async(self.publications_path)
         table = publications.table("file_id")
 
         file_id: str | None = None
@@ -1293,7 +1297,7 @@ MineOS Dev Team""",
         if not new and raw_file_id is None:
             raise RuntimeError("If not new, raw_file_id should be valid!")
 
-        username = self.get_login_from_cookie_data(token)
+        username = await self.get_login_from_cookie_data(token)
         if username is None:
             return api.failure("Token is invalid or expired")
 
@@ -1370,7 +1374,7 @@ MineOS Dev Team""",
                 icon_url = parsed_entry.source_url
             dependencies_data.append(parsed_entry)
 
-        publications = database.load(self.publications_path)
+        publications = await database.load_async(self.publications_path)
         table = publications.table("file_id")
 
         exists_id = table.get_id("publication_name", name)
@@ -1404,9 +1408,11 @@ MineOS Dev Team""",
         # Do NOT write ANYTHING unless all dependencies are ok, we have to be able to roll back changes.
         deps_to_write: list[tuple[str | None, dict[str, str | float]]] = []
         for dependency in dependencies_data:
-            dep_write_data, api_response = self.publication_dependency_edit(
-                dependency,
-                username,
+            dep_write_data, api_response = (
+                await self.publication_dependency_edit(
+                    dependency,
+                    username,
+                )
             )
             if api_response is not None:
                 return api_response
@@ -1414,13 +1420,13 @@ MineOS Dev Team""",
 
         # Now it should be ok to write data
         if new:
-            file_id = self.get_new_publication_id()
+            file_id = await self.get_new_publication_id()
 
         # Update dependency publications
         dependency_file_ids: set[int] = set()
         for dep_file_id, dep_publication_changes in deps_to_write:
             if dep_file_id is None:
-                dep_file_id = str(self.get_new_publication_id())
+                dep_file_id = str(await self.get_new_publication_id())
             assert dep_file_id is not None
 
             dep_pub_existing = publications.get(str(dep_file_id), {})
@@ -1465,7 +1471,7 @@ MineOS Dev Team""",
         publications[str(file_id)] = publication
 
         # Finally fully write everything
-        publications.write_file()
+        await publications.write_async()
 
         return api.success(file_id=int(file_id))
 
@@ -1475,13 +1481,11 @@ MineOS Dev Team""",
         file_id: str,
     ) -> api.Response:
         """Handle deleting a publication."""
-        await trio.lowlevel.checkpoint()
-
-        username = self.get_login_from_cookie_data(token)
+        username = await self.get_login_from_cookie_data(token)
         if username is None:
             return api.failure("Token is invalid or expired")
 
-        publications = database.load(self.publications_path)
+        publications = await database.load_async(self.publications_path)
 
         parsed_file_id = parse_int(file_id)
         if parsed_file_id is None:
@@ -1524,7 +1528,7 @@ MineOS Dev Team""",
                 del publications[str(dep_id)]
         del publications[str(parsed_file_id)]
 
-        publications.write_file()
+        await publications.write_async()
         return api.success()
 
     async def cmd_message(
@@ -1534,9 +1538,7 @@ MineOS Dev Team""",
         text: str,
     ) -> api.Response:
         """Send message to user_name from account associated with token."""
-        await trio.lowlevel.checkpoint()
-
-        from_username = self.get_login_from_cookie_data(token)
+        from_username = await self.get_login_from_cookie_data(token)
         if from_username is None:
             return api.failure("Token is invalid or expired")
 
@@ -1545,12 +1547,12 @@ MineOS Dev Team""",
         if not text:
             return api.failure("Text is blank")
 
-        users = database.load(self.users_path)
+        users = await database.load_async(self.users_path)
         to_user = users.get(to_username)
         if to_user is None or not to_user.get("is_verified"):
             return api.failure(f"User {to_username!r} does not exist!")
 
-        message_db = database.load(self.messages_path)
+        message_db = await database.load_async(self.messages_path)
         to_user_messages = message_db.get(to_username, {})
         from_messages = to_user_messages.get(from_username, {})
 
@@ -1564,7 +1566,7 @@ MineOS Dev Team""",
         to_user_messages[from_username] = from_messages
         message_db[to_username] = to_user_messages
         # Save
-        message_db.write_file()
+        await message_db.write_async()
 
         send_email(
             to_user["email"],
@@ -1589,13 +1591,11 @@ MineOS Dev Team""",
         user_name: str,
     ) -> api.Response:
         """Send message to user_name from account associated with token."""
-        await trio.lowlevel.checkpoint()
-
-        username = self.get_login_from_cookie_data(token)
+        username = await self.get_login_from_cookie_data(token)
         if username is None:
             return api.failure("Token is invalid or expired")
 
-        message_db = database.load(self.messages_path)
+        message_db = await database.load_async(self.messages_path)
 
         recieved_messages = message_db.get(username, {})
         from_user = recieved_messages.get(user_name, {})
@@ -1619,20 +1619,18 @@ MineOS Dev Team""",
         recieved_messages[user_name] = from_user
         message_db[username] = recieved_messages
         # Write changes
-        message_db.write_file()
+        await message_db.write_async()
 
         return api.success_direct(messages)
 
     async def cmd_dialogs(self, token: str) -> api.Response:
         """Return notifications from account associated with token."""
-        await trio.lowlevel.checkpoint()
-
-        username = self.get_login_from_cookie_data(token)
+        username = await self.get_login_from_cookie_data(token)
         if username is None:
             return api.failure("Token is invalid or expired")
 
-        message_db = database.load(self.messages_path)
-        users = database.load(self.users_path)
+        message_db = await database.load_async(self.messages_path)
+        users = await database.load_async(self.users_path)
         users_table = users.table("username")
 
         recieved_messages = message_db.get(username, {})

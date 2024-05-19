@@ -33,7 +33,7 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
-def parse_int(string: str) -> int | None:
+def parse_int(string: str | int) -> int | None:
     """Try to parse int. Return None on failure."""
     try:
         return int(string)

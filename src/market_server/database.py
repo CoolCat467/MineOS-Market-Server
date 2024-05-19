@@ -274,7 +274,7 @@ def load(file_path: str | Path | trio.Path) -> Records:
     return _LOADED[file]
 
 
-async def async_load(file_path: str | Path | trio.Path) -> Records:
+async def load_async(file_path: str | Path | trio.Path) -> Records:
     """Load database from file path or return already loaded instance."""
     await trio.lowlevel.checkpoint()
     file = path.abspath(file_path)

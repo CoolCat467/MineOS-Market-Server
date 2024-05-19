@@ -215,7 +215,7 @@ async def handle_script(
                     page_title="Verification was unsuccessful",
                     message="Where is token...",
                 )
-            verified = schema_v_2_04.verify(verify_token)
+            verified = await schema_v_2_04.verify(verify_token)
             if not verified:
                 return await stream_template(
                     "verify.html.jinja",

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from email.headerregistry import Address
+from typing import Any
 
 import pytest
 from market_server import schema
@@ -51,7 +52,7 @@ def test_parse_int(string: str | int, expect: int | None) -> None:
         ("1[27]=one&0[6]=zero", {"0": {"6": "zero"}, "1": {"27": "one"}}),
     ],
 )
-def test_parse_table(string: str, expect: int | None) -> None:
+def test_parse_table(string: str, expect: dict[str, Any]) -> None:
     assert schema.parse_table(string) == expect
 
 
@@ -71,5 +72,5 @@ def test_parse_table(string: str, expect: int | None) -> None:
         ("[0]=27&[1]=49", [27, 49]),
     ],
 )
-def test_parse_int_list(string: str, expect: int | None) -> None:
+def test_parse_int_list(string: str, expect: list[int]) -> None:
     assert schema.parse_int_list(string) == expect

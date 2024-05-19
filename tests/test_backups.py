@@ -1,9 +1,17 @@
+from __future__ import annotations
+
 import logging
+from typing import TYPE_CHECKING
 from unittest.mock import Mock, patch
 
 import pytest
 import trio
 from market_server import backups
+
+if TYPE_CHECKING:
+    from types import TracebackType
+
+    from market_server import database
 
 
 @pytest.mark.trio()
@@ -23,10 +31,17 @@ async def test_backup_database() -> None:
             # Mock database.Database() context manager to simulate loading and unloading a database
             with patch("market_server.database.Database") as mock_database:
                 # Define __aenter__ and __aexit__ methods for the mock object
-                async def async_enter(self):
+                async def async_enter(
+                    self: database.Database,
+                ) -> database.Database:
                     return self
 
-                async def async_exit(self, *args):
+                async def async_exit(
+                    self: database.Database,
+                    exc_type: type[BaseException] | None,
+                    exc_value: BaseException | None,
+                    traceback: TracebackType | None,
+                ) -> None:
                     pass
 
                 mock_backup_instance = Mock()
