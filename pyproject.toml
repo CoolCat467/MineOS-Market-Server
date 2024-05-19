@@ -196,5 +196,5 @@ legacy_tox_ini = """
     [testenv:mypy]
     deps =
         mypy
-    commands = mypy src
+    commands = mypy src tests
 """
