@@ -426,6 +426,12 @@ def generate_debug_post_page() -> str:
             "\n".join(
                 (
                     htmlgen.wrap_tag(
+                        "label",
+                        "Post Data",
+                        block=False,
+                        for_="post_area",
+                    ),
+                    htmlgen.wrap_tag(
                         "textarea",
                         htmlgen.jinja_expression("post_autofill"),
                         block=False,
@@ -433,12 +439,6 @@ def generate_debug_post_page() -> str:
                         id_="post_area",
                         rows=5,
                         cols=80,
-                    ),
-                    htmlgen.wrap_tag(
-                        "label",
-                        "Post Data",
-                        block=False,
-                        for_="post_area",
                     ),
                 ),
             ),
