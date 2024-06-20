@@ -166,6 +166,35 @@ class Message(NamedTuple):
     timestamp: int
 
 
+def check_url(input_url: str, input_name: str) -> api.Response:
+    """Make sure url is ok. Return string on success, api failure tuple if not."""
+    try:
+        url = URL(input_url)
+    except InvalidURL as exc:
+        error = exc.args[0]
+        return api.failure(f"Invalid {input_name} ({error})")
+
+    if url.scheme not in {"http", "https"}:
+        return api.failure(
+            f"Invalid {input_name} (scheme must be http or https)",
+        )
+
+    if len(url.host) > 253:
+        return api.failure(
+            f"Invalid {input_name} (full domain name max size is 253 characters)",
+        )
+
+    if "." not in url.host:
+        return api.failure(f"Invalid {input_name} (must have domain suffix)")
+    temp_domain_parts = url.host.split(".")
+    if not all(temp_domain_parts):
+        return api.failure(f"Invalid {input_name} (invalid domain label(s))")
+    if not all(len(p) < 64 for p in temp_domain_parts):
+        return api.failure(f"Invalid {input_name} (invalid domain label(s))")
+
+    return url.copy_with()
+
+
 class UploadDependency(NamedTuple):
     """Dependency argument item from Upload/Update Publication."""
 
@@ -185,7 +214,10 @@ class UploadDependency(NamedTuple):
         path = entry.get("path")
         if not isinstance(path, str):
             path = None
-        source_url = entry.get("source_url")
+
+        source_url: str | tuple[str, int] | None = entry.get("source_url")
+        if isinstance(source_url, str):
+            source_url = check_url(entry.get("source_url"), "source_url")
         if not isinstance(source_url, str):
             source_url = None
 
@@ -1030,7 +1062,7 @@ MineOS Dev Team""",
 
         if order_by not in {"popularity", "rating", "name", "date", None}:
             return api.failure(
-                "Invalid order by, valid is popularity, rating, name, or date.",
+                "Invalid order_by, valid is popularity, rating, name, or date.",
             )
         if order_by is None:
             order_by = "date"
@@ -1142,6 +1174,7 @@ MineOS Dev Team""",
         dependencies: str,
         category_id: str,
         whats_new: str | None = None,
+        preview_url: str | None = None,
     ) -> api.Response:
         """Handle updating a publication."""
         return await self.publication_edit(
@@ -1154,6 +1187,7 @@ MineOS Dev Team""",
             raw_dependencies=dependencies,
             category_id=category_id,
             whats_new=whats_new,
+            preview_url=preview_url,
             new=False,
             raw_file_id=file_id,
         )
@@ -1169,6 +1203,7 @@ MineOS Dev Team""",
         dependencies: str,
         category_id: str,
         whats_new: str | None = None,
+        preview_url: str | None = None,
     ) -> api.Response:
         """Handle uploading a new publication."""
         return await self.publication_edit(
@@ -1181,6 +1216,7 @@ MineOS Dev Team""",
             raw_dependencies=dependencies,
             category_id=category_id,
             whats_new=whats_new,
+            preview_url=preview_url,
             new=True,
             raw_file_id=None,
         )
@@ -1290,6 +1326,7 @@ MineOS Dev Team""",
         raw_dependencies: str,
         category_id: str,
         whats_new: str | None = None,
+        preview_url: str | None = None,
         new: bool = True,
         raw_file_id: str | None = None,
     ) -> api.Response:
@@ -1338,31 +1375,13 @@ MineOS Dev Team""",
         if license_ not in LICENSES:
             return api.failure("license_id is invalid")
 
-        try:
-            url = URL(source_url)
-        except InvalidURL as exc:
-            error = exc.args[0]
-            return api.failure(f"Invalid source_url ({error})")
+        src_url = check_url(source_url, "source_url")
+        if isinstance(src_url, tuple):  # Error
+            return src_url
 
-        if url.scheme not in {"http", "https"}:
-            return api.failure(
-                "Invalid source_url (scheme must be http or https)",
-            )
-
-        if len(url.host) > 253:
-            return api.failure(
-                "Invalid source_url (full domain name max size is 253 characters)",
-            )
-
-        if "." not in url.host:
-            return api.failure("Invalid source_url (must have domain suffix)")
-        temp_domain_parts = url.host.split(".")
-        if not all(temp_domain_parts):
-            return api.failure("Invalid source_url (invalid domain label(s))")
-        if not all(len(p) < 64 for p in temp_domain_parts):
-            return api.failure("Invalid source_url (invalid domain label(s))")
-
-        src_url = url.copy_with()
+        parsed_preview_url = check_url(preview_url, "preview_url")
+        if isinstance(src_url, tuple):  # Error
+            return parsed_preview_url
 
         icon_url: str | None = None
 
@@ -1468,6 +1487,7 @@ MineOS Dev Team""",
                 "icon_url": icon_url,
                 "whats_new": whats_new,
                 "whats_new_version": version if whats_new else None,
+                "preview_url": parsed_preview_url,
             },
         )
         publications[str(file_id)] = publication
