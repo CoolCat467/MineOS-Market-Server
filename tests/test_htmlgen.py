@@ -265,8 +265,8 @@ def test_select_box() -> None:
 def test_input_field_no_kwarg() -> None:
     assert (
         htmlgen.input_field("<id>", "woot")
-        == """<input id="<id>" name="<id>">
-<label for="<id>">woot</label>"""
+        == """<label for="<id>">woot</label>
+<input id="<id>" name="<id>">"""
     )
 
 

@@ -245,7 +245,7 @@ def input_field(
     if field_title is not None:
         lines.append(wrap_tag("label", field_title, False, for_=field_id))
     # If label should be before, reverse.
-    if field_type in {"number"}:
+    if field_type in {"number", "text"}:
         return "\n".join(reversed(lines))
     return "\n".join(lines)
 
@@ -562,7 +562,12 @@ def jinja_block(
 
 def jinja_extends(template_filename: str | Iterable[str]) -> str:
     """Return jinja extends statement from given template filename."""
-    if isinstance(template_filename, str):
+    # Using if else instead of ternary because it makes it confusing from
+    # a types perspective and less readable
+    if isinstance(
+        template_filename,
+        str,
+    ):  # ternary operator instead of if else
         filename = template_filename
     else:
         filename = "/".join(template_filename)
