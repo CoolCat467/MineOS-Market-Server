@@ -252,6 +252,7 @@ class Publication(NamedTuple):
     average_rating: float | None = None
     whats_new: str | None = None
     whats_new_version: float | None = None
+    preview_url: str | None = None
 
 
 def parse_email_address(string: str) -> Address | None:
@@ -925,6 +926,7 @@ MineOS Dev Team""",
             "icon_url",
             "whats_new",
             "whats_new_version",
+            "preview_url",
         )
         # TODO: Languages
         translated_description: str = pub["initial_description"]
