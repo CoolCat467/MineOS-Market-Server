@@ -192,7 +192,7 @@ def check_url(input_url: str, input_name: str) -> api.Response:
     if not all(len(p) < 64 for p in temp_domain_parts):
         return api.failure(f"Invalid {input_name} (invalid domain label(s))")
 
-    return url.copy_with()
+    return str(url.copy_with())
 
 
 class UploadDependency(NamedTuple):
@@ -215,9 +215,10 @@ class UploadDependency(NamedTuple):
         if not isinstance(path, str):
             path = None
 
-        source_url: str | tuple[str, int] | None = entry.get("source_url")
-        if isinstance(source_url, str):
-            source_url = check_url(entry.get("source_url"), "source_url")
+        raw_source_url = entry.get("source_url")
+        source_url: str | tuple[str, int] | None = None
+        if isinstance(raw_source_url, str):
+            source_url = check_url(raw_source_url, "source_url")
         if not isinstance(source_url, str):
             source_url = None
 
@@ -1379,9 +1380,10 @@ MineOS Dev Team""",
         if isinstance(src_url, tuple):  # Error
             return src_url
 
-        parsed_preview_url = check_url(preview_url, "preview_url")
-        if isinstance(src_url, tuple):  # Error
-            return parsed_preview_url
+        if preview_url is not None:
+            parsed_preview_url = check_url(preview_url, "preview_url")
+            if isinstance(parsed_preview_url, tuple):  # Error
+                return parsed_preview_url
 
         icon_url: str | None = None
 
@@ -1478,7 +1480,7 @@ MineOS Dev Team""",
                 "user_name": username,
                 "version": version,
                 "category_id": category,
-                "source_url": str(src_url),
+                "source_url": src_url,
                 "path": path,
                 "license_id": license_,
                 "timestamp": math.floor(time.time()),
