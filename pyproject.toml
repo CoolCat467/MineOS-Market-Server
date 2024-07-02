@@ -113,7 +113,6 @@ select = [
     "SIM",   # flake8-simplify
     "SLOT",  # flake8-slots
     "TCH",   # flake8-type-checking
-    "TRIO",  # flake8-trio
     "UP",    # pyupgrade
     "W",     # Warning
     "YTT",   # flake8-2020
