@@ -38,7 +38,7 @@ async def test_write_async(temp_db_file: str) -> None:
     await db.write_async()
 
     # Check if the file was written correctly
-    with open(temp_db_file) as file:  # noqa: ASYNC101
+    with open(temp_db_file) as file:
         data = json.load(file)
         assert data["key"] == "value"
 
@@ -50,7 +50,7 @@ async def test_context_manager_async(temp_db_file: str) -> None:
         db["jerald"] = "awesome"
 
     # Check if the file was written correctly after exiting the context manager
-    with open(temp_db_file) as file:  # noqa: ASYNC101
+    with open(temp_db_file) as file:
         data = json.load(file)
         assert data["jerald"] == "awesome"
 
@@ -58,7 +58,7 @@ async def test_context_manager_async(temp_db_file: str) -> None:
 @pytest.mark.trio()
 async def test_table(temp_db_file: str) -> None:
     # Create a test database file with some data
-    with open(temp_db_file, "w") as file:  # noqa: ASYNC101
+    with open(temp_db_file, "w") as file:
         json.dump(
             {
                 "key1": {"column1": "value1", "column2": "value2"},
@@ -83,7 +83,7 @@ async def test_table(temp_db_file: str) -> None:
 @pytest.mark.trio()
 async def test_records(temp_db_file: str) -> None:
     # Create a test database file with some data
-    with open(temp_db_file, "w") as file:  # noqa: ASYNC101
+    with open(temp_db_file, "w") as file:
         json.dump(
             {
                 "key1": {"column1": "value1", "column2": "value2"},
