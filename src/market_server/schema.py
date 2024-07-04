@@ -67,6 +67,16 @@ class PUBLICATION_CATEGORY(IntEnum):  # noqa: N801
     Wallpapers = 4
 
 
+class FileType(IntEnum):
+    """Publication dependency file type enums."""
+
+    MAIN = 1
+    RESOURCE = 2
+    ICON = 3
+    LOCALIZATION = 4
+    PREVIEW = 5
+
+
 RESERVED_NAMES: Final = {
     "true",
     "false",
@@ -238,6 +248,7 @@ class Dependency(NamedTuple):
     source_url: str
     path: str
     version: int | float
+    type_id: FileType
     publication_name: str | None = None
     category_id: int | None = None
 
@@ -285,7 +296,6 @@ class Publication(NamedTuple):
     average_rating: float | None = None
     whats_new: str | None = None
     whats_new_version: float | None = None
-    preview_url: str | None = None
 
 
 def parse_email_address(string: str) -> Address | None:
@@ -717,11 +727,15 @@ MineOS Dev Team""",
             return None, {}
         return (
             Dependency(
-                pub["source_url"],
-                pub["path"],
-                pub["version"],
-                pub.get("publication_name"),
-                pub.get("category_id"),
+                source_url=pub["source_url"],
+                path=pub["path"],
+                version=pub["version"],
+                type_id=pub.get(
+                    "type_id",
+                    FileType.RESOURCE,
+                ),  # TODO: get/set type properly
+                publication_name=pub.get("publication_name"),
+                category_id=pub.get("category_id"),
             ),
             pub,
         )
@@ -959,7 +973,6 @@ MineOS Dev Team""",
             "icon_url",
             "whats_new",
             "whats_new_version",
-            "preview_url",
         )
         # TODO: Languages
         translated_description: str = pub["initial_description"]
@@ -1175,7 +1188,6 @@ MineOS Dev Team""",
         dependencies: str,
         category_id: str,
         whats_new: str | None = None,
-        preview_url: str | None = None,
     ) -> api.Response:
         """Handle updating a publication."""
         return await self.publication_edit(
@@ -1188,7 +1200,6 @@ MineOS Dev Team""",
             raw_dependencies=dependencies,
             category_id=category_id,
             whats_new=whats_new,
-            preview_url=preview_url,
             new=False,
             raw_file_id=file_id,
         )
@@ -1204,7 +1215,6 @@ MineOS Dev Team""",
         dependencies: str,
         category_id: str,
         whats_new: str | None = None,
-        preview_url: str | None = None,
     ) -> api.Response:
         """Handle uploading a new publication."""
         return await self.publication_edit(
@@ -1217,7 +1227,6 @@ MineOS Dev Team""",
             raw_dependencies=dependencies,
             category_id=category_id,
             whats_new=whats_new,
-            preview_url=preview_url,
             new=True,
             raw_file_id=None,
         )
@@ -1327,7 +1336,6 @@ MineOS Dev Team""",
         raw_dependencies: str,
         category_id: str,
         whats_new: str | None = None,
-        preview_url: str | None = None,
         new: bool = True,
         raw_file_id: str | None = None,
     ) -> api.Response:
@@ -1379,11 +1387,6 @@ MineOS Dev Team""",
         src_url = check_url(source_url, "source_url")
         if isinstance(src_url, tuple):  # Error
             return src_url
-
-        if preview_url is not None:
-            parsed_preview_url = check_url(preview_url, "preview_url")
-            if isinstance(parsed_preview_url, tuple):  # Error
-                return parsed_preview_url
 
         icon_url: str | None = None
 
@@ -1489,7 +1492,6 @@ MineOS Dev Team""",
                 "icon_url": icon_url,
                 "whats_new": whats_new,
                 "whats_new_version": version if whats_new else None,
-                "preview_url": parsed_preview_url,
             },
         )
         publications[str(file_id)] = publication
