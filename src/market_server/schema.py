@@ -1720,7 +1720,8 @@ MineOS Dev Team""",
 
         publications = await database.load_async(self.publications_path)
 
-        existing_publication = publications.get(str(parsed_file_id))
+        parsed_file_str = str(parsed_file_id)
+        existing_publication = publications.get(parsed_file_str)
         if existing_publication is None:
             return api.failure(
                 f"Publication with id {file_id} doesn't exist!",
@@ -1728,12 +1729,12 @@ MineOS Dev Team""",
 
         downloads = await database.load_async(self.downloads_path)
 
-        users_downloaded: set[str] = set(downloads.get(parsed_file_id, ()))
+        users_downloaded: set[str] = set(downloads.get(parsed_file_str, ()))
 
         updated = False
         if username not in users_downloaded:
             users_downloaded.add(username)
-            downloads[parsed_file_id] = list(users_downloaded)
+            downloads[parsed_file_str] = list(users_downloaded)
             await downloads.write_async()
             updated = True
 
