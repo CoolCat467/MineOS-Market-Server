@@ -212,6 +212,7 @@ class UploadDependency(NamedTuple):
     publication_name: str | None
     path: str | None
     source_url: str | None
+    preview: bool = False
 
     @classmethod
     def parse_table_entry(
@@ -233,6 +234,8 @@ class UploadDependency(NamedTuple):
         if not isinstance(source_url, str):
             source_url = None
 
+        preview = bool(entry.get("preview", False))
+
         if not any((publication_name, path, source_url)):
             return None
 
@@ -240,6 +243,7 @@ class UploadDependency(NamedTuple):
             publication_name=publication_name,
             path=path,
             source_url=source_url,
+            preview=preview,
         )
 
 
@@ -1298,12 +1302,22 @@ MineOS Dev Team""",
         else:
             publication = publications.get(str(file_id), {})
 
+        # TODO: Look at this more closely, might be wrong
+        type_id = FileType.RESOURCE
+        if dependency.path.endswith(".lang"):
+            type_id = FileType.LOCALIZATION
+        if dependency.path == "Icon.pic":
+            type_id = FileType.ICON
+        if dependency.preview:
+            type_id = FileType.PREVIEW
+
         full_dependancy = {
             "source_url": dependency.source_url,
             "path": dependency.path,
             "publication_name": dependency.publication_name,
             "category_id": publication.get("category_id"),
             "user_name": publication.get("user_name", username),
+            "type_id": type_id,
         }
         full_dep_owner = full_dependancy["user_name"]
 
@@ -1509,6 +1523,7 @@ MineOS Dev Team""",
                 "icon_url": icon_url,
                 "whats_new": whats_new,
                 "whats_new_version": version if whats_new else None,
+                "type_id": FileType.MAIN,
             },
         )
         publications[str(file_id)] = publication
