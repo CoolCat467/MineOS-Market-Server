@@ -1304,7 +1304,7 @@ MineOS Dev Team""",
 
         # TODO: Look at this more closely, might be wrong
         type_id = FileType.RESOURCE
-        if dependency.path.endswith(".lang"):
+        if dependency.path is not None and dependency.path.endswith(".lang"):
             type_id = FileType.LOCALIZATION
         if dependency.path == "Icon.pic":
             type_id = FileType.ICON
