@@ -150,6 +150,7 @@ class SearchPublication(NamedTuple):
     version: int | float
     category_id: int
     reviews_count: int
+    downloads: int
 
     icon_url: str | None = None
 
@@ -412,6 +413,11 @@ class Version_2_04:  # noqa: N801
     def messages_path(self) -> trio.Path:
         """Message records path."""
         return self.records_root / "messages.json"
+
+    @property
+    def downloads_path(self) -> trio.Path:
+        """Download records path."""
+        return self.records_root / "downloads.json"
 
     def __init__(self, root_path: str | trio.Path) -> None:
         """Initialize records path."""
@@ -1150,11 +1156,21 @@ MineOS Dev Team""",
         offset_value = max(0, min(len(match_ids) - 1, offset_value))
         count_value = max(len(match_ids), min(0, count_value))
 
+        # Downloads count records
+        downloads = await database.load_async(self.downloads_path)
+
         matches: list[SearchPublication] = []
         for file_id in match_ids[offset_value:count_value]:
             publication = pub_records.get(file_id)
             if publication is None:
                 continue
+
+            download_count = len(downloads.get(file_id, ()))
+
+            # Handle imported records
+            if "download_count" in publication:
+                download_count += int(publication["download_count"])
+
             matches.append(
                 SearchPublication(
                     int(file_id),
@@ -1171,6 +1187,7 @@ MineOS Dev Team""",
                     reviews_count=self.get_review_count_sync(file_id) or 0,
                     average_rating=self.get_average_rating_sync(file_id),
                     popularity=self.get_publication_popularity_sync(file_id),
+                    downloads=download_count,
                 ),
             )
 
@@ -1687,6 +1704,44 @@ MineOS Dev Team""",
             )
 
         return api.success_direct(notifications)
+
+    async def cmd_download(self, token: str, file_id: str) -> api.Response:
+        """Mark given file id as downloaded for user associated with token.
+
+        Basically telemetry, but useful for observing usage in the wild.
+        """
+        username = await self.get_login_from_cookie_data(token)
+        if username is None:
+            return api.failure("Token is invalid or expired")
+
+        parsed_file_id = parse_int(file_id)
+        if parsed_file_id is None:
+            return api.failure("file_id is invalid")
+
+        publications = await database.load_async(self.publications_path)
+
+        existing_publication = publications.get(str(parsed_file_id))
+        if existing_publication is None:
+            return api.failure(
+                f"Publication with id {file_id} doesn't exist!",
+            )
+
+        downloads = await database.load_async(self.downloads_path)
+
+        users_downloaded: set[str] = set(downloads.get(parsed_file_id, ()))
+
+        updated = False
+        if username not in users_downloaded:
+            users_downloaded.add(username)
+            downloads[parsed_file_id] = list(users_downloaded)
+            await downloads.write_async()
+            updated = True
+
+        # This would be the correct way to do it, but does not match
+        # response from real server
+        # return api.success(updated=updated)
+        # so we do this instead:
+        return api.response(False, success=True, updated=updated)
 
     def index(self) -> list[str]:
         """Return list of valid scripts."""
