@@ -1753,11 +1753,7 @@ MineOS Dev Team""",
             await downloads.write_async()
             updated = True
 
-        # This would be the correct way to do it, but does not match
-        # response from real server
-        # return api.success(updated=updated)
-        # so we do this instead:
-        return api.response(False, success=True, updated=updated)
+        return api.success(updated=updated)
 
     def index(self) -> list[str]:
         """Return list of valid scripts."""
