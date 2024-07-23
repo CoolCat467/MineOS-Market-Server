@@ -33,7 +33,7 @@ import uuid
 from collections import Counter, deque
 from email import message_from_string
 from email.errors import HeaderParseError
-from email.headerregistry import Address
+from email.headerregistry import Address, UniqueAddressHeader
 from email.policy import default as email_default_policy
 from enum import IntEnum
 from secrets import token_urlsafe
@@ -312,6 +312,10 @@ def parse_email_address(string: str) -> Address | None:
         return None
     if not to:
         return None
+    if not isinstance(to, UniqueAddressHeader):
+        raise RuntimeError(
+            f"During email parsing, got {to!r} ({type(to)}) instead of UniqueAddressHeader as email address group.",
+        )
     value = to.addresses[0]
     assert isinstance(value, Address)
     if not value.username or not value.domain:
