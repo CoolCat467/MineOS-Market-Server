@@ -50,7 +50,7 @@ version = {attr = "market_server.server.__version__"}
 mineos_market_server = "market_server.server:run"
 
 [tool.setuptools.package-data]
-market_server = ["py.typed", "static", "templates"]
+market_server = ["py.typed", "static/*", "templates/*.jinja"]
 
 [tool.mypy]
 mypy_path = "src"
