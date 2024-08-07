@@ -1768,7 +1768,7 @@ MineOS Dev Team""",
         await trio.lowlevel.checkpoint()
         attribute = f"cmd_{script}"
         if not hasattr(self, attribute):
-            return api.failure("Script not found", 404)
+            return api.failure(f"Script {script!r} not found", 404)
 
         function = getattr(self, attribute)
 

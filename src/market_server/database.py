@@ -280,7 +280,8 @@ async def load_async(file_path: str | Path | trio.Path) -> Records:
     file = path.abspath(file_path)
     if file not in _LOADED:
         _LOADED[file] = Records(file, auto_load=False)
-        await _LOADED[file].reload_async()
+        if await trio.Path(file).exists():
+            await _LOADED[file].reload_async()
     return _LOADED[file]
 
 
