@@ -1322,7 +1322,11 @@ MineOS Dev Team""",
         new_publication_id = id_records.get("publication", None)
         if new_publication_id is None:
             publications = await database.load_async(self.publications_path)
-            new_publication_id = max(map(int, publications.keys())) + 1
+            if not publications:
+                new_publication_id = 1
+            else:
+                pub_ids = max(map(int, publications.keys())) + 1
+                new_publication_id = max(pub_ids) + 1
         assert isinstance(new_publication_id, int)
         id_records["publication"] = new_publication_id + 1
         await id_records.write_async()
