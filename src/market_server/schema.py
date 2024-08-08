@@ -331,11 +331,61 @@ def parse_int(string: str | int) -> int | None:
         return None
 
 
-def parse_table(string: str, limit: int | None = None) -> dict[str, Any]:
-    """Parse encoded table from string.
+##def parse_table(string: str, limit: int | None = None) -> dict[str, Any]:
+##    """Parse encoded table from string.
+##
+##    If limit is not None, limits how many recursive layers in to go at most.
+##    """
+##
+##    def set_key(
+##        dict_: dict[str, Any],
+##        keys: list[str],
+##        value: str,
+##        n: int | None = None,
+##    ) -> None:
+##        if n is not None and n < 0:
+##            return
+##        key = keys[0].removesuffix("]")
+##        if len(keys) == 1:
+##            dict_[key] = value
+##            return
+##        dict_.setdefault(key, {})
+##        set_key(dict_[key], keys[1:], value, None if n is None else n - 1)
+##
+##    root: dict[str, Any] = {}
+##    for part in string.split("&"):
+##        if "=" not in part:
+##            continue
+##        key_data, value = part.split("=", 1)
+##        set_key(root, key_data.split("["), value, limit)
+##
+##    return root
 
-    If limit is not None, limits how many recursive layers in to go at most.
-    """
+
+##def parse_int_list(string: str) -> list[int]:
+##    """Parse integer list.
+##
+##    ex `[0]=27&[1]=49` -> [27, 49]
+##    ex `[3]=27&[1]=49` -> [49, 27]
+##    """
+##    table = parse_table(string, 1)
+##    result: list[int] = []
+##    if "" not in table:
+##        return result
+##    for key in sorted(table[""].keys()):
+##        parsed = parse_int(table[""][key])
+##        if parsed is None:
+##            continue
+##        result.append(parsed)
+##    return result
+
+
+def parse_table(
+    incoming: dict[str, str],
+    limit: int | None = 1,
+) -> dict[str, str | dict[str, str]]:
+    """Convert table of depth 1 to higher order depth."""
+    root: dict[str, str | dict[str, str]]
 
     def set_key(
         dict_: dict[str, Any],
@@ -353,27 +403,24 @@ def parse_table(string: str, limit: int | None = None) -> dict[str, Any]:
         set_key(dict_[key], keys[1:], value, None if n is None else n - 1)
 
     root: dict[str, Any] = {}
-    for part in string.split("&"):
-        if "=" not in part:
+    for key, value in incoming.items():
+        if "[" not in key:
+            root[key] = value
             continue
-        key_data, value = part.split("=", 1)
-        set_key(root, key_data.split("["), value, limit)
+        set_key(root, key.split("["), value, limit)
 
     return root
 
 
-def parse_int_list(string: str) -> list[int]:
+def parse_int_list(table: dict[str, str]) -> list[int]:
     """Parse integer list.
 
     ex `[0]=27&[1]=49` -> [27, 49]
     ex `[3]=27&[1]=49` -> [49, 27]
     """
-    table = parse_table(string, 1)
     result: list[int] = []
-    if "" not in table:
-        return result
-    for key in sorted(table[""].keys()):
-        parsed = parse_int(table[""][key])
+    for key in sorted(table.keys()):
+        parsed = parse_int(table[key])
         if parsed is None:
             continue
         result.append(parsed)
@@ -746,7 +793,7 @@ MineOS Dev Team""",
                 version=pub["version"],
                 type_id=pub.get(
                     "type_id",
-                    FileType.RESOURCE,
+                    int(FileType.RESOURCE),
                 ),  # TODO: get/set type properly
                 publication_name=pub.get("publication_name"),
                 category_id=pub.get("category_id"),
@@ -1074,19 +1121,23 @@ MineOS Dev Team""",
 
     async def cmd_publications(
         self,
-        category_id: str,
+        category_id: str | None,
         order_by: str | None,
         order_direction: str | None,
         offset: str | None,
         count: str | None,
         search: str | None,
-        file_ids: str | None,
+        file_ids: str | dict[str, str] | None,
+        user_name: str | None,
     ) -> api.Response:
         """Search for a publication."""
         await trio.lowlevel.checkpoint()
-        category = parse_int(category_id)
-        if category is None or category < 0:
-            return api.failure("Invalid category")
+
+        category: int | None = None
+        if category_id is not None:
+            category = parse_int(category_id)
+            if category < 0:
+                return api.failure("Invalid category")
 
         if order_by not in {"popularity", "rating", "name", "date", None}:
             return api.failure(
@@ -1117,9 +1168,18 @@ MineOS Dev Team""",
         # Get record ids of files that match
         category_records: dict[str, dict[str, str]] = {}
         pub_file_ids = table["file_id"]
-        for index, cat_id in enumerate(table["category_id"]):
-            if cat_id == category:
-                file_id = pub_file_ids[index]
+        if category is None and user_name is not None:
+            for index, pub_user_name in enumerate(table["user_name"]):
+                if pub_user_name == user_name:
+                    file_id = pub_file_ids[index]
+                    category_records[file_id] = pub_records[file_id]
+        elif category is not None:
+            for index, cat_id in enumerate(table["category_id"]):
+                if cat_id == category:
+                    file_id = pub_file_ids[index]
+                    category_records[file_id] = pub_records[file_id]
+        else:
+            for file_id in pub_file_ids:
                 category_records[file_id] = pub_records[file_id]
 
         obtain_files: set[str] = set(category_records.keys())
@@ -1763,10 +1823,16 @@ MineOS Dev Team""",
         """Return list of valid scripts."""
         return [a[4:] for a in dir(self) if a.startswith("cmd_")]
 
-    async def script(self, script: str, data: dict[str, str]) -> api.Response:
+    async def script(
+        self,
+        script: str,
+        raw_data: dict[str, str],
+    ) -> api.Response:
         """Handle script given post data."""
         await trio.lowlevel.checkpoint()
         attribute = f"cmd_{script}"
+        data = parse_table(raw_data)
+        print(f"Running {attribute!r} {data =}")
         if not hasattr(self, attribute):
             return api.failure(f"Script {script!r} not found", 404)
 
