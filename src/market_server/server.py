@@ -230,7 +230,12 @@ async def handle_script(
         multi_dict = await request.form
         form = multi_dict.to_dict()
         data = dict(ChainMap(form, request.args))
-        return await schema_v_2_04.script(script, data)
+        response = await schema_v_2_04.script(script, data)
+        if isinstance(response, str):
+            # print(f"Response = {pretty_format(response)}")
+            return response
+        # print(f"Response = {pretty_format(response[0])}")
+        return response[0]
     return api.failure("Invalid version")
 
 
