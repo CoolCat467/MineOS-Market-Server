@@ -45,6 +45,8 @@ from httpx import URL, InvalidURL
 from market_server import api, database, security
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
+
     from typing_extensions import Self
 
 LICENSES: Final = {
@@ -126,8 +128,8 @@ class Statistics(NamedTuple):
     publications_count: int
     reviews_count: int
     messages_count: int
-    last_registered_user: str | None
-    most_popular_user: str | None
+    last_registered_user: str
+    most_popular_user: str
 
 
 class LoginResponse(NamedTuple):
@@ -217,7 +219,7 @@ class UploadDependency(NamedTuple):
     @classmethod
     def parse_table_entry(
         cls,
-        entry: dict[str, str | object],
+        entry: Mapping[str, str | object],
     ) -> Self | None:
         """Parse dependency input table entry or return None."""
         publication_name = entry.get("publication_name")
@@ -383,9 +385,8 @@ def parse_int(string: str | int) -> int | None:
 def parse_table(
     incoming: dict[str, str],
     limit: int | None = 1,
-) -> dict[str, str | dict[str, str]]:
+) -> dict[str, str | dict[str, str] | Any]:
     """Convert table of depth 1 to higher order depth."""
-    root: dict[str, str | dict[str, str]]
 
     def set_key(
         dict_: dict[str, Any],
@@ -583,8 +584,8 @@ class Version_2_04:  # noqa: N801
             len(publications),
             review_count,
             messages_count,
-            last,
-            most_poplular_user,
+            last or "",
+            most_poplular_user or "",
         )
         return api.success_schema(stats)
 
@@ -1136,7 +1137,7 @@ MineOS Dev Team""",
         category: int | None = None
         if category_id is not None:
             category = parse_int(category_id)
-            if category < 0:
+            if category is None or category < 0:
                 return api.failure("Invalid category")
 
         if order_by not in {"popularity", "rating", "name", "date", None}:
@@ -1160,31 +1161,50 @@ MineOS Dev Team""",
 
         get_files: list[int] | None = None
         if file_ids is not None:
+            if isinstance(file_ids, str):
+                return api.failure("Invalid file_ids")
             get_files = parse_int_list(file_ids) or None
 
         pub_records = await database.load_async(self.publications_path)
         table = pub_records.table("file_id")
 
-        # Get record ids of files that match
-        category_records: dict[str, dict[str, str]] = {}
+        ##        # Get record ids of files that match
+        ##        category_records: dict[str, dict[str, str]] = {}
         pub_file_ids = table["file_id"]
-        if category is None and user_name is not None:
-            for index, pub_user_name in enumerate(table["user_name"]):
-                if pub_user_name == user_name:
-                    file_id = pub_file_ids[index]
-                    category_records[file_id] = pub_records[file_id]
-        elif category is not None:
-            for index, cat_id in enumerate(table["category_id"]):
-                if cat_id == category:
-                    file_id = pub_file_ids[index]
-                    category_records[file_id] = pub_records[file_id]
-        else:
-            for file_id in pub_file_ids:
-                category_records[file_id] = pub_records[file_id]
+        ##        if category is None and user_name is not None:
+        ##            for index, pub_user_name in enumerate(table["user_name"]):
+        ##                if pub_user_name == user_name:
+        ##                    file_id = pub_file_ids[index]
+        ##                    category_records[file_id] = pub_records[file_id]
+        ##        elif category is not None:
+        ##            for index, cat_id in enumerate(table["category_id"]):
+        ##                if cat_id == category:
+        ##                    file_id = pub_file_ids[index]
+        ##                    category_records[file_id] = pub_records[file_id]
+        ##        else:
+        ##            for file_id in enumerate(table["user_name"]):
+        ##                category_records[file_id] = pub_records[file_id]
 
-        obtain_files: set[str] = set(category_records.keys())
+        obtain_files: set[str] = set(pub_file_ids)
+
         if get_files is not None:
             obtain_files &= set(map(str, get_files))
+
+        if category is not None:
+            for file_id in tuple(obtain_files):
+                if pub_records[file_id]["category_id"] == category:
+                    continue
+                obtain_files.remove(file_id)
+        else:
+            for file_id in tuple(obtain_files):
+                if pub_records[file_id]["category_id"] is None:
+                    obtain_files.remove(file_id)
+
+        if user_name is not None:
+            for file_id in tuple(obtain_files):
+                if pub_records[file_id]["user_name"] == user_name:
+                    continue
+                obtain_files.remove(file_id)
 
         if search:
             obtain_files = {
@@ -1208,13 +1228,13 @@ MineOS Dev Team""",
         elif order_by == "name":
             match_ids = sorted(
                 obtain_files,
-                key=lambda f: category_records[f]["publication_name"],
+                key=lambda f: pub_records[f]["publication_name"],
                 reverse=descending,
             )
         else:
             match_ids = sorted(
                 obtain_files,
-                key=lambda f: category_records[f]["timestamp"],
+                key=lambda f: pub_records[f]["timestamp"],
                 reverse=descending,
             )
 
@@ -1270,7 +1290,7 @@ MineOS Dev Team""",
         path: str,
         description: str,
         license_id: str,
-        dependencies: str,
+        dependencies: str | dict[str, dict[str, str]],
         category_id: str,
         whats_new: str | None = None,
     ) -> api.Response:
@@ -1297,7 +1317,7 @@ MineOS Dev Team""",
         path: str,
         description: str,
         license_id: str,
-        dependencies: str,
+        dependencies: str | dict[str, dict[str, str]],
         category_id: str,
         whats_new: str | None = None,
     ) -> api.Response:
@@ -1325,8 +1345,7 @@ MineOS Dev Team""",
             if not publications:
                 new_publication_id = 1
             else:
-                pub_ids = max(map(int, publications.keys())) + 1
-                new_publication_id = max(pub_ids) + 1
+                new_publication_id = max(map(int, publications.keys())) + 1
         assert isinstance(new_publication_id, int)
         id_records["publication"] = new_publication_id + 1
         await id_records.write_async()
@@ -1432,7 +1451,7 @@ MineOS Dev Team""",
         path: str,
         description: str,
         license_id: str,
-        raw_dependencies: str,
+        raw_dependencies: str | dict[str, dict[str, str]],
         category_id: str,
         whats_new: str | None = None,
         new: bool = True,
@@ -1487,9 +1506,14 @@ MineOS Dev Team""",
         if isinstance(src_url, tuple):  # Error
             return src_url
 
+        print(f"{raw_dependencies = }")
+        if isinstance(raw_dependencies, str):
+            return api.failure("dependencies are invalid")
+        assert isinstance(raw_dependencies, dict)
+
         icon_url: str | None = None
 
-        parsed_dependencies_table = parse_table(raw_dependencies).get("", {})
+        parsed_dependencies_table = raw_dependencies
         dependencies_data: list[UploadDependency] = []
         for _entry_id, entry_data in parsed_dependencies_table.items():
             parsed_entry = UploadDependency.parse_table_entry(entry_data)
@@ -1498,6 +1522,14 @@ MineOS Dev Team""",
             if parsed_entry.path == "Icon.pic":
                 icon_url = parsed_entry.source_url
             dependencies_data.append(parsed_entry)
+
+        # if icon_url is None and category in {
+        #     PUBLICATION_CATEGORY.Applications,
+        #     PUBLICATION_CATEGORY.Wallpapers,
+        # }:
+        #     return api.failure(
+        #         "Publications in Applications and Wallpapers categories must have icons!",
+        #     )
 
         publications = await database.load_async(self.publications_path)
         table = publications.table("file_id")
@@ -1851,7 +1883,7 @@ MineOS Dev Team""",
                 traceback.print_exception(exc)
                 return api.failure("Internal server error", 500)
 
-        send_arguments: dict[str, str | None] = {}
+        send_arguments: dict[str, str | dict[str, Any] | None] = {}
         missing = False
         arguments: list[tuple[bool, str]] = []
         for name in argument_names:

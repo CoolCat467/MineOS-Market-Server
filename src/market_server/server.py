@@ -231,11 +231,11 @@ async def handle_script(
         form = multi_dict.to_dict()
         data = dict(ChainMap(form, request.args))
         response = await schema_v_2_04.script(script, data)
-        if isinstance(response, str):
-            # print(f"Response = {pretty_format(response)}")
-            return response
-        # print(f"Response = {pretty_format(response[0])}")
-        return response[0]
+        if isinstance(response, tuple):
+            response = response[0]
+        # print(f"{response = }")
+        print(f"Response = {pretty_format(response)}")
+        return response
     return api.failure("Invalid version")
 
 
