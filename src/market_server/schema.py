@@ -1222,7 +1222,7 @@ MineOS Dev Team""",
             count_value = len(match_ids)
 
         offset_value = max(0, min(len(match_ids) - 1, offset_value))
-        count_value = max(len(match_ids), min(0, count_value))
+        count_value = min(len(match_ids), max(0, count_value))
 
         # Downloads count records
         downloads = await database.load_async(self.downloads_path)
