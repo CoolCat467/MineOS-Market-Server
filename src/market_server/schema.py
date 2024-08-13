@@ -303,6 +303,7 @@ class Publication(NamedTuple):
     average_rating: float | None = None
     whats_new: str | None = None
     whats_new_version: float | None = None
+    downloads: int = 0
 
 
 def parse_email_address(string: str) -> Address | None:
@@ -1016,11 +1017,22 @@ MineOS Dev Team""",
     ) -> Publication | str:
         """Return Publication object from file id or error text if not found."""
         pub_records = await database.load_async(self.publications_path)
-        pub = pub_records.get(str(file_id))
+        file_id_str = str(file_id)
+        pub = pub_records.get(file_id_str)
         if pub is None or pub.get("category_id") is None:
             return (
                 f"Publication with specified file ID ({file_id}) doesn't exist"
             )
+
+        # Download count
+        download_records = await database.load_async(self.downloads_path)
+
+        download_count = len(download_records.get(file_id_str, ()))
+
+        # Handle imported records
+        if "downloads" in pub:
+            download_count += int(pub["downloads"])
+
         write = (
             "publication_name",
             "user_name",
@@ -1073,6 +1085,7 @@ MineOS Dev Team""",
             all_dependencies=all_dependencies,
             dependencies_data=dependencies_data,
             average_rating=average_rating,
+            downloads=download_count,
         )
 
     async def cmd_publication(
@@ -1256,8 +1269,8 @@ MineOS Dev Team""",
             download_count = len(downloads.get(file_id, ()))
 
             # Handle imported records
-            if "download_count" in publication:
-                download_count += int(publication["download_count"])
+            if "downloads" in publication:
+                download_count += int(publication["downloads"])
 
             matches.append(
                 SearchPublication(
