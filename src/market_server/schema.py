@@ -236,7 +236,7 @@ class UploadDependency(NamedTuple):
         if not isinstance(source_url, str):
             source_url = None
 
-        preview = bool(entry.get("preview", False))
+        preview = entry.get("preview", "false") == "true"
 
         if not any((publication_name, path, source_url)):
             return None
@@ -385,7 +385,7 @@ def parse_int(string: str | int) -> int | None:
 
 def parse_table(
     incoming: dict[str, str],
-    limit: int | None = 1,
+    limit: int | None = 3,
 ) -> dict[str, str | dict[str, str] | Any]:
     """Convert table of depth 1 to higher order depth."""
 
@@ -1403,7 +1403,10 @@ MineOS Dev Team""",
             publication = publications.get(str(file_id), {})
 
         # TODO: Look at this more closely, might be wrong
-        type_id = FileType.RESOURCE
+        if dependency.path is None:
+            type_id = FileType.MAIN
+        else:
+            type_id = FileType.RESOURCE
         if dependency.path is not None and dependency.path.endswith(".lang"):
             type_id = FileType.LOCALIZATION
         if dependency.path == "Icon.pic":
@@ -1419,6 +1422,7 @@ MineOS Dev Team""",
             "user_name": publication.get("user_name", username),
             "type_id": type_id,
         }
+
         full_dep_owner = full_dependancy["user_name"]
 
         if (
@@ -1519,7 +1523,6 @@ MineOS Dev Team""",
         if isinstance(src_url, tuple):  # Error
             return src_url
 
-        print(f"{raw_dependencies = }")
         if isinstance(raw_dependencies, str):
             return api.failure("dependencies are invalid")
         assert isinstance(raw_dependencies, dict)
