@@ -255,7 +255,7 @@ class Dependency(NamedTuple):
     source_url: str
     path: str
     version: int | float
-    type_id: FileType
+    type_id: int  # One of FileType
     publication_name: str | None = None
     category_id: int | None = None
 
@@ -788,6 +788,7 @@ MineOS Dev Team""",
         pub = pub_records.get(str(file_id))
         if pub is None:
             return None, {}
+
         return (
             Dependency(
                 source_url=pub["source_url"],
@@ -1390,7 +1391,7 @@ MineOS Dev Team""",
                 dependency.publication_name,
             )
             if match_id is not None:
-                file_id = table["publication_name"][match_id]
+                file_id = table["file_id"][match_id]
 
         new_publication = False
         # If that fails too, we need a new publication ID.
@@ -1420,7 +1421,7 @@ MineOS Dev Team""",
             "publication_name": dependency.publication_name,
             "category_id": publication.get("category_id"),
             "user_name": publication.get("user_name", username),
-            "type_id": type_id,
+            "type_id": int(type_id),
         }
 
         full_dep_owner = full_dependancy["user_name"]
@@ -1609,6 +1610,8 @@ MineOS Dev Team""",
 
             dependency_file_ids.add(int(dep_file_id))
         # Delete unreferenced null category dependencies
+        if publication.get("dependencies", False) is None:
+            publication["dependencies"] = []
         for old_dep_file_id in publication.get("dependencies", []):
             old_dep = publications.get(str(old_dep_file_id))
             if old_dep is None:
@@ -1639,7 +1642,7 @@ MineOS Dev Team""",
                 "icon_url": icon_url,
                 "whats_new": whats_new,
                 "whats_new_version": version if whats_new else None,
-                "type_id": FileType.MAIN,
+                "type_id": int(FileType.MAIN),
             },
         )
         publications[str(file_id)] = publication
