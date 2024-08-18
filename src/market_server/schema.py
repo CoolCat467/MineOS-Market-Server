@@ -236,7 +236,7 @@ class UploadDependency(NamedTuple):
         if not isinstance(source_url, str):
             source_url = None
 
-        preview = entry.get("preview", "false") == "true"
+        preview = str(entry.get("preview")).lower() in {"true", "1"}
 
         if not any((publication_name, path, source_url)):
             return None
