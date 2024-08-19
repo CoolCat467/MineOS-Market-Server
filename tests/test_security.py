@@ -5,6 +5,7 @@ import secrets
 from typing import TYPE_CHECKING
 
 import pytest
+
 from market_server import security
 
 if TYPE_CHECKING:
@@ -170,7 +171,7 @@ def test_compare_hash_sync_correct() -> None:
     )
 
 
-@pytest.mark.trio()
+@pytest.mark.trio
 async def test_compare_hash_correct() -> None:
     assert await security.compare_hash(
         "totatoe",
@@ -179,7 +180,7 @@ async def test_compare_hash_correct() -> None:
     )
 
 
-@pytest.mark.trio()
+@pytest.mark.trio
 async def test_compare_hash_wrong() -> None:
     assert not await security.compare_hash(
         "hacks password",

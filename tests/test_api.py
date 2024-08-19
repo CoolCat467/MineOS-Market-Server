@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import NamedTuple
 
 import pytest
+
 from market_server import api
 
 
