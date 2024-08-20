@@ -60,6 +60,13 @@ local host = "http://localhost:3004/MineOSAPI/2.04/"
 
 If you enable SSL support, you can make it `https` instead of `http`!
 
+If you are hosting the server locally, you will need to allow opencomputers
+to access "private" IP addresses.
+
+Edit your opencomputers configuration file (usually located at `.minecraft/config/opencomputers/settings.conf`),
+and close to line 1000 you need to change `deny private` to `allow private`,
+otherwise you will encounter the "Address is not allowed" issue.
+
 ## Configuration
 Configuration file locations follow the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html).
 Main configuration file lives at `$XDG_CONFIG_HOME/mineos_market_webserver/config.toml`, or `$HOME/.config/mineos_market_webserver/config.toml` if unset.
