@@ -72,7 +72,8 @@ Because this is a fresh, squeaky clean version of the app market. So fresh that 
 [crashes because of a bug in the way zero publications are handled on the overview screen](https://github.com/IgorTimofeev/MineOS/pull/629).
 If you would like to use a backup of the records from the original server, simply replace
 the files from the `backups` directory at the root of this repository in the server's records
-folder. Record folder location given below.
+folder. Make sure the server is not running when you replace the files, as records are stored in-memory
+and written back to the records folder on shutdown to reduce latency. Record folder location given below.
 
 ## Configuration
 Configuration file locations follow the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html).
