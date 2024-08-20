@@ -64,7 +64,7 @@ If you are hosting the server locally, you will need to allow opencomputers
 to access "private" IP addresses.
 
 Edit your opencomputers configuration file (usually located at `.minecraft/config/opencomputers/settings.conf`),
-and close to line 1000 you need to change `deny private` to `allow private`,
+and close to line 675 or so you need to change `deny private` to `allow private`,
 otherwise you will encounter the "Address is not allowed" issue.
 
 ## Configuration
