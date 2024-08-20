@@ -11,6 +11,8 @@ Python MineOS App Market Server Reimplementation
 
 <!-- END BADGIE TIME -->
 
+![thumbnail](./img/thumbnail.png)
+
 ## Description
 Python re-implementation of the server side of the [MineOS](https://github.com/IgorTimofeev/MineOS) App Market
 
@@ -21,6 +23,42 @@ install this project with the command listed below:
 ```console
 pip install git+https://github.com/CoolCat467/MineOS-Market-Server.git
 ```
+
+## Usage
+Run the server:
+```console
+mineos_market_server
+```
+Go to URL `http://<IP_of_host>:3004`
+On default, the web server is hosted on port `3004`.
+This can be changed in the configuration file (more info below)
+
+If you need to stop the server, use Ctrl+C to shut it down cleanly.
+
+Important Note: If you don't enable SSL support, login credentials are sent to server in clear text!
+
+## Integrating with Official App Market Client
+To use the server with the official app market client, you will need to modify
+the official app market client's code to point to where you are hosting this
+server from, instead of the official servers.
+
+To do this, use the built-in `MineCode IDE` application, go to
+Applications > App Market.app > Main.lua, and at the time of writing
+at least close by the top of the file you should see a line saying something like
+
+```lua
+local host = "http://mineos.buttex.ru/MineOSAPI/2.04/"
+```
+
+You will need to change this to the address of the server, for example:
+
+```lua
+local host = "http://localhost:3004/MineOSAPI/2.04/"
+```
+
+![Edited_App_Market_Code](./img/Edited_App_Market_Code.png)
+
+If you enable SSL support, you can make it `https` instead of `http`!
 
 ## Configuration
 Configuration file locations follow the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html).
@@ -36,16 +74,6 @@ Database records live in `$XDG_DATA_HOME/mineos_market_webserver/records/`, or `
 - `publications.json` is for remembering publication data.
 - `reviews.json` is for remembering reviews on publications and votes on reviews.
 - `users.json` is for remembering user data. Passwords are hashed with sha3_256.
-
-## Usage
-Run the server:
-```console
-mineos_market_server
-```
-Go to URL `http://<IP_of_host>:3004`, or whatever port you have set in the main configuration file.
-
-Important Note: If you don't enable SSL support, login credentials are sent to server in clear text!
-
 
 ## Enabling SSL Support
 If you would like to enable SSL support, it's a bit tricky but it's doable,
