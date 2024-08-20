@@ -67,6 +67,13 @@ Edit your opencomputers configuration file (usually located at `.minecraft/confi
 and close to line 675 or so you need to change `deny private` to `allow private`,
 otherwise you will encounter the "Address is not allowed" issue.
 
+## Why are there no publications?
+Because this is a fresh, squeaky clean version of the app market. So fresh that the client
+[crashes because of a bug in the way zero publications are handled on the overview screen](https://github.com/IgorTimofeev/MineOS/pull/629).
+If you would like to use a backup of the records from the original server, simply replace
+the files from the `backups` directory at the root of this repository in the server's records
+folder. Record folder location given below.
+
 ## Configuration
 Configuration file locations follow the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html).
 Main configuration file lives at `$XDG_CONFIG_HOME/mineos_market_webserver/config.toml`, or `$HOME/.config/mineos_market_webserver/config.toml` if unset.
