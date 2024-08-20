@@ -3,10 +3,11 @@ import tempfile
 from collections.abc import Generator
 
 import pytest
+
 from market_server.database import Database, Records
 
 
-@pytest.fixture()
+@pytest.fixture
 def temp_db_file() -> Generator[str, None, None]:
     # Create a temporary database file
     with tempfile.NamedTemporaryFile(delete=True) as temp_file:
@@ -26,7 +27,7 @@ def test_reload_file(temp_db_file: str) -> None:
     assert db["key"] == "value"
 
 
-@pytest.mark.trio()
+@pytest.mark.trio
 async def test_write_async(temp_db_file: str) -> None:
     # Initialize a Database instance
     db = Database(temp_db_file, auto_load=False)
@@ -43,7 +44,7 @@ async def test_write_async(temp_db_file: str) -> None:
         assert data["key"] == "value"
 
 
-@pytest.mark.trio()
+@pytest.mark.trio
 async def test_context_manager_async(temp_db_file: str) -> None:
     # Initialize a Database instance using async context manager
     async with Database(temp_db_file, auto_load=False) as db:
@@ -55,7 +56,7 @@ async def test_context_manager_async(temp_db_file: str) -> None:
         assert data["jerald"] == "awesome"
 
 
-@pytest.mark.trio()
+@pytest.mark.trio
 async def test_table(temp_db_file: str) -> None:
     # Create a test database file with some data
     with open(temp_db_file, "w") as file:  # noqa: ASYNC230
@@ -80,7 +81,7 @@ async def test_table(temp_db_file: str) -> None:
         assert table["column3"] == ("value5", "value6")
 
 
-@pytest.mark.trio()
+@pytest.mark.trio
 async def test_records(temp_db_file: str) -> None:
     # Create a test database file with some data
     with open(temp_db_file, "w") as file:  # noqa: ASYNC230

@@ -6,6 +6,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 import trio
+
 from market_server import backups
 
 if TYPE_CHECKING:
@@ -14,7 +15,7 @@ if TYPE_CHECKING:
     from market_server import database
 
 
-@pytest.mark.trio()
+@pytest.mark.trio
 async def test_backup_database() -> None:
     # Mock database.get_loaded() function to return a list of loaded database filenames
     with patch(
@@ -62,7 +63,7 @@ async def test_backup_database() -> None:
                 )  # Check if backup.update() was called with the correct instance
 
 
-@pytest.mark.trio()
+@pytest.mark.trio
 async def test_backup() -> None:
     with patch.object(logging, "info") as mock_info:
         with patch.object(backups, "backup_database") as mock_backup_database:
@@ -71,7 +72,7 @@ async def test_backup() -> None:
             mock_info.assert_called_with("Backup complete")
 
 
-@pytest.mark.trio()
+@pytest.mark.trio
 async def test_periodic_backups(
     autojump_clock: trio.testing.MockClock,
 ) -> None:

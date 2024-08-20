@@ -4,6 +4,7 @@ from email.headerregistry import Address
 from typing import Any
 
 import pytest
+
 from market_server import schema
 
 
