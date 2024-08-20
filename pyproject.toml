@@ -79,6 +79,9 @@ combine-as-imports = true
 all = true
 disable_all_dunder_policy = true
 
+[tool.codespell]
+skip = "backup/*.json"
+
 [tool.black]
 line-length = 79
 target-version = ['py310']
