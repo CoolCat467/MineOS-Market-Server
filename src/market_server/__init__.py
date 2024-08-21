@@ -24,7 +24,18 @@ __title__ = "Market Server"
 __author__ = "CoolCat467"
 __license__ = "GNU General Public License Version 3"
 
-from market_server.server import run
+from typing import TYPE_CHECKING
+
+from market_server.server import DATA_PATH, run
+
+if TYPE_CHECKING:
+    from trio import Path
+
+
+def get_records_path() -> Path:
+    """Return records path."""
+    return DATA_PATH / "records"
+
 
 if __name__ == "__main__":  # pragma: no cover
     run()

@@ -1009,7 +1009,7 @@ MineOS Dev Team""",
             return None
         table = database.Table(reviews, "review_id")
         ratings = table["rating"]
-        return sum(map(int, ratings)) / len(ratings)
+        return round(sum(map(int, ratings)) / len(ratings), ndigits=4)
 
     async def get_publication(
         self,
@@ -1045,7 +1045,7 @@ MineOS Dev Team""",
             "timestamp",
             "initial_description",
             "dependencies",
-            "icon_url",
+            "icon_url",  # TODO: Infer from dependencies instead of storing twice
             "whats_new",
             "whats_new_version",
         )
@@ -1072,7 +1072,9 @@ MineOS Dev Team""",
                 if sub_deps := dep_pub.get("dependencies"):
                     toplevel_deps.extend(sub_deps)
 
-        all_dependencies = sorted(all_dependencies_set)
+        all_dependencies: list[int] | None = sorted(all_dependencies_set)
+        if not all_dependencies:
+            all_dependencies = None
         dependencies_data = {
             k: dependencies_data[k] for k in sorted(dependencies_data)
         }
@@ -1161,6 +1163,11 @@ MineOS Dev Team""",
         if order_by is None:
             order_by = "date"
 
+        if order_direction not in {"asc", "desc", None}:
+            return api.failure(
+                "Invalid order_direction (must be `asc` or `desc`)",
+            )
+
         descending = order_direction != "asc"
 
         offset_value = parse_int(offset or 0)
@@ -1245,7 +1252,7 @@ MineOS Dev Team""",
                 key=lambda f: pub_records[f]["publication_name"],
                 reverse=descending,
             )
-        else:
+        else:  # date
             match_ids = sorted(
                 obtain_files,
                 key=lambda f: pub_records[f]["timestamp"],
@@ -1255,14 +1262,17 @@ MineOS Dev Team""",
         if count_value is None:
             count_value = len(match_ids)
 
-        offset_value = max(0, min(len(match_ids) - 1, offset_value))
+        offset_value = max(0, offset_value)
+        # No need to load downloads if no publications to read
+        if offset_value >= len(match_ids):
+            return api.success_direct([], True)
         count_value = min(len(match_ids), max(0, count_value))
 
         # Downloads count records
         downloads = await database.load_async(self.downloads_path)
 
         matches: list[SearchPublication] = []
-        for file_id in match_ids[offset_value:count_value]:
+        for file_id in match_ids[offset_value : offset_value + count_value]:
             publication = pub_records.get(file_id)
             if publication is None:
                 continue
@@ -1283,7 +1293,7 @@ MineOS Dev Team""",
                             "user_name",
                             "version",
                             "category_id",
-                            "icon_url",
+                            "icon_url",  # TODO: Infer from dependencies
                         )
                     },
                     reviews_count=self.get_review_count_sync(file_id) or 0,
@@ -1528,7 +1538,9 @@ MineOS Dev Team""",
             return api.failure("dependencies are invalid")
         assert isinstance(raw_dependencies, dict)
 
-        icon_url: str | None = None
+        icon_url: str | None = (
+            None  # TODO: Remove once inferred from dependencies
+        )
 
         parsed_dependencies_table = raw_dependencies
         dependencies_data: list[UploadDependency] = []
@@ -1537,7 +1549,9 @@ MineOS Dev Team""",
             if not parsed_entry:
                 continue
             if parsed_entry.path == "Icon.pic":
-                icon_url = parsed_entry.source_url
+                icon_url = (
+                    parsed_entry.source_url
+                )  # TODO: Remove once inferred from dependencies
             dependencies_data.append(parsed_entry)
 
         # if icon_url is None and category in {
@@ -1639,7 +1653,7 @@ MineOS Dev Team""",
                 "timestamp": math.floor(time.time()),
                 "initial_description": description,
                 "dependencies": sorted(dependency_file_ids) or None,
-                "icon_url": icon_url,
+                "icon_url": icon_url,  # TODO: Remove once inferred from dependencies
                 "whats_new": whats_new,
                 "whats_new_version": version if whats_new else None,
                 "type_id": int(FileType.MAIN),
