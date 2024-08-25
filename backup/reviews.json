@@ -2867,8 +2867,8 @@
    "timestamp": 1705165542,
    "user_name": "Dimsk",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 2,
+    "total": 3
    }
   }
  },
@@ -3028,7 +3028,7 @@
    "user_name": "kogtyv",
    "votes": {
     "positive": 1,
-    "total": 1
+    "total": 2
    }
   },
   "1167": {
@@ -3153,8 +3153,8 @@
    "timestamp": 1624456788,
    "user_name": "kogtyv",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 2,
+    "total": 2
    }
   },
   "1210": {
@@ -4303,6 +4303,17 @@
     "total": 0
    }
   },
+  "1644": {
+   "comment": "\u0443\u0440\u0430 \u0441\u043a\u0440\u0438\u043d\u0448\u043e\u0442\u044b!",
+   "id": 1644,
+   "rating": 4,
+   "timestamp": 1723128797,
+   "user_name": "CACKE",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
   "272": {
    "comment": "\u041d\u043e\u0440\u043c",
    "id": 272,
@@ -4332,8 +4343,8 @@
    "timestamp": 1543830796,
    "user_name": "Fronun",
    "votes": {
-    "positive": 0,
-    "total": 0
+    "positive": 1,
+    "total": 1
    }
   },
   "647": {
@@ -4483,6 +4494,17 @@
    "rating": 5,
    "timestamp": 1677564123,
    "user_name": "HappyWindinkg",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "1653": {
+   "comment": "NuclearCraft (\u043d\u0430\u0434\u043e \u043d\u0430\u0439\u0442\u0438 \u0432 \u044e\u0442\u0430\u0431\u0447\u0438\u043a\u0435)",
+   "id": 1653,
+   "rating": 5,
+   "timestamp": 1724282118,
+   "user_name": "Bufka2011",
    "votes": {
     "positive": 0,
     "total": 0
@@ -4969,6 +4991,17 @@
     "positive": 1,
     "total": 1
    }
+  },
+  "1641": {
+   "comment": "Not Work + ChatGPT ahh description",
+   "id": 1641,
+   "rating": 1,
+   "timestamp": 1722716555,
+   "user_name": "A5tr0_",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
   }
  },
  "2217": {},
@@ -5003,8 +5036,8 @@
    "timestamp": 1708807674,
    "user_name": "Bumer_32",
    "votes": {
-    "positive": 1,
-    "total": 2
+    "positive": 2,
+    "total": 3
    }
   },
   "1611": {
@@ -5052,8 +5085,8 @@
    "timestamp": 1705744251,
    "user_name": "DobroposterTop",
    "votes": {
-    "positive": 0,
-    "total": 0
+    "positive": 1,
+    "total": 1
    }
   }
  },
@@ -5111,8 +5144,8 @@
    "timestamp": 1705308431,
    "user_name": "Smok1e",
    "votes": {
-    "positive": 0,
-    "total": 0
+    "positive": 1,
+    "total": 1
    }
   },
   "1615": {
@@ -5122,8 +5155,8 @@
    "timestamp": 1711905730,
    "user_name": "CACKE",
    "votes": {
-    "positive": 0,
-    "total": 0
+    "positive": 1,
+    "total": 1
    }
   }
  },
@@ -5176,8 +5209,32 @@
   }
  },
  "2330": {},
- "2332": {},
- "2335": {},
+ "2332": {
+  "1648": {
+   "comment": "\u041f\u0438\u0437\u0434\u0430\u0442\u044b\u0435 \u043e\u0431\u043e\u0438, \u043d\u043e \u0441\u043e \u0432\u0440\u0435\u043c\u0435\u043d\u0435\u043c dvd \u0437\u0430\u0441\u0442\u0440\u0435\u0432\u0430\u0435\u0442 \u043d\u0430 \u043a\u0440\u0430\u044e \u044d\u043a\u0440\u0430\u043d\u0430.",
+   "id": 1648,
+   "rating": 5,
+   "timestamp": 1723308250,
+   "user_name": "kirbest1000",
+   "votes": {
+    "positive": 1,
+    "total": 1
+   }
+  }
+ },
+ "2335": {
+  "1643": {
+   "comment": "\u0422\u043e\u043c\u0430\u0441 \u0448\u0435\u043b\u0431\u0438, \u0441\u0438\u0433\u043c\u0430!!!!!!!!!!!",
+   "id": 1643,
+   "rating": 5,
+   "timestamp": 1723127404,
+   "user_name": "CACKE",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  }
+ },
  "2339": {},
  "2340": {
   "1618": {
@@ -5187,8 +5244,8 @@
    "timestamp": 1717765218,
    "user_name": "PlushPersik",
    "votes": {
-    "positive": 0,
-    "total": 0
+    "positive": 1,
+    "total": 1
    }
   }
  },
@@ -5280,8 +5337,8 @@
    "timestamp": 1719610157,
    "user_name": "CACKE",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 2,
+    "total": 3
    }
   },
   "1638": {
@@ -5290,6 +5347,17 @@
    "rating": 2,
    "timestamp": 1720569978,
    "user_name": "OLESHE",
+   "votes": {
+    "positive": 1,
+    "total": 1
+   }
+  },
+  "1640": {
+   "comment": "\u043c\u043e\u0436\u043d\u043e \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u044f\u0442\u044c \u0437\u0430\u043f\u0440\u043e\u0441\u044b \u043d\u0430 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0445\u043e\u043c\u044f\u043a\u0430 \u0438 \u0442\u0430\u043f\u0430\u0442\u044c \u0443\u0436\u0435 \u0435\u0433\u043e",
+   "id": 1640,
+   "rating": 1,
+   "timestamp": 1721727251,
+   "user_name": "HappyWindinkg",
    "votes": {
     "positive": 0,
     "total": 0
@@ -5303,6 +5371,17 @@
    "id": 1631,
    "rating": 4,
    "timestamp": 1719609929,
+   "user_name": "CACKE",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "1645": {
+   "comment": "\u043e\u0431\u043e\u0438 10/10",
+   "id": 1645,
+   "rating": 5,
+   "timestamp": 1723136035,
    "user_name": "CACKE",
    "votes": {
     "positive": 0,
@@ -5474,6 +5553,17 @@
    "votes": {
     "positive": 1,
     "total": 1
+   }
+  },
+  "1656": {
+   "comment": "fuck my ass, \u0437\u0430\u0440\u0430\u0431\u043e\u0442\u0430\u043b\u043e",
+   "id": 1656,
+   "rating": 4,
+   "timestamp": 1724450280,
+   "user_name": "id1otina",
+   "votes": {
+    "positive": 0,
+    "total": 0
    }
   },
   "174": {
@@ -5785,6 +5875,43 @@
    }
   }
  },
+ "2404": {
+  "1649": {
+   "comment": "\u0425\u043e\u0440\u043e\u0448\u0430\u044f \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0430 \u043d\u043e \u0432\u043e \u0432\u0440\u0435\u043c\u044f \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438 \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u043e \u043d\u0430\u0436\u0430\u043b EEPROM \u0442\u043e\u044c\u043a\u043e \u0434\u043b\u044f \u043a\u043e\u0442\u043e\u0432 \u0438 \u0431\u043e\u043b\u044c\u0448\u0435 \u043d\u0435 \u0441\u043c\u043e\u0433 \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0443 \u043f\u043e\u0442\u043e\u043c\u0443 \u0447\u0442\u043e \u043d\u0430\u043f\u0438\u0441\u0430\u043b\u043e EEPROM is read-only",
+   "id": 1649,
+   "rating": 4,
+   "timestamp": 1723317666,
+   "user_name": "NazarHK_",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "1651": {
+   "comment": "\u041f\u0440\u0438\u043a\u043e\u043b\u044c\u043d\u0430\u044f \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0430, \u043d\u043e \u0441 \u043d\u0435\u0439 \u043f\u043e\u0447\u0435\u043c\u0443-\u0442\u043e \u0432\u044b\u043b\u0435\u0437\u0430\u0435\u0442 \u0431\u043e\u043b\u044c\u0448\u0435 \u043e\u0448\u0438\u0431\u043e\u043a out of memory",
+   "id": 1651,
+   "rating": 5,
+   "timestamp": 1723381961,
+   "user_name": "kirbest1000",
+   "votes": {
+    "positive": 0,
+    "total": 1
+   }
+  },
+  "1654": {
+   "comment": "\u041f\u0440\u043e\u0448\u0438\u043b \u0438 \u0437\u0430\u0448\u0451\u043b \u0432 \u0431\u0438\u043e\u0441 \u043f\u043e\u0441\u043b\u0435 \u0442\u0430\u043c \u043d\u0430\u0436\u0430\u043b \u043d\u0430 \u043a\u043b\u0430\u0432\u0438\u0448\u0443 \u0447\u0442\u043e\u0431\u044b \u043f\u043e\u043f\u0430\u0441\u0442\u044c \u0432 \u0437\u0430\u0433\u0440\u0443\u0437\u043e\u0447\u043d\u044b\u0439 \u043f\u0443\u043d\u043a\u0442 \u0438 \u0432\u044b\u043b\u0435\u0437\u043b\u0430 \u043e\u0448\u0438\u0431\u043a\u0430 \u043d\u043e \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0430 \u0440\u0435\u0430\u043b\u044c\u043d\u043e \u043f\u0440\u0438\u043a\u043e\u043b\u044c\u043d\u0430\u044f \u043a\u0430\u043a \u0432 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u0439 \u0436\u0438\u0437\u043d\u0438.",
+   "id": 1654,
+   "rating": 3,
+   "timestamp": 1724438528,
+   "user_name": "matveyminer",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  }
+ },
+ "2410": {},
+ "2414": {},
  "245": {
   "1050": {
    "comment": "\u0421\u0438\u0435 \u0447\u0443\u0434\u043e \u043d\u0435 \u0440\u043e\u0431\u0438\u0442. \u0421\u043f\u0438\u0441\u043e\u043a \u044f\u0437\u044b\u043a\u043e\u0432 \u043d\u0430\u0439\u0442\u0438 \u043d\u0435 \u043c\u043e\u0436\u0435\u0442.",
@@ -6167,7 +6294,7 @@
    "user_name": "Egli",
    "votes": {
     "positive": 0,
-    "total": 0
+    "total": 1
    }
   },
   "170": {
@@ -6224,7 +6351,7 @@
    "user_name": "Xylic",
    "votes": {
     "positive": 0,
-    "total": 2
+    "total": 3
    }
   }
  },
@@ -7181,8 +7308,8 @@
    "timestamp": 1522458897,
    "user_name": "TheSlavan",
    "votes": {
-    "positive": 0,
-    "total": 0
+    "positive": 1,
+    "total": 1
    }
   },
   "412": {
@@ -7192,8 +7319,8 @@
    "timestamp": 1522753390,
    "user_name": "xjboss",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 2,
+    "total": 2
    }
   },
   "494": {
@@ -7203,8 +7330,8 @@
    "timestamp": 1532358967,
    "user_name": "Fronun",
    "votes": {
-    "positive": 0,
-    "total": 0
+    "positive": 1,
+    "total": 1
    }
   }
  },
@@ -8144,8 +8271,8 @@
    "timestamp": 1689154666,
    "user_name": "CACKE",
    "votes": {
-    "positive": 0,
-    "total": 0
+    "positive": 1,
+    "total": 1
    }
   },
   "1480": {
