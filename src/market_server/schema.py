@@ -572,6 +572,11 @@ class Version_2_04:  # noqa: N801
         users = await database.load_async(self.users_path)
         publications = await database.load_async(self.publications_path)
 
+        publication_count = 0
+        for pub in publications.values():
+            if pub.get("category_id") is not None:
+                publication_count += 1
+
         table = users.table("name")
         last: str | None = None
         if table["name"]:
@@ -582,7 +587,7 @@ class Version_2_04:  # noqa: N801
 
         stats = Statistics(
             len(users),
-            len(publications),
+            publication_count,
             review_count,
             messages_count,
             last or "",
@@ -1213,12 +1218,12 @@ MineOS Dev Team""",
 
         if category is not None:
             for file_id in tuple(obtain_files):
-                if pub_records[file_id]["category_id"] == category:
+                if pub_records[file_id].get("category_id") == category:
                     continue
                 obtain_files.remove(file_id)
         else:
             for file_id in tuple(obtain_files):
-                if pub_records[file_id]["category_id"] is None:
+                if pub_records[file_id].get("category_id") is None:
                     obtain_files.remove(file_id)
 
         if user_name is not None:
@@ -1438,7 +1443,7 @@ MineOS Dev Team""",
 
         if (
             full_dep_owner != username
-            and full_dependancy["category_id"] is None
+            and full_dependancy.get("category_id") is None
         ):
             return ("", {}), api.failure(
                 f"Cannot specify null category dependency {file_id!r} (owned by {full_dep_owner!r}, not {username!r})",
