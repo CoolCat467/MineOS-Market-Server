@@ -1059,7 +1059,7 @@ MineOS Dev Team""",
 
         all_dependencies_set: set[int] = set()
         dependencies_data: dict[int, Dependency] = {}
-        if pub["dependencies"]:
+        if pub.get("dependencies"):
             toplevel_deps: deque[int] = deque(pub["dependencies"])
 
             while toplevel_deps:
@@ -1087,7 +1087,7 @@ MineOS Dev Team""",
         average_rating = self.get_average_rating_sync(file_id)
 
         return Publication(
-            **{k: pub[k] for k in write},
+            **{k: pub.get(k) for k in write},
             file_id=int(file_id),
             translated_description=translated_description,
             all_dependencies=all_dependencies,
