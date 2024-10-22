@@ -54,7 +54,7 @@ mineos_market_server = "market_server.server:run"
 market_server = ["py.typed", "static/*", "templates/*.jinja"]
 
 [tool.mypy]
-mypy_path = "src"
+files = ["src/market_server/",]
 check_untyped_defs = true
 disallow_any_generics = true
 disallow_untyped_calls = true
@@ -140,7 +140,7 @@ extend-ignore = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov-report term-missing --cov=market_server"
+addopts = "--cov-report=term-missing --cov=market_server"
 testpaths = [
     "tests",
 ]
