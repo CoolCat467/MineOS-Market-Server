@@ -43,7 +43,7 @@ _LOADED: dict[str, Records] = {}
 class Database(dict[str, Any]):
     """Database dict with file read write functions."""
 
-    __slots__ = ("file", "__weakref__")
+    __slots__ = ("__weakref__", "file")
 
     def __init__(
         self,
@@ -145,7 +145,7 @@ class Table:
     Allows getting and setting entire columns of a database
     """
 
-    __slots__ = ("_records", "_key_name")
+    __slots__ = ("_key_name", "_records")
 
     def __init__(self, records: dict[str, Any], key_name: str) -> None:
         """Initialize and set records and key name."""
