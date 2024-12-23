@@ -1,7 +1,7 @@
 # MineOS-Market-Server
 Python MineOS App Market Server Reimplementation
 
-[![Tests](https://github.com/CoolCat467/MineOS-Market-Server/actions/workflows/ci.yml/badge.svg)](https://github.com/CoolCat467/MineOS-Market-Server/actions/workflows/ci.yml)
+[![CI](https://github.com/CoolCat467/MineOS-Market-Server/actions/workflows/ci.yml/badge.svg)](https://github.com/CoolCat467/MineOS-Market-Server/actions/workflows/ci.yml)
 <!-- BADGIE TIME -->
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/CoolCat467/MineOS-Market-Server/main.svg)](https://results.pre-commit.ci/latest/github/CoolCat467/MineOS-Market-Server/main)
