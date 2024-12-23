@@ -27,14 +27,13 @@ __license__ = "GNU General Public License Version 3"
 
 import inspect
 import math
+import re
 import time
 import traceback
 import uuid
 from collections import Counter, deque
-from email import message_from_string
-from email.errors import HeaderParseError
-from email.headerregistry import Address, UniqueAddressHeader
-from email.policy import default as email_default_policy
+from email.headerregistry import Address
+from email.utils import parseaddr
 from enum import IntEnum
 from secrets import token_urlsafe
 from typing import TYPE_CHECKING, Any, Final, NamedTuple, cast
@@ -58,6 +57,10 @@ LICENSES: Final = {
     6: "Mozilla Public License 2.0",
     7: "The Unlicense",
 }
+
+EMAIL_REGEX: Final = re.compile(
+    r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+)
 
 
 class PUBLICATION_CATEGORY(IntEnum):  # noqa: N801
@@ -308,22 +311,31 @@ class Publication(NamedTuple):
 
 def parse_email_address(string: str) -> Address | None:
     """Parse email address from string."""
+    # Strip whitespace from the input string
+    string = string.strip()
+
+    # Check if the string matches the email regex
+    if not EMAIL_REGEX.match(string):
+        return None
+
+    # Use parseaddr to extract the email address and name
+    name, email = parseaddr(string)
+
+    # Check if the email is valid
+    if not email:
+        return None
+
+    # Create an Address object
     try:
-        msg = message_from_string(f"To: {string}", policy=email_default_policy)
-        to = msg["to"]
-    except (IndexError, HeaderParseError):
+        address = Address(addr_spec=email, display_name=name)
+    except ValueError:
         return None
-    if not to:
+
+    # Validate the Address object
+    if not address.username or not address.domain:
         return None
-    if not isinstance(to, UniqueAddressHeader):
-        raise RuntimeError(
-            f"During email parsing, got {to!r} ({type(to)}) instead of UniqueAddressHeader as email address group.",
-        )
-    value = to.addresses[0]
-    assert isinstance(value, Address)
-    if not value.username or not value.domain:
-        return None
-    return value
+
+    return address
 
 
 def parse_int(string: str | int) -> int | None:
