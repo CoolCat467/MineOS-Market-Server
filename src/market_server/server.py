@@ -32,7 +32,7 @@ import traceback
 from collections import ChainMap
 from collections.abc import AsyncIterator, Awaitable, Callable, Iterable
 from os import getenv, makedirs, path
-from typing import Any, Final, TypeVar, cast
+from typing import TYPE_CHECKING, Any, Final, TypeVar, cast
 
 import trio
 from hypercorn.config import Config
@@ -48,6 +48,11 @@ if sys.version_info < (3, 11):
 else:
     import tomllib
 
+if TYPE_CHECKING:
+    from typing_extensions import ParamSpec
+
+    PS = ParamSpec("PS")
+
 from market_server import api, backups, database, htmlgen, schema
 
 HOME: Final = trio.Path(getenv("HOME", path.expanduser("~")))
@@ -61,7 +66,7 @@ CONFIG_PATH: Final = XDG_CONFIG_HOME / FILE_TITLE
 DATA_PATH: Final = XDG_DATA_HOME / FILE_TITLE
 MAIN_CONFIG: Final = CONFIG_PATH / "config.toml"
 
-Handler = TypeVar("Handler", bound=Callable[..., Awaitable[object]])
+T = TypeVar("T")
 
 
 def combine_end(data: Iterable[str], final: str = "and") -> str:
@@ -120,11 +125,16 @@ def pretty_exception_name(exc: BaseException) -> str:
     return f"{error} ({reason})"
 
 
-def pretty_exception(function: Handler) -> Handler:
+def pretty_exception(
+    function: Callable[PS, Awaitable[T]],
+) -> Callable[PS, Awaitable[T | tuple[AsyncIterator[str], int]]]:
     """Make exception pages pretty."""
 
     @functools.wraps(function)
-    async def wrapper(*args: Any, **kwargs: Any) -> Any:
+    async def wrapper(  # type: ignore[misc]
+        *args: PS.args,
+        **kwargs: PS.kwargs,
+    ) -> T | tuple[AsyncIterator[str], int]:
         code = 500
         name = "Exception"
         desc = (
@@ -136,11 +146,6 @@ def pretty_exception(function: Handler) -> Handler:
         try:
             return await function(*args, **kwargs)
         except Exception as exception:
-            ### traceback.print_exception changed in 3.10
-            ##if sys.version_info < (3, 10):
-            ##    tb = sys.exc_info()[2]
-            ##    traceback.print_exception(etype=None, value=exception, tb=tb)
-            ##else:
             traceback.print_exception(exception)
 
             if isinstance(exception, HTTPException):
@@ -157,7 +162,7 @@ def pretty_exception(function: Handler) -> Handler:
             desc,
         )
 
-    return cast(Handler, wrapper)
+    return wrapper
 
 
 # Stolen from WOOF (Web Offer One File), Copyright (C) 2004-2009 Simon Budig,
