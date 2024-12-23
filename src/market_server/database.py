@@ -84,7 +84,7 @@ class Database(dict[str, Any]):
     def write_file(self) -> None:
         """Write database file.
 
-        May raise PermissionError in the event of insufficiant permissions.
+        May raise PermissionError in the event of insufficient permissions.
         """
         folder = path.dirname(self.file)
         if not path.exists(folder):
@@ -95,7 +95,7 @@ class Database(dict[str, Any]):
     async def write_async(self) -> None:
         """Write database file asynchronously.
 
-        May raise PermissionError in the event of insufficiant permissions.
+        May raise PermissionError in the event of insufficient permissions.
         """
         folder = trio.Path(self.file).parent
         if not await folder.exists():

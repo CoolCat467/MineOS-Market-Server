@@ -1400,7 +1400,7 @@ MineOS Dev Team""",
     ) -> tuple[tuple[str | None, dict[str, str | float]], api.Response | None]:
         """Upload or edit publication dependency.
 
-        Return ("file_id" | None (needs new file id), updated_dependancy), <api error response> | None
+        Return ("file_id" | None (needs new file id), updated_dependency), <api error response> | None
         """
         publications = await database.load_async(self.publications_path)
         table = publications.table("file_id")
@@ -1442,7 +1442,7 @@ MineOS Dev Team""",
         if dependency.preview:
             type_id = FileType.PREVIEW
 
-        full_dependancy = {
+        full_dependency = {
             "source_url": dependency.source_url,
             "path": dependency.path,
             "publication_name": dependency.publication_name,
@@ -1451,18 +1451,18 @@ MineOS Dev Team""",
             "type_id": int(type_id),
         }
 
-        full_dep_owner = full_dependancy["user_name"]
+        full_dep_owner = full_dependency["user_name"]
 
         if (
             full_dep_owner != username
-            and full_dependancy.get("category_id") is None
+            and full_dependency.get("category_id") is None
         ):
             return ("", {}), api.failure(
                 f"Cannot specify null category dependency {file_id!r} (owned by {full_dep_owner!r}, not {username!r})",
             )
 
         modified = False
-        for key, value in full_dependancy.items():
+        for key, value in full_dependency.items():
             if publication.get(key) != value:
                 modified = True
                 break
@@ -1470,14 +1470,14 @@ MineOS Dev Team""",
         if (
             not new_publication
             and modified
-            and full_dependancy["user_name"] != username
+            and full_dependency["user_name"] != username
         ):
             return ("", {}), api.failure(
                 f"Cannot modify dependency {file_id!r} (owned by {full_dep_owner!r}, not {username!r})",
             )
 
         if modified:
-            full_dependancy.update(
+            full_dependency.update(
                 {
                     "version": round(
                         publication.get("version", 0.99) + 0.01,
@@ -1486,7 +1486,7 @@ MineOS Dev Team""",
                     "timestamp": math.floor(time.time()),
                 },
             )
-        return (file_id, full_dependancy), None
+        return (file_id, full_dependency), None
 
     async def publication_edit(
         self,
@@ -1805,8 +1805,8 @@ MineOS Dev Team""",
 
         message_db = await database.load_async(self.messages_path)
 
-        recieved_messages = message_db.get(username, {})
-        from_user = recieved_messages.get(user_name, {})
+        received_messages = message_db.get(username, {})
+        from_user = received_messages.get(user_name, {})
 
         if not from_user:
             return api.success_direct([])
@@ -1824,8 +1824,8 @@ MineOS Dev Team""",
             message_entry["is_read"] = True
             from_user[str(timestamp)] = message_entry
         # Save messages marked as read
-        recieved_messages[user_name] = from_user
-        message_db[username] = recieved_messages
+        received_messages[user_name] = from_user
+        message_db[username] = received_messages
         # Write changes
         await message_db.write_async()
 
@@ -1841,10 +1841,10 @@ MineOS Dev Team""",
         users = await database.load_async(self.users_path)
         users_table = users.table("username")
 
-        recieved_messages = message_db.get(username, {})
+        received_messages = message_db.get(username, {})
 
         notifications: list[Notification] = []
-        for from_username, thread in recieved_messages.items():
+        for from_username, thread in received_messages.items():
             timestamp = max(map(int, thread))
             last_thread_entry = thread[str(timestamp)]
 
