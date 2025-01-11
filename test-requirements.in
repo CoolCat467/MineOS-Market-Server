@@ -6,8 +6,7 @@ pytest-cov
 
 # Tools
 black; implementation_name == "cpython"
-mypy >= 1.14.0  # Would use mypy[faster-cache], but orjson has build issues on pypy
-orjson; implementation_name == "cpython"
+mypy >= 1.14.0
 ruff >= 0.6.6
 uv >= 0.2.24
 codespell
@@ -22,6 +21,7 @@ Werkzeug~=3.1.2
 exceptiongroup >= 1.2.0; python_version < "3.11"
 httpx~=0.28.1
 hypercorn[trio]~=0.17.3
+orjson>=3.10,<4
 quart-trio~=0.11.1
 quart~=0.20.0
 tomli >= 2.0.1; python_version < "3.11"
