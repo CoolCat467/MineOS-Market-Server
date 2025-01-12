@@ -87,7 +87,7 @@ all = true
 disable_all_dunder_policy = true
 
 [tool.codespell]
-skip = "backup/*.json"
+skip = "**/*.json"
 
 [tool.typos.files]
 extend-exclude = ["backup/*.json"]
