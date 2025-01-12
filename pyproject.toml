@@ -31,6 +31,7 @@ keywords = ["minecraft", "mineos", "api", "server", "lua"]
 dependencies = [
     "httpx~=0.28.1",
     "hypercorn[trio]~=0.17.3",
+    "orjson>=3.10,<4",
     "quart~=0.20.0",
     "quart-trio~=0.11.1",
     "trio~=0.28.0",
@@ -86,7 +87,7 @@ all = true
 disable_all_dunder_policy = true
 
 [tool.codespell]
-skip = "backup/*.json"
+skip = "**/*.json"
 
 [tool.typos.files]
 extend-exclude = ["backup/*.json"]

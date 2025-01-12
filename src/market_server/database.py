@@ -23,15 +23,15 @@ from __future__ import annotations
 __title__ = "Database"
 __author__ = "CoolCat467"
 
-import json
 from os import makedirs, path
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+import orjson
 import trio
 
 if TYPE_CHECKING:
     from collections.abc import Generator, Iterable, Iterator
-    from pathlib import Path
     from types import TracebackType
 
     from typing_extensions import Self
@@ -66,8 +66,7 @@ class Database(dict[str, Any]):
 
         Will raise FileNotFoundError in the event file does not exist.
         """
-        with open(self.file, "rb") as file:
-            self.update(json.load(file))
+        self.update(orjson.loads(Path(self.file).read_bytes()))
 
     async def reload_async(self) -> None:
         """Reload database file asynchronously.
@@ -79,7 +78,16 @@ class Database(dict[str, Any]):
             data = await file.read()
             if not data:
                 return
-            self.update(json.loads(data))
+            self.update(orjson.loads(data))
+
+    def serialize(self) -> bytes:
+        """Return this object's data serialized as bytes."""
+        return orjson.dumps(
+            self,
+            option=orjson.OPT_APPEND_NEWLINE
+            | orjson.OPT_NON_STR_KEYS
+            | orjson.OPT_NAIVE_UTC,
+        )
 
     def write_file(self) -> None:
         """Write database file.
@@ -89,8 +97,7 @@ class Database(dict[str, Any]):
         folder = path.dirname(self.file)
         if not path.exists(folder):
             makedirs(folder, exist_ok=False)
-        with open(self.file, "w", encoding="utf-8") as file:
-            json.dump(self, file, separators=(",", ":"))
+        Path(self.file).write_bytes(self.serialize())
 
     async def write_async(self) -> None:
         """Write database file asynchronously.
@@ -102,10 +109,9 @@ class Database(dict[str, Any]):
             await folder.mkdir(parents=True, exist_ok=False)
         async with await trio.open_file(
             self.file,
-            "w",
-            encoding="utf-8",
+            "wb",
         ) as file:
-            await file.write(json.dumps(self, separators=(",", ":")))
+            await file.write(self.serialize())
 
     def __enter__(self) -> Self:
         """Enter context manager."""
@@ -135,7 +141,7 @@ class Database(dict[str, Any]):
         exc_value: BaseException | None,
         traceback: TracebackType | None,
     ) -> None:
-        """Async context manager exit."""
+        """Async context manager exit, write file contents asynchronously."""
         await self.write_async()
 
 
