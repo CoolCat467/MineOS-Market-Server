@@ -2,7 +2,7 @@ ci:
   autofix_prs: true
   autoupdate_schedule: weekly
   submodules: false
-  skip: [badgie]
+  skip: [badgie, regenerate-files]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -48,3 +48,11 @@ repos:
     rev: v1.3.1
     hooks:
       - id: zizmor
+  - repo: local
+    hooks:
+      - id: regenerate-files
+        name: regenerate generated files
+        language: system
+        entry: python src/market_server/generate_pages.py
+        pass_filenames: false
+        files: ^src\/market_server\/(((htmlgen|generate_pages)\.py)|((static|templates)\/.+\.\w+))$

@@ -71,6 +71,8 @@ def test_css_multi() -> None:
     [
         ("p", {}, "<p>"),
         ("p", {"fish": "false"}, '<p fish="false">'),
+        ("p", {"fish": False}, '<p fish="false">'),
+        ("p", {"fish": True}, '<p fish="true">'),
         ("i", {}, "<i>"),
         (
             "input",
@@ -204,6 +206,15 @@ def test_select_dict() -> None:
     )
 
 
+def test_select_dict_checkbox_bool() -> None:
+    assert (
+        htmlgen.select_dict("name_here", {"Cat mode enabled": True})
+        == """<input type="checkbox" id="name_here_0" name="name_here" value="true">
+<label for="name_here_0">Cat mode enabled</label>
+<br>"""
+    )
+
+
 def test_select_dict_lots_default() -> None:
     assert (
         htmlgen.select_dict(
@@ -276,6 +287,14 @@ def test_input_field_with_type() -> None:
         htmlgen.input_field("<id>", "woot", field_type="types woo")
         == """<input type="types woo" id="<id>" name="<id>">
 <label for="<id>">woot</label>"""
+    )
+
+
+def test_input_field_number_reverse() -> None:
+    assert (
+        htmlgen.input_field("<id>", "woot", field_type="number")
+        == """<label for="<id>">woot</label>
+<input type="number" id="<id>" name="<id>">"""
     )
 
 
