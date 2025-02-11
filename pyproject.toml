@@ -31,7 +31,7 @@ keywords = ["minecraft", "mineos", "api", "server", "lua"]
 dependencies = [
     "httpx~=0.28.1",
     "hypercorn[trio]~=0.17.3",
-    "orjson>=3.10,<4",
+    "orjson>=3.10.15",
     "quart~=0.20.0",
     "quart-trio~=0.11.1",
     "trio~=0.28.0",
@@ -53,31 +53,36 @@ mineos_market_server = "market_server.server:run"
 [tool.setuptools.package-data]
 market_server = ["py.typed", "static/*", "templates/*.jinja"]
 
+[project.optional-dependencies]
+tests = [
+    "pytest>=5.0",
+    "pytest-cov",
+    "pytest-trio",
+    "coverage>=7.2.5",
+    "uv>=0.5.21",
+    "mypy>=1.14.1",
+]
+tools = [
+    'black>=24.10.0; implementation_name == "cpython"',
+    "ruff>=0.9.2",
+    "codespell>=2.3.0",
+]
+
+[tool.uv]
+package = true
+
 [tool.mypy]
 files = ["src/market_server/",]
-check_untyped_defs = true
-disallow_any_decorated = true
-disallow_any_generics = true
-disallow_any_unimported = true
-disallow_incomplete_defs = true
-disallow_subclassing_any = true
-disallow_untyped_calls = true
-disallow_untyped_decorators = true
-disallow_untyped_defs = true
-ignore_missing_imports = true
-local_partial_types = true
-no_implicit_optional = true
-no_implicit_reexport = true
 show_column_numbers = true
 show_error_codes = true
 show_traceback = true
+disallow_any_decorated = true
+disallow_any_unimported = true
+ignore_missing_imports = true
+local_partial_types = true
+no_implicit_optional = true
 strict = true
-strict_equality = true
-warn_redundant_casts = true
-warn_return_any = true
 warn_unreachable = true
-warn_unused_configs = true
-warn_unused_ignores = true
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
@@ -164,6 +169,9 @@ source_pkgs = ["market_server"]
 omit = [
     "generate_pages.py",
 ]
+parallel = true
+relative_files = true
+source = ["."]
 
 [tool.coverage.report]
 precision = 1
