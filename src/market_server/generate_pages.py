@@ -38,9 +38,9 @@ MODULE: Final = Path(__file__).absolute().parent
 SOURCE_ROOT: Final = MODULE.parent.parent
 
 TEMPLATE_FOLDER: Final = MODULE / "templates"
-TEMPLATE_FUNCTIONS: dict[str, Callable[[], str]] = {}
+TEMPLATE_FUNCTIONS: dict[Path, Callable[[], str]] = {}
 STATIC_FOLDER: Final = MODULE / "static"
-STATIC_FUNCTIONS: dict[str, Callable[[], str]] = {}
+STATIC_FUNCTIONS: dict[Path, Callable[[], str]] = {}
 
 
 def save_content(path: Path, content: str) -> None:
