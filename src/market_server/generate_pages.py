@@ -24,7 +24,9 @@ __title__ = "Generate Pages"
 __author__ = "CoolCat467"
 
 
-import pathlib
+import argparse
+import sys
+from pathlib import Path
 from typing import TYPE_CHECKING, Final
 
 from market_server import htmlgen, server
@@ -32,45 +34,33 @@ from market_server import htmlgen, server
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-TEMPLATE_FOLDER: Final = pathlib.Path("templates")
-TEMPLATE_FUNCTIONS: dict[str, Callable[[], str]] = {}
-STATIC_FOLDER: Final = pathlib.Path("static")
-STATIC_FUNCTIONS: dict[str, Callable[[], str]] = {}
+MODULE: Final = Path(__file__).absolute().parent
+SOURCE_ROOT: Final = MODULE.parent.parent
+
+TEMPLATE_FOLDER: Final = MODULE / "templates"
+TEMPLATE_FUNCTIONS: dict[Path, Callable[[], str]] = {}
+STATIC_FOLDER: Final = MODULE / "static"
+STATIC_FUNCTIONS: dict[Path, Callable[[], str]] = {}
 
 
-def save_template(name: str, content: str) -> None:
-    """Save content as new template "{name}"."""
-    assert TEMPLATE_FOLDER is not None
-    if not TEMPLATE_FOLDER.exists():
-        TEMPLATE_FOLDER.mkdir()
-    template_path = TEMPLATE_FOLDER / f"{name}.html.jinja"
-    with open(template_path, "w", encoding="utf-8") as template_file:
-        template_file.write(content)
-        template_file.write("\n")
-    print(f"Saved content to {template_path}")
-
-
-def save_static(filename: str, content: str) -> None:
-    """Save content as new static file "{filename}"."""
-    assert STATIC_FOLDER is not None
-    static_path = STATIC_FOLDER / filename
-    with open(static_path, "w", encoding="utf-8") as static_file:
-        static_file.write(content)
-        static_file.write("\n")
-    print(f"Saved content to {static_path}")
+def save_content(path: Path, content: str) -> None:
+    """Save content to given path."""
+    path.write_text(content + "\n", encoding="utf-8")
+    print(f"Saved content to {path}")
 
 
 def save_template_as(
     filename: str,
 ) -> Callable[[Callable[[], str]], Callable[[], str]]:
     """Save generated template as filename."""
+    path = TEMPLATE_FOLDER / f"{filename}.html.jinja"
 
     def function_wrapper(function: Callable[[], str]) -> Callable[[], str]:
-        if filename in TEMPLATE_FUNCTIONS:
+        if path in TEMPLATE_FUNCTIONS:
             raise NameError(
                 f"{filename!r} already exists as template filename",
             )
-        TEMPLATE_FUNCTIONS[filename] = function
+        TEMPLATE_FUNCTIONS[path] = function
         return function
 
     return function_wrapper
@@ -80,11 +70,12 @@ def save_static_as(
     filename: str,
 ) -> Callable[[Callable[[], str]], Callable[[], str]]:
     """Save generated static file as filename."""
+    path = STATIC_FOLDER / filename
 
     def function_wrapper(function: Callable[[], str]) -> Callable[[], str]:
-        if filename in STATIC_FUNCTIONS:
+        if path in STATIC_FUNCTIONS:
             raise NameError(f"{filename!r} already exists as static filename")
-        STATIC_FUNCTIONS[filename] = function
+        STATIC_FUNCTIONS[path] = function
         return function
 
     return function_wrapper
@@ -163,9 +154,9 @@ def generate_style_css() -> str:
                 'input[type="submit"]',
                 border=("1.5px", "solid", "black"),
                 border_radius="4px",
-                padding="0.5%",
-                margin_left="0.5%",
-                margin_right="0.5%",
+                padding="0.5rem",
+                margin_left="0.5rem",
+                margin_right="0.5rem",
                 min_width="min-content",
             ),
         ),
@@ -457,14 +448,65 @@ def generate_debug_post_page() -> str:
     )
 
 
-def run() -> None:
-    """Generate all page templates and static files."""
+def matches_disk_files(new_files: dict[Path, str]) -> bool:
+    """Return if all new file contents match old file contents.
+
+    Copied from src/trio/_tools/gen_exports.py, dual licensed under
+    MIT and APACHE2.
+    """
+    for path, new_source in new_files.items():
+        if not path.exists():
+            return False
+        # Strip trailing newline `save_content` adds.
+        old_source = path.read_text(encoding="utf-8")[:-1]
+        if old_source != new_source:
+            return False
+    return True
+
+
+def process(do_test: bool) -> int:
+    """Generate all page templates and static files. Return exit code."""
+    new_files: dict[Path, str] = {}
     for filename, function in TEMPLATE_FUNCTIONS.items():
-        save_template(filename, function())
+        new_files[filename] = function()
     for filename, function in STATIC_FUNCTIONS.items():
-        save_static(filename, function())
+        new_files[filename] = function()
+
+    matches_disk = matches_disk_files(new_files)
+
+    if do_test:
+        if not matches_disk:
+            print("Generated sources are outdated. Please regenerate.")
+            return 1
+    elif not matches_disk:
+        for path, new_source in new_files.items():
+            save_content(path, new_source)
+        print("\nRegenerated sources successfully.")
+        # With pre-commit integration, show that we edited files.
+        return 1
+    print("Generated sources are up to date.")
+    return 0
+
+
+def run() -> int:
+    """Regenerate all generated files."""
+    parser = argparse.ArgumentParser(
+        description="Generate static and template files",
+    )
+    parser.add_argument(
+        "--test",
+        "-t",
+        action="store_true",
+        help="test if code is still up to date",
+    )
+    parsed_args = parser.parse_args()
+
+    # Double-check we found the right directory
+    assert (SOURCE_ROOT / "LICENSE").exists()
+
+    return process(do_test=parsed_args.test)
 
 
 if __name__ == "__main__":
     print(f"{__title__}\nProgrammed by {__author__}.\n")
-    run()
+    sys.exit(run())

@@ -59,8 +59,8 @@ code {
 input[type="submit"] {
   border: 1.5px solid black;
   border-radius: 4px;
-  padding: 0.5%;
-  margin-left: 0.5%;
-  margin-right: 0.5%;
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   min-width: min-content;
 }
