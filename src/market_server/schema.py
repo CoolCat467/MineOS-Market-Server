@@ -1928,7 +1928,7 @@ MineOS Dev Team""",
         argument_names = arg_spec.args[1:]
         if not argument_names:
             try:
-                return cast(api.Response, await function())
+                return cast("api.Response", await function())
             except Exception as exc:
                 traceback.print_exception(exc)
                 return api.failure("Internal server error", 500)
@@ -1965,7 +1965,7 @@ MineOS Dev Team""",
             for idx, group in enumerate(groups):
                 assert isinstance(group[0], bool)
                 required = bool(group[0])
-                arg_names = cast(list[str], group[1:])
+                arg_names = cast("list[str]", group[1:])
                 if not required and idx == 0:
                     result = " or ".join(arg_names)
                 elif required:
@@ -1976,7 +1976,7 @@ MineOS Dev Team""",
             arguments_text = ", ".join(argument_results)
             return api.failure(f"Missing arguments: {arguments_text}")
         try:
-            return cast(api.Response, await function(**send_arguments))
+            return cast("api.Response", await function(**send_arguments))
         except Exception as exc:
             traceback.print_exception(exc)
             return api.failure("Internal server error", 500)
