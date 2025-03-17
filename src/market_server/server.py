@@ -261,7 +261,10 @@ try:
 
     def pretty_format(text: str) -> str:
         """Pretty format text."""
-        obj = cast("dict[str, Any]", market_api.lua_parser.parse_lua_table(text))
+        obj = cast(
+            "dict[str, Any]",
+            market_api.lua_parser.parse_lua_table(text),
+        )
         value = market_api.pretty_format_response(obj)
         assert isinstance(value, str)
         return value
