@@ -40,8 +40,8 @@ repos:
       - id: codespell
         additional_dependencies:
           - tomli
-  - repo: https://github.com/crate-ci/typos
-    rev: v1.30.3
+  - repo: https://github.com/adhtruong/mirrors-typos
+    rev: v1.31.0
     hooks:
       - id: typos
   - repo: https://github.com/woodruffw/zizmor-pre-commit
