@@ -43,7 +43,7 @@
    106,
    1046
   ],
-  "downloads": 5,
+  "downloads": 7,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Calculator.app/Icon.pic",
   "initial_description": "This is an extremely powerful calculator that combines the functionality of engineering mathematics and binary blocks. It allows bit-by-bit editing of numbers, as well as the ability to work in octal and hexadecimal number systems and displaying UTF-8/ASCII charactes by their codes.",
   "license_id": 1,
@@ -64,30 +64,13 @@
   "user_name": "ECS",
   "version": 1.08
  },
- "1047": {
-  "category_id": 1,
-  "dependencies": [
-   1048
-  ],
-  "icon_url": "https://github.com/BTVoidX/MineOSApps/blob/master/Sunshine/Icon.pic?raw=true",
-  "initial_description": "Sunshine is an app that allows you to control world time and weather easily. (Requires debug card)",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "Sunshine",
-  "source_url": "https://raw.githubusercontent.com/BTVoidX/MineOSApps/master/Sunshine/Main.lua",
-  "timestamp": 1549899382,
-  "user_name": "btvoidx",
-  "version": 1.03,
-  "whats_new": "Now it works fine",
-  "whats_new_version": 1.03
- },
  "1055": {
   "category_id": 1,
   "dependencies": [
    1056,
    106
   ],
-  "downloads": 1,
+  "downloads": 2,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Reinstall%20OS.app/Icon.pic",
   "initial_description": "Emergency script for instant OS reistalling. It works like MineOS EFI with selected Internet Recovery option",
   "license_id": 1,
@@ -175,7 +158,7 @@
    97,
    2218
   ],
-  "downloads": 2,
+  "downloads": 4,
   "initial_description": "Main MineOS file. It allows users to launch applications via several clicks, to organize their workspace in folders, to protect some secret files using biometric or password identification",
   "license_id": 1,
   "path": "OS.lua",
@@ -200,6 +183,7 @@
  },
  "1061": {
   "category_id": 2,
+  "downloads": 1,
   "initial_description": "Component library",
   "license_id": 1,
   "path": "Component.lua",
@@ -233,7 +217,7 @@
  },
  "107": {
   "category_id": 2,
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "This library allows you to encode/decode XML structure to/from Lua table.",
   "license_id": 1,
   "path": "XML.lua",
@@ -305,7 +289,7 @@
    106,
    1078
   ],
-  "downloads": 2,
+  "downloads": 5,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Lua.app/Icon.pic",
   "initial_description": "The Lua interpreter appliaction allows you to instantly launch single-line lua scripts and view result. There's also RAM stack viewer sidebar for quick access to any memory object",
   "license_id": 1,
@@ -349,43 +333,9 @@
   "whats_new": "Added icons preview for grid list",
   "whats_new_version": 1.45
  },
- "1090": {
-  "category_id": 1,
-  "dependencies": [
-   1091
-  ],
-  "downloads": 1,
-  "icon_url": "https://github.com/Stolar2002/opencomputers/raw/master/ASCII/Icon.pic",
-  "initial_description": "\u042d\u0442\u0430 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430 \u0432\u0430\u043c \u043f\u043e\u0437\u0432\u043e\u043b\u0438\u0442 \u0448\u0438\u0444\u0440\u043e\u0432\u0430\u0442\u044c \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "ASCII",
-  "source_url": "https://raw.githubusercontent.com/Stolar2002/opencomputers/master/ASCII/Main.lua",
-  "timestamp": 1548948874,
-  "user_name": "Stolar",
-  "version": 1.12,
-  "whats_new": "\u041d\u043e\u0432\u044b\u0439 \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441",
-  "whats_new_version": 1.08
- },
- "1093": {
-  "category_id": 1,
-  "dependencies": [
-   1094
-  ],
-  "downloads": 2,
-  "icon_url": "https://github.com/Stolar2002/opencomputers/raw/master/PicViewer.app/Icon.pic",
-  "initial_description": "\u042d\u0442\u0430 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430 \u043f\u043e\u0437\u0432\u043e\u043b\u0438\u0442 \u0432\u0430\u043c \u0432\u044b\u0432\u043e\u0434\u0438\u0442\u044c \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044f \u0432 \u0444\u043e\u0440\u043c\u0430\u0442\u0435 pic",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "Pic Viewer",
-  "source_url": "https://raw.githubusercontent.com/Stolar2002/opencomputers/master/PicViewer.app/Main.lua",
-  "timestamp": 1548947583,
-  "user_name": "Stolar",
-  "version": 1.01
- },
  "1095": {
   "category_id": 2,
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "Library for internet requests performing",
   "license_id": 1,
   "path": "Internet.lua",
@@ -481,7 +431,7 @@
    106,
    1108
   ],
-  "downloads": 1,
+  "downloads": 2,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Shooting.app/Icon.pic",
   "initial_description": "Application for bow shooting practice",
   "license_id": 1,
@@ -495,9 +445,9 @@
  "1108": {
   "path": "Icon.pic",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Shooting.app/Icon.pic",
-  "timestamp": 1575217981,
+  "timestamp": 1652893110,
   "type_id": 3,
-  "user_name": "jirka086",
+  "user_name": "ECS",
   "version": 1.01
  },
  "1109": {
@@ -506,7 +456,7 @@
    106,
    1110
   ],
-  "downloads": 3,
+  "downloads": 4,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Multiscreen.app/Icon.pic",
   "initial_description": "This application allows you to draw huge and beautiful images on a multiple screens that merged to a single cluster",
   "license_id": 1,
@@ -543,25 +493,6 @@
   "user_name": "ECS",
   "version": 1.09
  },
- "1153": {
-  "category_id": 1,
-  "dependencies": [
-   1159,
-   103
-  ],
-  "downloads": 6,
-  "icon_url": "https://dl.dropboxusercontent.com/s/r1qjhdwxfhyayjq/icon.pic",
-  "initial_description": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0434\u043b\u044f \u0442\u0435\u0445 \u043a\u043e\u043c\u0443 \u043b\u0435\u043d\u044c \u043b\u0430\u0437\u0438\u0442\u044c \u0432 \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u0440\u0430\u0434\u0438\u043e \u0438 \u043d\u0435 \u043b\u0435\u043d\u044c \u043b\u0430\u0437\u0438\u0442\u044c \u0432 \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u043a\u043e\u043c\u043f\u0430.",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "Simple Radio Player",
-  "source_url": "https://raw.githubusercontent.com/Hatry1337/SimpleRadioPlayer/master/Simple%20Radio%20Player.app/Main.lua",
-  "timestamp": 1589714992,
-  "user_name": "Hatryy",
-  "version": 1.25,
-  "whats_new": "Changed basic station to RainbowFM",
-  "whats_new_version": 1.25
- },
  "1155": {
   "path": "Localizations/French.lang",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/3D%20Print.app/Localizations/French.lang",
@@ -594,24 +525,6 @@
   "user_name": "ECS",
   "version": 1.03
  },
- "1160": {
-  "category_id": 1,
-  "dependencies": [
-   1162
-  ],
-  "downloads": 3,
-  "icon_url": "https://raw.githubusercontent.com/Maxu5/OpenComputers/master/SpaceX/Icon.pic",
-  "initial_description": "\u041f\u043e\u043b\u0451\u0442 \u0441\u043a\u0432\u043e\u0437\u044c \u043a\u043e\u0441\u043c\u043e\u0441. \u041a\u0440\u0430\u0441\u0438\u0432\u0430\u044f \u0437\u0430\u0441\u0442\u0430\u0432\u043a\u0430 \u043a\u0430\u043a \u0431\u044b\u043b\u0430 \u0432 Windows XP.",
-  "license_id": 2,
-  "path": "Main.lua",
-  "publication_name": "SpaceX",
-  "source_url": "https://raw.githubusercontent.com/Maxu5/OpenComputers/master/SpaceX/SpaceX.lua",
-  "timestamp": 1550925358,
-  "user_name": "Maxus",
-  "version": 1.02,
-  "whats_new": "\u0423\u0432\u0435\u043b\u0438\u0447\u0438\u043d\u0430 \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c \u0437\u0430 \u0441\u0447\u0451\u0442 \u0431\u0443\u0444\u0435\u0440\u0438\u0437\u0430\u0446\u0438\u0438 \u0430 \u0442\u0430\u043a\u0436\u0435 \u043d\u0435\u043a\u043e\u0442\u043e\u0440\u044b\u0445 \u0444\u0438\u0448\u0435\u0447\u0435\u043a \u043e\u0442 ECS.",
-  "whats_new_version": 1.02
- },
  "1166": {
   "category_id": 2,
   "initial_description": "MD5 library by github.com/kikito",
@@ -626,7 +539,7 @@
  "1167": {
   "path": "/Localizations/German.lang",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Localizations/German.lang",
-  "timestamp": 1652893110,
+  "timestamp": 1720036066,
   "type_id": 4,
   "user_name": "ECS",
   "version": 1.21
@@ -638,84 +551,6 @@
   "type_id": 4,
   "user_name": "ECS",
   "version": 1.21
- },
- "1170": {
-  "category_id": 1,
-  "dependencies": [
-   1172
-  ],
-  "icon_url": "https://github.com/Jack5079/opencomputers/raw/master/SysFucked.app/Icon.pic",
-  "initial_description": "it deletes everything :-O",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "SysFucked",
-  "source_url": "https://raw.githubusercontent.com/Jack5079/opencomputers/master/SysFucked.app/Main.lua",
-  "timestamp": 1553894010,
-  "user_name": "Jack5079",
-  "version": 1.1,
-  "whats_new": "(Hopefully) Downloads correctly",
-  "whats_new_version": 1.08
- },
- "1173": {
-  "category_id": 1,
-  "dependencies": [
-   1095,
-   73,
-   1061,
-   1174
-  ],
-  "downloads": 1,
-  "icon_url": "https://dl.dropboxusercontent.com/s/drzbp4wnfmefgfs/IconSC.pic",
-  "initial_description": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0434\u043b\u044f \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0441\u043f\u0430\u0432\u043d\u0435\u0440\u0430\u043c\u0438 \u0438\u0437 DEvolution \u0438 \u0434\u0440\u0443\u0433\u0438\u0445 \u043c\u043e\u0434\u043e\u0432. \u0422\u0430\u043a \u0436\u0435 \u043c\u043e\u0436\u043d\u043e \u0443\u043f\u0440\u0430\u0432\u043b\u044f\u0442\u044c \u0434\u0440\u0443\u0433\u0438\u043c\u0438 \u0440\u0435\u0434\u0441\u0442\u043e\u0443\u043d \u0448\u0442\u0443\u043a\u0430\u043c\u0438.",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "Spawner Control",
-  "source_url": "https://dl.dropboxusercontent.com/s/eryxnm1p5xvixmz/MainSC.lua",
-  "timestamp": 1605038252,
-  "user_name": "Hatryy",
-  "version": 1.01,
-  "whats_new": "\u0413\u0430\u0432\u043d\u043e\u043a\u043e\u0434\u0438\u043a \u0443\u0434\u0430\u043b\u0451\u043d, \u0442\u0435\u043f\u0435\u0440\u044c \u0432\u0441\u0451 \u043f\u043e \u043a\u0430\u0439\u0444\u0443 \u0438 \u043a\u043e\u043c\u043f \u0432\u0440\u043e\u0434\u0435 \u043a\u0430\u043a \u043d\u0435 \u043a\u0440\u0430\u0448\u0438\u0442",
-  "whats_new_version": 1.01
- },
- "1174": {
-  "path": "Icon.pic",
-  "source_url": "https://dl.dropboxusercontent.com/s/drzbp4wnfmefgfs/IconSC.pic",
-  "timestamp": 1605038252,
-  "type_id": 3,
-  "user_name": "Hatryy",
-  "version": 1.01
- },
- "1175": {
-  "category_id": 1,
-  "dependencies": [
-   1176
-  ],
-  "downloads": 1,
-  "icon_url": "https://raw.githubusercontent.com/Jack5079/opencomputers/master/SysFucked%20Slient.app/Icon.pic",
-  "initial_description": "Ever used my old application(1 day ago) called SysFucked to destroy your computer, but it was slow? Never fear, SysFucked Slient is here! The moment you run it, it deletes everything! No confirmation needed!",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "SysFucked Slient",
-  "source_url": "https://raw.githubusercontent.com/Jack5079/opencomputers/master/SysFucked%20Slient.app/Main.lua",
-  "timestamp": 1553952059,
-  "user_name": "Jack5079",
-  "version": 1
- },
- "1177": {
-  "category_id": 1,
-  "dependencies": [
-   1178
-  ],
-  "downloads": 3,
-  "icon_url": "https://raw.githubusercontent.com/Jack5079/opencomputers/master/IP.app/Icon.pic",
-  "initial_description": "Ever needed to know your (real) computer's IP inside of MineOS? No? Well I don't care! This program will tell you your IP!",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "IP",
-  "source_url": "https://raw.githubusercontent.com/Jack5079/opencomputers/master/IP.app/Main.lua",
-  "timestamp": 1553956267,
-  "user_name": "Jack5079",
-  "version": 1
  },
  "1186": {
   "category_id": 3,
@@ -736,7 +571,7 @@
   "dependencies": [
    1198
   ],
-  "downloads": 9,
+  "downloads": 11,
   "icon_url": "https://github.com/alexexe82/HIPOSAV/blob/master/apps/Prizm3d/Icon.pic?raw=true",
   "initial_description": "\u0413\u0430\u0442\u0430\u043b\u043e\u0433 \u0433\u043e\u043b\u043e\u043f\u0440\u043e\u0435\u043a\u0446\u0438\u0439 \u0434\u043b\u044f \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0440\u0430 2-\u0433\u043e \u0443\u0440\u043e\u0432\u043d\u044f. \u0421 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0441\u0442\u044c\u044e \u0432\u044b\u0432\u043e\u0434\u0430 \u0438 \u043d\u0435\u043a\u043e\u0442\u043e\u0440\u044b\u0445 \u043d\u0430\u0441\u0442\u0440\u043e\u0435\u043a. \u0414\u043b\u044f \u0440\u0430\u0431\u043e\u0442\u044b \u043d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0440 \u0438 \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442 \u043a\u0430\u0440\u0442\u0430. \u041f\u0438\u0448\u0438\u0442\u0435 \u043a\u0430\u043a\u0438\u0435 \u043f\u0440\u043e\u0435\u043a\u0446\u0438\u0438 \u0445\u043e\u0442\u0435\u043b\u0438 \u0431\u044b \u0432\u0438\u0434\u0435\u0442\u044c \u0432 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0435. \u0411\u0443\u0434\u0443 \u0434\u043e\u0431\u0430\u0432\u043b\u044f\u0442\u044c \u043f\u043e \u043c\u0435\u0440\u0435 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0441\u0442\u0438.",
   "license_id": 1,
@@ -760,7 +595,7 @@
  "1208": {
   "path": "/Localizations/Bulgarian.lang",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Localizations/Bulgarian.lang",
-  "timestamp": 1652893110,
+  "timestamp": 1706532690,
   "type_id": 4,
   "user_name": "ECS",
   "version": 1.18
@@ -768,7 +603,7 @@
  "1209": {
   "path": "/Localizations/Japanese.lang",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Localizations/Japanese.lang",
-  "timestamp": 1652893110,
+  "timestamp": 1706532728,
   "type_id": 4,
   "user_name": "ECS",
   "version": 1.17
@@ -781,27 +616,6 @@
   "user_name": "ECS",
   "version": 1.08
  },
- "1211": {
-  "category_id": 1,
-  "dependencies": [
-   1212,
-   1215,
-   1216,
-   1217
-  ],
-  "downloads": 4,
-  "icon_url": "https://raw.githubusercontent.com/zenith391/Fuchas/master/Installers/Fuchas.app/Icon.pic",
-  "initial_description": "When you're tired of the good OS named MineOS, you can install that alternative OS. WARNING! While this is planned in the future, this OS doesn't have any GUI!",
-  "license_id": 2,
-  "path": "Main.lua",
-  "publication_name": "Fuchas Installer",
-  "source_url": "https://raw.githubusercontent.com/zenith391/Fuchas/master/Installers/Fuchas.app/Main.lua",
-  "timestamp": 1566738469,
-  "user_name": "GarryDevs",
-  "version": 1.05,
-  "whats_new": "The installer now shows you the changelog, you can also now install WIP version with button \"Install (UNSAFE)\", because yup, it's unsafe and very unstable (the dev version)",
-  "whats_new_version": 1.05
- },
  "1223": {
   "category_id": 3,
   "downloads": 1,
@@ -813,23 +627,6 @@
   "timestamp": 1563275009,
   "user_name": "Furry",
   "version": 1
- },
- "1226": {
-  "category_id": 1,
-  "dependencies": [
-   1237
-  ],
-  "icon_url": "https://kittyle.ga/projects/lzt/shell/Icon2.pic",
-  "initial_description": "\u041f\u0440\u043e\u0441\u0442\u0430\u044f \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430 \u0434\u043b\u044f \u0442\u043e\u0433\u043e \u0447\u0442\u043e \u0431\u044b \u0432\u043e\u0439\u0442\u0438 \u0432 shell. \u0422\u0440\u0435\u0431\u0443\u0435\u0442 \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u0443\u044e OpenOS \u043d\u0430 \u043e\u0442\u0434\u0435\u043b\u044c\u043d\u043e\u043c \u0434\u0438\u0441\u043a\u0435 \u043e\u0442 MineOS.",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "Goto Shell v2",
-  "source_url": "https://kittyle.ga/projects/lzt/shell/Main.lua",
-  "timestamp": 1566745313,
-  "user_name": "KittyLeOff",
-  "version": 1.03,
-  "whats_new": "\u0423 \u043c\u0435\u043d\u044f \u0441\u043b\u043e\u043c\u0430\u043b\u0441\u044f \u0434\u043e\u043c\u0435\u043d, \u0441\u043c\u0435\u043d\u0438\u043b \u0441\u0441\u044b\u043b\u043a\u0443. (\u041d\u0435 \u0438\u0437\u043c\u0435\u043d\u0438\u043b \u043d\u0435 \u0441\u0438\u043c\u0432\u043e\u043b \u043a\u043e\u0434\u0430)",
-  "whats_new_version": 1.03
  },
  "1229": {
   "path": "Localizations/Dutch.lang",
@@ -902,7 +699,7 @@
    1255,
    1256
   ],
-  "downloads": 3,
+  "downloads": 6,
   "icon_url": "https://github.com/FelixBanan/OpenSecurity/blob/master/MineOS/Applications/EFI%20Writer.app/Icon.pic?raw=true",
   "initial_description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430 \u0434\u043b\u044f \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0438 EEPROM \u0447\u0435\u0440\u0435\u0437 Card Writer \u0438\u0437 \u043c\u043e\u0434\u0430 OpenSecurity",
   "license_id": 1,
@@ -939,6 +736,7 @@
  },
  "1257": {
   "category_id": 3,
+  "downloads": 1,
   "initial_description": "Download it to root/localizations/",
   "license_id": 7,
   "path": "Magyar.lang",
@@ -962,7 +760,7 @@
  "1259": {
   "path": "/Localizations/Slovak.lang",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Localizations/Slovak.lang",
-  "timestamp": 1652893110,
+  "timestamp": 1706532719,
   "type_id": 4,
   "user_name": "ECS",
   "version": 1.15
@@ -1047,23 +845,6 @@
   "whats_new": "\u0418\u0441\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u044b \u043e\u0448\u0438\u0431\u043a\u0438, \u043f\u043e\u043b\u043d\u0430\u044f \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 Bit64",
   "whats_new_version": 1.02
  },
- "1272": {
-  "category_id": 1,
-  "dependencies": [
-   108,
-   1273
-  ],
-  "downloads": 3,
-  "icon_url": "https://github.com/IgorTimofeev/MineOS/raw/master/Icons/Application.pic",
-  "initial_description": "Allows you to easily control reactor from BigReactors",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "BetterReactorControl",
-  "source_url": "https://raw.githubusercontent.com/VedTerrarian/MineOS.BetterReactorControl/master/Main.lua?token=AL3HO47DK7E5KAVO7I3FTEK6B3MYA",
-  "timestamp": 1578031751,
-  "user_name": "Ved",
-  "version": 1
- },
  "1274": {
   "category_id": 2,
   "downloads": 1,
@@ -1078,7 +859,7 @@
  },
  "1275": {
   "category_id": 2,
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "A great library for working with a sound card! It allows you to easily and quickly use this beast. On the side of your program is only loading the library and its use (and deleting sound objects)! It is not even necessary to keep track of whether there is a sound card. Without it, the library does not produce any errors, but most likely it will not play sound. And its main feature is that it can play as many sounds as you like at the same time (until the RAM runs out).",
   "license_id": 1,
   "path": "soundlib.lua",
@@ -1088,44 +869,9 @@
   "user_name": "FireAid",
   "version": 1.01
  },
- "1276": {
-  "category_id": 1,
-  "dependencies": [
-   106,
-   1277
-  ],
-  "downloads": 3,
-  "icon_url": "https://github.com/maxsspeaker/gitboom/raw/master/Goto%20Shell%20v2.app/Icon.pic",
-  "initial_description": "\u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430 \u043f\u0440\u043e\u043f\u0430\u043b\u0430 \u044f \u0434\u043e\u0431\u0430\u0432\u0438\u043b \u043f\u043e\u0442\u043e\u043c\u0443\u0448\u0442\u043e \u043b\u044e\u0434\u0438 \u043d\u0435\u043c\u043e\u0433\u0443\u0442 \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0441\u0430 \u0435\u0439 \u0430\u0442\u0430\u043a \u0432\u0441\u0451 \u043e\u043a \u044d\u0442\u043e \u043d\u0435 \u043c\u043e\u044f \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "Goto Shell",
-  "source_url": "https://github.com/maxsspeaker/gitboom/raw/master/Goto%20Shell%20v2.app/Main.lua",
-  "timestamp": 1579889527,
-  "user_name": "maxsspeaker",
-  "version": 1
- },
- "1278": {
-  "category_id": 1,
-  "dependencies": [
-   1279
-  ],
-  "downloads": 1,
-  "icon_url": "http://plotgaming.hu/Icon.pic",
-  "initial_description": "This is my first AntiVirus for OpenComputers!",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "PlotDefender",
-  "source_url": "http://plotgaming.hu/Main.lua",
-  "timestamp": 1581853008,
-  "user_name": "BomberPlayz",
-  "version": 1.14,
-  "whats_new": "Added some keywords that will trigger the antivirus.",
-  "whats_new_version": 1.13
- },
  "1280": {
   "category_id": 3,
-  "downloads": 2,
+  "downloads": 4,
   "initial_description": "\u042d\u0442\u043e\u0442 \u0441\u043a\u0440\u0438\u043f\u0442 \u043f\u043e\u043c\u043e\u0436\u0434\u0435\u0442 \u0432 \u043f\u0435\u0440\u0441\u043e\u043d\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438",
   "license_id": 1,
   "path": "Minecraft.lua",
@@ -1146,7 +892,7 @@
    1305,
    1306
   ],
-  "downloads": 8,
+  "downloads": 14,
   "icon_url": "https://raw.githubusercontent.com/TheSainEyereg/WebDisplays-MineOS-App/master/WebDisplays.app/Icon.pic",
   "initial_description": "This application was created for best and fast control WebDevices mod with WebDisplays OC module",
   "license_id": 1,
@@ -1207,21 +953,6 @@
   "user_name": "ECS",
   "version": 1.83
  },
- "1311": {
-  "category_id": 1,
-  "dependencies": [
-   1312
-  ],
-  "icon_url": "https://pastebin.com/raw/LBS1SH7b",
-  "initial_description": "\u0414\u0430\u043d\u043d\u043e\u0435 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u043f\u043e\u0437\u0432\u043e\u043b\u044f\u0435\u0442 \u0434\u0435\u043b\u0430\u0442\u044c \u0441\u043a\u0440\u0438\u043d\u0448\u043e\u0442 \u0412\u0430\u0448\u0435\u0433\u043e \u044d\u043a\u0440\u0430\u043d\u0430 \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442 \u0435\u0433\u043e \u0432 \u0444\u043e\u0440\u043c\u0430\u0442\u0435 .pic! \u0422\u0440\u0435\u0431\u0443\u044e\u0442\u0441\u044f \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u0431\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0438.",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "Screenshoter",
-  "source_url": "https://pastebin.com/raw/8CTizzQs",
-  "timestamp": 1584107654,
-  "user_name": "DevilPuppy",
-  "version": 1
- },
  "1313": {
   "category_id": 2,
   "initial_description": "Not made by me but used by my some of my programs made by: https://github.com/rxi/json.lua/",
@@ -1258,7 +989,7 @@
    1061,
    1327
   ],
-  "downloads": 3,
+  "downloads": 6,
   "icon_url": "https://raw.githubusercontent.com/TheSainEyereg/CustomMineOS-MineOS-App/master/Custom%20MineOS.app/Icon.pic",
   "initial_description": "App that changes original MineOS bios and loader theme",
   "license_id": 1,
@@ -1308,7 +1039,7 @@
    73,
    1333
   ],
-  "downloads": 3,
+  "downloads": 8,
   "icon_url": "https://raw.githubusercontent.com/TheSainEyereg/EFIControl-MineOS-App/master/EFI%20Control.app/Icon.pic",
   "initial_description": "This is a republication of a program that was in AppMarket. In my opinion, this is the best program for working with EFI, so it comes with minimal code changes.",
   "license_id": 1,
@@ -1372,89 +1103,6 @@
   "user_name": "BrightYC",
   "version": 1.01
  },
- "1335": {
-  "category_id": 1,
-  "dependencies": [
-   1344
-  ],
-  "downloads": 12,
-  "icon_url": "https://raw.githubusercontent.com/BrightYC/Cyan/master/MineOS/Icon.pic",
-  "initial_description": "Advanced bootloader with Lua REPL, protected access and cool interface (https://github.com/BrightYC/Cyan)",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "Cyan BIOS",
-  "source_url": "https://raw.githubusercontent.com/BrightYC/Cyan/master/MineOS/Main.lua",
-  "timestamp": 1618141568,
-  "user_name": "BrightYC",
-  "version": 1.14,
-  "whats_new": "Missed eeprom.setLabel",
-  "whats_new_version": 1.01
- },
- "1344": {
-  "path": "Icon.pic",
-  "source_url": "https://raw.githubusercontent.com/BrightYC/Cyan/master/MineOS/Icon.pic",
-  "timestamp": 1618141568,
-  "type_id": 3,
-  "user_name": "BrightYC",
-  "version": 1.08
- },
- "1346": {
-  "category_id": 1,
-  "dependencies": [
-   1347
-  ],
-  "downloads": 1,
-  "icon_url": "https://github.com/GravityGouseS/VanillaOS/raw/master/icon.pic",
-  "initial_description": "A simple Lua version of Windows NotMyFault Application. Freezes your OS or 'causes BSOD if you have enough memory.",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "NotMyFault",
-  "source_url": "https://github.com/GravityGouseS/VanillaOS/raw/master/NMF.lua",
-  "timestamp": 1590167957,
-  "user_name": "Lemob",
-  "version": 1.03
- },
- "1348": {
-  "category_id": 1,
-  "dependencies": [
-   1349
-  ],
-  "icon_url": "https://raw.githubusercontent.com/Jack5079/opencomputers/master/BIOS%20Wiper.app/Icon.pic",
-  "initial_description": "why did i make this",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "BIOS Wiper",
-  "source_url": "https://raw.githubusercontent.com/Jack5079/opencomputers/master/BIOS%20Wiper.app/Main.lua",
-  "timestamp": 1591568193,
-  "user_name": "Jack5079",
-  "version": 1.01
- },
- "1353": {
-  "category_id": 1,
-  "dependencies": [
-   1354
-  ],
-  "downloads": 6,
-  "icon_url": "https://raw.githubusercontent.com/arduinka55055/MineOS_Reactor/master/Icon.pic",
-  "initial_description": "https://github.com/arduinka55055/MineOS_Reactor",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "Reactor",
-  "source_url": "https://raw.githubusercontent.com/arduinka55055/MineOS_Reactor/master/main.lua",
-  "timestamp": 1606150429,
-  "user_name": "CodeMiner505",
-  "version": 1.04,
-  "whats_new": "Added Fuel Bar",
-  "whats_new_version": 1.03
- },
- "1354": {
-  "path": "Icon.pic",
-  "source_url": "https://raw.githubusercontent.com/arduinka55055/MineOS_Reactor/master/Icon.pic",
-  "timestamp": 1606150429,
-  "type_id": 3,
-  "user_name": "CodeMiner505",
-  "version": 1.04
- },
  "1357": {
   "category_id": 1,
   "dependencies": [
@@ -1462,16 +1110,40 @@
    1359,
    1360
   ],
-  "downloads": 4,
+  "downloads": 12,
   "icon_url": "https://github.com/Artyemlom/Downloaderrr/blob/master/Downloader%20v1.01%20Reloaded/Icon.pic?raw=true",
   "initial_description": "This application is designed to enable users to download files from the Internet.",
   "license_id": 1,
   "path": "Main.lua",
   "publication_name": "Downloader",
-  "source_url": "https://raw.githubusercontent.com/Artyemlom/Downloaderrr/master/Downloader%20v1.01%20Reloaded/Main.lua",
-  "timestamp": 1592409574,
+  "source_url": "https://raw.githubusercontent.com/Artyemlom/Downloaderrr/refs/heads/master/Downloader%20v1.02%20Reloaded/Main.lua",
+  "timestamp": 1741128839,
   "user_name": "Artyemlom",
-  "version": 1.01
+  "version": 1.02
+ },
+ "1358": {
+  "path": "Localizations/Russian.lang",
+  "source_url": "https://raw.githubusercontent.com/Artyemlom/Downloaderrr/master/Downloader%20v1.01%20Reloaded/Localizations/Russian.lang",
+  "timestamp": 1741128839,
+  "type_id": 4,
+  "user_name": "Artyemlom",
+  "version": 1.02
+ },
+ "1359": {
+  "path": "Localizations/English.lang",
+  "source_url": "https://raw.githubusercontent.com/Artyemlom/Downloaderrr/master/Downloader%20v1.01%20Reloaded/Localizations/English.lang",
+  "timestamp": 1741128839,
+  "type_id": 4,
+  "user_name": "Artyemlom",
+  "version": 1.02
+ },
+ "1360": {
+  "path": "Icon.pic",
+  "source_url": "https://github.com/Artyemlom/Downloaderrr/blob/master/Downloader%20v1.01%20Reloaded/Icon.pic?raw=true",
+  "timestamp": 1741128839,
+  "type_id": 3,
+  "user_name": "Artyemlom",
+  "version": 1.02
  },
  "1367": {
   "category_id": 3,
@@ -1484,21 +1156,6 @@
   "user_name": "WindowsEpico",
   "version": 1.02
  },
- "1368": {
-  "category_id": 1,
-  "dependencies": [
-   1371
-  ],
-  "icon_url": "https://raw.githubusercontent.com/JustNoneNick-JAVA/Apps.MineOS.Data/master/mat841.pic",
-  "initial_description": "Can be used as screensaver",
-  "license_id": 7,
-  "path": "Main.lua",
-  "publication_name": "Matrix hehe",
-  "source_url": "https://pastebin.com/raw/BT1P79xU",
-  "timestamp": 1593678622,
-  "user_name": "JNNGL",
-  "version": 1.04
- },
  "137": {
   "path": "/Icons/HDD.pic",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Icons/HDD.pic",
@@ -1506,32 +1163,6 @@
   "type_id": 2,
   "user_name": "ECS",
   "version": 1.83
- },
- "1377": {
-  "category_id": 1,
-  "dependencies": [
-   1378
-  ],
-  "downloads": 3,
-  "icon_url": "https://www.dropbox.com/s/h0b1gm8nzxig5sa/Icon.pic?dl=1",
-  "initial_description": "fool your friends with this \"virus\", This is \"Scamdisk\" but with different name and icon, install it in your friend computer and say \"There is a update and ECS implemented a Terminal\"",
-  "license_id": 4,
-  "path": "Main.lua",
-  "publication_name": "Terminal",
-  "source_url": "https://www.dropbox.com/s/ddvjs932rxjq7c2/Main.lua?dl=1",
-  "timestamp": 1594456364,
-  "user_name": "danilacasito",
-  "version": 1.02,
-  "whats_new": "this is a prank program, don't delete the FILES in the DISK, only flash the BIOS, backup your bios to other eepron and done",
-  "whats_new_version": 1.02
- },
- "1378": {
-  "path": "Icon.pic",
-  "source_url": "https://www.dropbox.com/s/h0b1gm8nzxig5sa/Icon.pic?dl=1",
-  "timestamp": 1594456364,
-  "type_id": 3,
-  "user_name": "danilacasito",
-  "version": 1.02
  },
  "138": {
   "path": "/Icons/Floppy.pic",
@@ -1541,57 +1172,9 @@
   "user_name": "ECS",
   "version": 1.83
  },
- "1380": {
-  "category_id": 1,
-  "dependencies": [
-   73,
-   108,
-   1060,
-   1095,
-   1381,
-   1382,
-   1383,
-   1059
-  ],
-  "downloads": 6,
-  "icon_url": "https://raw.githubusercontent.com/MrOlegTitov/Extreme-Reactors-Control-Program/master/Icon.pic",
-  "initial_description": "This program can help you to control your reactor from Extreme Reactors or Big Reactors mod.",
-  "license_id": 6,
-  "path": "Main.lua",
-  "publication_name": "Reactor Control",
-  "source_url": "https://raw.githubusercontent.com/MrOlegTitov/Extreme-Reactors-Control-Program/master/Main.lua",
-  "timestamp": 1596362844,
-  "user_name": "MrOlegTitov",
-  "version": 1.08,
-  "whats_new": "Changed application license.",
-  "whats_new_version": 1.08
- },
- "1381": {
-  "path": "Localizations/English.lang",
-  "source_url": "https://raw.githubusercontent.com/MrOlegTitov/Extreme-Reactors-Control-Program/master/Localizations/English.lang",
-  "timestamp": 1596362844,
-  "type_id": 4,
-  "user_name": "MrOlegTitov",
-  "version": 1.08
- },
- "1382": {
-  "path": "Localizations/Russian.lang",
-  "source_url": "https://raw.githubusercontent.com/MrOlegTitov/Extreme-Reactors-Control-Program/master/Localizations/Russian.lang",
-  "timestamp": 1596362844,
-  "type_id": 4,
-  "user_name": "MrOlegTitov",
-  "version": 1.08
- },
- "1383": {
-  "path": "Icon.pic",
-  "source_url": "https://raw.githubusercontent.com/MrOlegTitov/Extreme-Reactors-Control-Program/master/Icon.pic",
-  "timestamp": 1596362844,
-  "type_id": 3,
-  "user_name": "MrOlegTitov",
-  "version": 1.08
- },
  "1387": {
   "category_id": 2,
+  "downloads": 1,
   "initial_description": "control Minecraft server by rcon.",
   "license_id": 1,
   "path": "rcon",
@@ -1603,6 +1186,7 @@
  },
  "1392": {
   "category_id": 2,
+  "downloads": 1,
   "initial_description": "ESC",
   "license_id": 1,
   "path": "InfoPanel Installer.lua",
@@ -1640,7 +1224,7 @@
    1058,
    1095
   ],
-  "downloads": 13,
+  "downloads": 24,
   "icon_url": "https://raw.githubusercontent.com/Hatry1337/Cubify/main/Icon.pic",
   "initial_description": "Music player with playlists, playing queue, cloud sync and etc.\nGithub: https://github.com/Hatry1337/Cubify",
   "license_id": 1,
@@ -1660,30 +1244,6 @@
   "type_id": 3,
   "user_name": "Hatryy",
   "version": 1.09
- },
- "1396": {
-  "category_id": 1,
-  "dependencies": [
-   1397
-  ],
-  "downloads": 3,
-  "icon_url": "https://github.com/arduinka55055/MineOS_Powerbank/blob/master/Icon.pic?raw=true",
-  "initial_description": "Powerbank(beta) is cool battery manager for your RF system. place adapters around your energy capacitors, and manage percentage. also you can combine more elements in one group. WARNING! application is beta, so you can notice some bugs. please tell me about bugs",
-  "license_id": 2,
-  "path": "Main.lua",
-  "publication_name": "Powerbank",
-  "source_url": "https://raw.githubusercontent.com/arduinka55055/MineOS_Powerbank/master/Main.lua",
-  "timestamp": 1606247080,
-  "user_name": "CodeMiner505",
-  "version": 1
- },
- "1397": {
-  "path": "Icon.pic",
-  "source_url": "https://github.com/arduinka55055/MineOS_Powerbank/blob/master/Icon.pic?raw=true",
-  "timestamp": 1606247080,
-  "type_id": 3,
-  "user_name": "CodeMiner505",
-  "version": 1
  },
  "1398": {
   "category_id": 3,
@@ -1712,34 +1272,10 @@
  "140": {
   "path": "/Icons/Folder.pic",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Icons/Folder.pic",
-  "timestamp": 1652893110,
+  "timestamp": 1629276601,
   "type_id": 2,
-  "user_name": "ECS",
+  "user_name": "pril",
   "version": 1.83
- },
- "1400": {
-  "category_id": 1,
-  "dependencies": [
-   1401
-  ],
-  "downloads": 3,
-  "icon_url": "https://github.com/gaussandhisgun/OpenComputersApps/raw/main/RTClock/Icon.pic",
-  "initial_description": "ECS' clock.lua fork, but with icon and uses system time instead of world one",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "RTClock",
-  "source_url": "https://github.com/gaussandhisgun/OpenComputersApps/raw/main/RTClock/Main.lua",
-  "timestamp": 1612380254,
-  "user_name": "Gravitos",
-  "version": 1
- },
- "1401": {
-  "path": "Icon.pic",
-  "source_url": "https://github.com/gaussandhisgun/OpenComputersApps/raw/main/RTClock/Icon.pic",
-  "timestamp": 1612380254,
-  "type_id": 3,
-  "user_name": "Gravitos",
-  "version": 1
  },
  "1402": {
   "category_id": 2,
@@ -1753,58 +1289,6 @@
   "version": 1.03,
   "whats_new": "Fixed interruption disabling issue",
   "whats_new_version": 1.01
- },
- "1405": {
-  "category_id": 1,
-  "dependencies": [
-   106,
-   73,
-   108,
-   1402,
-   1060,
-   1095,
-   1059,
-   97,
-   1406,
-   1407,
-   1408
-  ],
-  "downloads": 4,
-  "icon_url": "https://github.com/MrOlegTitov/Refined-Storage-Info-Program/blob/main/Icon.pic?raw=true",
-  "initial_description": "This program can help you for getting some info about your's Refined Storage network and to order auto crafts. ",
-  "license_id": 6,
-  "path": "Main.lua",
-  "publication_name": "Refined Storage Control",
-  "source_url": "https://raw.githubusercontent.com/MrOlegTitov/Refined-Storage-Info-Program/main/Main.lua",
-  "timestamp": 1613367302,
-  "user_name": "MrOlegTitov",
-  "version": 1.02,
-  "whats_new": "Updated icon.",
-  "whats_new_version": 1.02
- },
- "1406": {
-  "path": "Icon.pic",
-  "source_url": "https://github.com/MrOlegTitov/Refined-Storage-Info-Program/blob/main/Icon.pic?raw=true",
-  "timestamp": 1613367302,
-  "type_id": 3,
-  "user_name": "MrOlegTitov",
-  "version": 1.02
- },
- "1407": {
-  "path": "Localizations/English.lang",
-  "source_url": "https://raw.githubusercontent.com/MrOlegTitov/Refined-Storage-Info-Program/main/Localizations/English.lang",
-  "timestamp": 1613367302,
-  "type_id": 4,
-  "user_name": "MrOlegTitov",
-  "version": 1.01
- },
- "1408": {
-  "path": "Localizations/Russian.lang",
-  "source_url": "https://raw.githubusercontent.com/MrOlegTitov/Refined-Storage-Info-Program/main/Localizations/Russian.lang",
-  "timestamp": 1613367302,
-  "type_id": 4,
-  "user_name": "MrOlegTitov",
-  "version": 1.01
  },
  "141": {
   "path": "/Icons/FileNotExists.pic",
@@ -1833,7 +1317,7 @@
    2053,
    2055
   ],
-  "downloads": 4,
+  "downloads": 6,
   "icon_url": "https://raw.githubusercontent.com/Senliast/mineos-apps/main/DoorLock.app/Icon.pic",
   "initial_description": "A lock that supports code or fingerprint. You can configure output of a redstone signal on different sites depending on if the authentication failed or succeeded and an auto-lock timer. This app is reborn of the CodeDoor app on older MineOS versions with some more functions additionally. CodeDoor uses old libraries that doesnt work on new MineOS versions (at least, officially) and is therefore not available anymore. This app changes it.",
   "license_id": 1,
@@ -1873,7 +1357,7 @@
    1440,
    2011
   ],
-  "downloads": 16,
+  "downloads": 29,
   "icon_url": "https://raw.githubusercontent.com/Chebuya/OpenOS-mineos/master/Icon.pic",
   "initial_description": "OpenOS in your MineOS",
   "license_id": 1,
@@ -1891,7 +1375,7 @@
   "dependencies": [
    1437
   ],
-  "downloads": 5,
+  "downloads": 7,
   "icon_url": "https://raw.githubusercontent.com/Xottabich0/holoclockirl/main/Icon.pic",
   "initial_description": "\u041d\u0435\u0431\u043e\u043b\u044c\u0448\u0430\u044f \u043f\u0435\u0440\u0435\u0434\u0435\u043b\u043a\u0430 \u0433\u043e\u043b\u043e\u0433\u0440\u0430\u0444\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0447\u0430\u0441\u043e\u0432 \u0438\u0437 \u043e\u0440\u0438\u0433\u0438\u043d\u0430\u043b\u044c\u043d\u043e\u0439 \u043a\u043e\u043c\u043f\u043b\u0435\u043a\u0442\u0430\u0446\u0438\u0438 MineOS \u043f\u043e\u0434 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f! \u0427\u0430\u0441\u043e\u0432\u043e\u043f\u0439 \u043f\u043e\u044f\u0441 \u0443\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u0435\u0442\u0441\u044f \u0432 \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430\u0445 \u0441\u0438\u0441\u0442\u0435\u043c\u044b!",
   "license_id": 1,
@@ -1983,6 +1467,7 @@
   "dependencies": [
    1450
   ],
+  "downloads": 1,
   "icon_url": "https://raw.githubusercontent.com/BrightYC/Catch/main/Icon.pic",
   "initial_description": "Full disk encryption",
   "license_id": 1,
@@ -2014,7 +1499,7 @@
    1465,
    1480
   ],
-  "downloads": 5,
+  "downloads": 10,
   "icon_url": "https://raw.githubusercontent.com/kogtyvPl/word.app/main/icon.pic",
   "initial_description": "\u0422\u0435\u043a\u0441\u0442\u043e\u0432\u044b\u0439 \u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440. \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0439, \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0443\u0439 \u0441\u0432\u043e\u0438 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f, \u0447\u0442\u043e\u0431\u044b \u0432\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0438\u0445 \u043a\u0443\u0434\u0430 \u043d\u0438\u0431\u0443\u0442\u044c \u0432 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 :)",
   "license_id": 1,
@@ -2424,7 +1909,7 @@
    1511,
    1513
   ],
-  "downloads": 2,
+  "downloads": 3,
   "icon_url": "https://raw.githubusercontent.com/kogtyvPl/animatia/main/Icon.pic",
   "initial_description": "\u0442\u0435\u0441\u0442\u043e\u0432\u0430\u044f \u0430\u043d\u0438\u043c\u0430\u0446\u0438\u044f (\u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u043a\u0430\u0434\u0440\u043e\u0432 \u044f \u0434\u0435\u043b\u0430\u0442\u044c \u043d\u0435 \u0443\u043c\u0435\u044e, \u043a\u0442\u043e \u0443\u043c\u0435\u0435\u0442 \u043d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u043a\u0430\u043a)",
   "license_id": 1,
@@ -2506,7 +1991,7 @@
    1517,
    1518
   ],
-  "downloads": 5,
+  "downloads": 8,
   "icon_url": "https://raw.githubusercontent.com/kogtyvPl/BlackMineOS/main/IconFinder.pic",
   "initial_description": "\u0422\u0451\u043c\u043d\u044b\u0439 \u0441\u0442\u0438\u043b\u044c \u043f\u0430\u043f\u043e\u043a \u0438 Finder (\u0443\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u0435\u0442\u0441\u044f \u0441\u0440\u0430\u0437\u0443 \u043f\u0440\u0438 \u0441\u043a\u0430\u0447\u0438\u0432\u0430\u043d\u0438\u0438)",
   "license_id": 1,
@@ -2644,6 +2129,7 @@
    1548,
    1549
   ],
+  "downloads": 2,
   "icon_url": "https://raw.githubusercontent.com/kogtyvPl/Minecode-Fix/main/Icon.pic",
   "initial_description": "\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u0444\u0430\u0439\u043b\u043e\u0432: .reds .mp3 .sound",
   "license_id": 1,
@@ -2766,7 +2252,7 @@
    1559,
    1560
   ],
-  "downloads": 7,
+  "downloads": 8,
   "icon_url": "https://raw.githubusercontent.com/kogtyvPl/Animation-1/main/Icon.pic",
   "initial_description": "\u0414\u0438\u0430\u0444\u0438\u043b\u044c\u043c \u043f\u0440\u043e \u0431\u0443\u043d\u0442\u0443\u044e\u0449\u0438\u0445 \u0448\u043a\u043e\u043b\u044c\u043d\u0438\u043a\u043e\u0432 \u043e\u0442 \u0441\u0442\u0443\u0434\u0438\u0438: \u041c\u0435\u043b\u044c\u043d\u0438\u0446\u0430!",
   "license_id": 1,
@@ -2863,7 +2349,7 @@
    1562,
    1563
   ],
-  "downloads": 7,
+  "downloads": 10,
   "icon_url": "https://raw.githubusercontent.com/filtys00/SmartHome/main/Icon.pic",
   "initial_description": "Allows you remote controll over your home through connected Redstone I/O blocks",
   "license_id": 1,
@@ -2900,7 +2386,7 @@
    1569,
    1570
   ],
-  "downloads": 2,
+  "downloads": 4,
   "icon_url": "https://raw.githubusercontent.com/kogtyvPl/diafilm-2/main/Icon.pic",
   "initial_description": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0430\u0442\u044c \u0441\u043b\u0430\u0439\u0434\u044b - \u043d\u0430\u0436\u043c\u0438 \u043f\u0440\u043e\u0431\u0435\u043b. \u042d\u0442\u043e \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0435\u043d\u0438\u0435 \u0434\u0438\u0444\u0438\u043b\u044c\u043c\u0430 \u0431\u0443\u043d\u0442\u0443\u044e\u0449\u0438\u0435 \u0448\u043a\u043e\u043b\u044c\u043d\u0438\u043a\u0438!!!",
   "license_id": 1,
@@ -2967,7 +2453,7 @@
    1580,
    1581
   ],
-  "downloads": 4,
+  "downloads": 5,
   "icon_url": "https://raw.githubusercontent.com/kogtyvPl/Cubechat/main/Icon.pic",
   "initial_description": "\u0427\u0430\u0442 \u0434\u043b\u044f \u043e\u0431\u0449\u0435\u043d\u0438\u044f (\u043f\u0440\u043e\u0441\u0442\u043e \u0442\u0435\u0441\u0442)",
   "license_id": 1,
@@ -3010,7 +2496,7 @@
    1593,
    1594
   ],
-  "downloads": 3,
+  "downloads": 5,
   "icon_url": "https://raw.githubusercontent.com/kogtyvPl/CCleaner/main/Icon.pic",
   "initial_description": "\u042d\u0442\u043e \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0431\u044b\u043b\u043e \u0432\u043e\u0441\u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u043e \u0434\u0440\u0443\u0433\u0438\u043c\u0438 \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f\u043c\u0438. \u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0431\u044b\u043b\u043e \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u043e.",
   "license_id": 1,
@@ -3119,7 +2605,7 @@
  },
  "1600": {
   "category_id": 1,
-  "downloads": 2,
+  "downloads": 3,
   "initial_description": "No",
   "license_id": 1,
   "path": 1,
@@ -3135,7 +2621,7 @@
    106,
    1608
   ],
-  "downloads": 3,
+  "downloads": 4,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Console.app/Icon.pic",
   "initial_description": "Application for simple I/O using text console with global print() function support",
   "license_id": 1,
@@ -3165,7 +2651,7 @@
    1687,
    1688
   ],
-  "downloads": 3,
+  "downloads": 6,
   "icon_url": "https://raw.githubusercontent.com/kogtyvPl/numpade/main/Icon.pic",
   "initial_description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u0430 \u0434\u043b\u044f \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u0442\u0435\u043a\u0441\u0442\u043e\u0432\u044b\u0445 \u0444\u0430\u0439\u043b\u043e\u0432 (.txt) \u0438\u0434\u0435\u044f: Bumer_32. \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0441\u043e\u0437\u0434\u0430\u043b: kogtyv. \u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0443\u0439 \u0441\u0432\u043e\u0438 \u043a\u0440\u0430\u0441\u0438\u0432\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u044b :)",
   "license_id": 1,
@@ -3191,7 +2677,7 @@
   "dependencies": [
    1615
   ],
-  "downloads": 2,
+  "downloads": 5,
   "icon_url": "https://www.dropbox.com/s/iqdgd9gg762jfbq/img.pic?dl=1",
   "initial_description": "buteful screensaver",
   "license_id": 1,
@@ -3251,7 +2737,7 @@
    1621,
    106
   ],
-  "downloads": 3,
+  "downloads": 4,
   "icon_url": "https://github.com/kogtyvPl/Book-Read/raw/main/Icon.pic",
   "initial_description": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0434\u043b\u044f \u0447\u0442\u0435\u043d\u0438\u044f \u043a\u043d\u0438\u0433 \u0438\u0437 \u043f\u0430\u043f\u043a\u0438: (books/). \u0427\u0438\u0442\u0430\u0439 \u043a\u043d\u0438\u0433\u0438, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0443 \u0442\u0435\u0431\u044f \u0435\u0441\u043b\u0438 \u0438\u043b\u0438 \u0442\u044b \u0441\u043a\u0430\u0447\u0430\u043b.",
   "license_id": 1,
@@ -3294,7 +2780,7 @@
    1633,
    1634
   ],
-  "downloads": 1,
+  "downloads": 3,
   "icon_url": "https://github.com/Toxa2015Ars/OC-Programs/blob/main/1%20program/Icon.pic?raw=true",
   "initial_description": "Big Reactors reactor control program.",
   "license_id": 1,
@@ -3372,7 +2858,7 @@
    106,
    1236
   ],
-  "downloads": 4,
+  "downloads": 7,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/App%20Market.app/Icon.pic",
   "initial_description": "One of the main system applications, allows you to check for available updates, and download the most beautiful programs created specifically for MineOS.",
   "license_id": 1,
@@ -3475,7 +2961,7 @@
    1663,
    1664
   ],
-  "downloads": 6,
+  "downloads": 9,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Picture%20View.app/Icon.pic",
   "initial_description": "Default MineOS application for viewing images in .pic format",
   "license_id": 1,
@@ -3580,7 +3066,7 @@
    1670,
    1665
   ],
-  "downloads": 2,
+  "downloads": 6,
   "icon_url": "https://raw.githubusercontent.com/Bs0Dd/OpenCompSoft/master/TapFAT/MineOS/Icon.pic",
   "initial_description": "Full-functional Filesystem for Computronics tapes. Read more at: https://github.com/Bs0Dd/OpenCompSoft/blob/master/TapFAT/README.md",
   "license_id": 1,
@@ -3627,6 +3113,7 @@
  },
  "1674": {
   "category_id": 2,
+  "downloads": 1,
   "initial_description": "OpenOS serialization library literally moved to MineOS. So far, its worked for me and I dont think there are bugs.",
   "license_id": 1,
   "path": "serialization.lua",
@@ -3646,7 +3133,7 @@
    1681,
    1682
   ],
-  "downloads": 2,
+  "downloads": 6,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Calendar.app/Icon.pic",
   "initial_description": "An interactive calendar with mini & full window modes",
   "license_id": 1,
@@ -3770,7 +3257,7 @@
    2381,
    2382
   ],
-  "downloads": 6,
+  "downloads": 8,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/MineCode%20IDE.app/Icon.pic",
   "initial_description": "This is a powerful tool for developing any app you want. It supports Lua syntax highlighting, text selection and copy/pasting, user-defined color schemes and beautiful integrated file manager",
   "license_id": 1,
@@ -3810,7 +3297,7 @@
   "dependencies": [
    1709
   ],
-  "downloads": 8,
+  "downloads": 11,
   "icon_url": "https://raw.githubusercontent.com/Bs0Dd/OpenCompSoft/master/Piano/Icon.pic",
   "initial_description": "Simple piano app, based on piano from early MineOS versions.",
   "license_id": 1,
@@ -3853,7 +3340,7 @@
    1729,
    1730
   ],
-  "downloads": 8,
+  "downloads": 14,
   "icon_url": "https://raw.githubusercontent.com/Bs0Dd/OpenCompSoft/master/TET%D0%AFIS/Icon.pic",
   "initial_description": "Game console with Tetris and Snake games, based on Snake game from early MineOS versions.",
   "license_id": 1,
@@ -3921,7 +3408,7 @@
    1735,
    1736
   ],
-  "downloads": 3,
+  "downloads": 5,
   "icon_url": "https://raw.githubusercontent.com/Bs0Dd/OpenCompSoft/master/GuessWord/Icon.pic",
   "initial_description": "Game where you have to guess a word by a hint. WARNING - The database of words for the English language is not yet ready (there is only Russian). If you want to help me with this, write to Discord: Bs()Dd#5299.",
   "license_id": 1,
@@ -3991,7 +3478,7 @@
    2376,
    2377
   ],
-  "downloads": 4,
+  "downloads": 7,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Finder.app/Icon.pic",
   "initial_description": "This application allows you to navigate the file system of your computer, as well as copy, paste, cut, rename and edit files, create shortcuts and search them in current directory. For convenience, each directory can be added to the \"favorites\" menu. Threre is also feature of manual navigation to the string path on HDD. Finder supports a modem protocol for connecting to remote computers filesystem and transferring files \"over the air\". Finder supports real FTP servers connection for quick and easy file transfer without using third-party services such as pastebin.com",
   "license_id": 1,
@@ -4017,7 +3504,7 @@
   "dependencies": [
    1791
   ],
-  "downloads": 2,
+  "downloads": 4,
   "icon_url": "https://github.com/Yaroslav-Nesst/Mineos-Toprec/blob/main/Icon.pic?raw=true",
   "initial_description": "I liked this recovery! Not bad and not the best, medium",
   "license_id": 1,
@@ -4057,6 +3544,7 @@
   "dependencies": [
    1904
   ],
+  "downloads": 1,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Events.app/Icon.pic",
   "initial_description": "Simple app that work like \"dmesg\" from OpenOS",
   "license_id": 1,
@@ -4077,7 +3565,7 @@
  },
  "1915": {
   "category_id": 3,
-  "downloads": 2,
+  "downloads": 3,
   "initial_description": "\u041a\u0430\u0441\u0442\u043e\u043c\u043d\u044b\u0439 \u0435\u0444\u0438, \u0434\u043b\u044f \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438 \u043d\u0430\u0436\u043c\u0438\u0442\u0435 \u043f\u043e \u0444\u0430\u0439\u043b\u0443 \u043f\u043a\u043c \u0438 \u043f\u0440\u043e\u0448\u0438\u0442\u044c eeprom",
   "license_id": 7,
   "path": "Bios.lua",
@@ -4218,7 +3706,7 @@
    103,
    1991
   ],
-  "downloads": 7,
+  "downloads": 8,
   "icon_url": "https://raw.githubusercontent.com/cadergator10/Opencomputers-serpentine/main/database/Icon.pic",
   "initial_description": "A powerful and modular database and server system! Github: https://github.com/cadergator10/Opencomputers-servertine    Module Website: https://cadespc.com",
   "license_id": 1,
@@ -4251,7 +3739,7 @@
    1402,
    391
   ],
-  "downloads": 1,
+  "downloads": 2,
   "icon_url": "https://raw.githubusercontent.com/Bumer-32/MineOSPrograms/main/MyFlux.app/Icon.pic",
   "initial_description": "----This is an application that will allow gou to view the\nstatistics of your flux system from flux networks mod\n\n--all you have to do is connect ang storage via an adapter to gour PC!\n--number of storages, points, and connectors\n--the sum of all energy!\n\n--MyFlux github: https://github.com/Bumer-32/MineOSPrograms/tree/main/MyFlux.app",
   "license_id": 1,
@@ -4298,7 +3786,7 @@
  },
  "1950": {
   "category_id": 3,
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "this thing adds latvian language to MineOS, still in beta version, adds only to mineos, not the apps",
   "license_id": 1,
   "path": "/Localizations/Latvian.lang",
@@ -4310,7 +3798,7 @@
  },
  "1951": {
   "category_id": 2,
-  "downloads": 3,
+  "downloads": 4,
   "initial_description": "this is the libqr for opencomputers, but with mineos compatibility",
   "license_id": 1,
   "path": "QR.lua",
@@ -4322,7 +3810,7 @@
  },
  "1952": {
   "category_id": 3,
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "Reboots The MineOS",
   "license_id": 1,
   "path": "RebootOS.lua",
@@ -4334,6 +3822,7 @@
  },
  "1955": {
   "category_id": 2,
+  "downloads": 1,
   "initial_description": "Just a test",
   "license_id": 1,
   "path": "poop",
@@ -4383,7 +3872,7 @@
   "dependencies": [
    1981
   ],
-  "downloads": 2,
+  "downloads": 3,
   "icon_url": "https://github.com/panandafog/TurretsControl/blob/main/icon.pic?raw=true",
   "initial_description": "Application for controlling turrets from Open Modular Turrets mod",
   "license_id": 1,
@@ -4406,7 +3895,7 @@
  },
  "1982": {
   "category_id": 3,
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "SS",
   "license_id": 4,
   "path": "main.lua",
@@ -4446,7 +3935,7 @@
    1990,
    2005
   ],
-  "downloads": 14,
+  "downloads": 18,
   "icon_url": "https://raw.githubusercontent.com/Bumer-32/MineOSPrograms/main/GitHub%20Downloader.app/Icon.pic",
   "initial_description": "This program allows you to clone any repository from github",
   "license_id": 1,
@@ -4485,6 +3974,7 @@
  },
  "1991": {
   "category_id": 2,
+  "downloads": 1,
   "initial_description": "Custom Compatability library for Servertine. Allows program to perform certain library actions on both MineOS and OpenOS to allow for less extra programming on my side",
   "license_id": 1,
   "path": "Compat.lua",
@@ -4526,7 +4016,7 @@
   "dependencies": [
    2019
   ],
-  "downloads": 5,
+  "downloads": 9,
   "icon_url": "https://github.com/PlushPersik/CTFAK-OC/raw/forMINEOS/CTFAK%202.0.app/Icon.pic",
   "initial_description": "This is CTFAK port for MineOS to opencomputers mod (MINECRAFT mod). Developers: PlushPersik, CACKE.",
   "license_id": 1,
@@ -4549,7 +4039,7 @@
  },
  "2034": {
   "category_id": 3,
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "Just script that says hello world may be someone need it",
   "license_id": 1,
   "path": "hello-world.lua",
@@ -4624,6 +4114,7 @@
    1992,
    1748
   ],
+  "downloads": 1,
   "initial_description": "Library to use shared resources like network or wireless cards",
   "license_id": 5,
   "path": "netComponents.lua",
@@ -4637,7 +4128,7 @@
  },
  "2058": {
   "category_id": 2,
-  "downloads": 2,
+  "downloads": 3,
   "initial_description": "used to drive modem components",
   "license_id": 1,
   "path": "openNet.lua",
@@ -4746,7 +4237,7 @@
   "dependencies": [
    2180
   ],
-  "downloads": 6,
+  "downloads": 7,
   "icon_url": "https://github.com/Smok1e/minedelbrot/raw/main/Icon.pic",
   "initial_description": "Simple Mandelbrot set visualizer",
   "license_id": 1,
@@ -4797,7 +4288,7 @@
    2212,
    2213
   ],
-  "downloads": 3,
+  "downloads": 5,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Pioneer.app/Icon.pic",
   "initial_description": "Pro-grade digital DJ deck for Computronics tape drives and DFPWM audio codec. To convert your favorite tracks, use https://music.madefor.cc",
   "license_id": 1,
@@ -5031,7 +4522,7 @@
   "dependencies": [
    2216
   ],
-  "downloads": 3,
+  "downloads": 4,
   "icon_url": "https://github.com/QM8782/MineOS-Apps/raw/main/productivity/console_cmd/Icon.pic",
   "initial_description": "Hi everyone, I'm excited to introduce you to the \u201cConsole Command\u201d app. This standalone application is designed to interact with and utilize different tools within your operating system. It\u2019s a powerful tool that can help you streamline your tasks and enhance your productivity. Please note that the \u201cConsole Command\u201d app is currently under heavy development. This means that while we\u2019re working hard to add new features and improve its functionality, it may not be entirely finished and could contain some bugs. Your feedback is invaluable to us. If you encounter any bugs while using the app, we encourage you to report them so we can address them promptly. To do this, simply type \u201chttps://github.com/QM8782/MineOS-Apps/issues\u201d into your modern browser and issue a bug for the program. We appreciate your understanding and patience as we continue to develop and refine the \u201cConsole Command\u201d app. Thank you for your support! Best of luck, QuickMuffin8782",
   "license_id": 2,
@@ -5066,6 +4557,7 @@
  },
  "2218": {
   "category_id": 2,
+  "downloads": 1,
   "initial_description": "MineOS filesystem library",
   "license_id": 1,
   "path": "Filesystem.lua",
@@ -5080,7 +4572,7 @@
   "dependencies": [
    2220
   ],
-  "downloads": 13,
+  "downloads": 20,
   "icon_url": "https://storage.buttex.ru/data/free_and_total_memory.pic",
   "initial_description": "\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u0432 \u043f\u043e\u043a\u043e\u0435!\u043a\u0442\u043e \u0435\u0433\u043e \u0432\u043e\u043e\u0431\u0449\u0435 \u043c\u0435\u043d\u044f\u0435\u0442? \u0425\u0443\u0439))0",
   "license_id": 1,
@@ -5107,6 +4599,7 @@
    106,
    2222
   ],
+  "downloads": 1,
   "icon_url": "https://github.com/IgorTimofeev/MineOS/raw/master/Applications/HEX.app/Icon.pic",
   "initial_description": "This small hexadecimal file editor will allow you to view and delicately adjust binary data formats",
   "license_id": 1,
@@ -5130,7 +4623,7 @@
   "dependencies": [
    2224
   ],
-  "downloads": 1,
+  "downloads": 4,
   "icon_url": "https://raw.githubusercontent.com/ke46138/OC-MineOS-WirelessSender/main/app/WirelessSender.app/Icon.pic",
   "initial_description": "A program for sending messages via a wireless modem",
   "license_id": 1,
@@ -5158,7 +4651,7 @@
    2227,
    2228
   ],
-  "downloads": 2,
+  "downloads": 6,
   "icon_url": "https://raw.githubusercontent.com/ke46138/OC-MineOS-WirelessReceiver/main/WirelessReceiver.app/Icon.pic",
   "initial_description": "A program for receiving messages via a wireless modem",
   "license_id": 1,
@@ -5201,7 +4694,7 @@
    2232,
    2327
   ],
-  "downloads": 7,
+  "downloads": 11,
   "icon_url": "https://raw.githubusercontent.com/ke46138/OC-MineOS-Printer/main/Printer.app/Icon.pic",
   "initial_description": "A program for printing pages through printer from openprinter mod.",
   "license_id": 1,
@@ -5245,7 +4738,7 @@
    2235,
    2241
   ],
-  "downloads": 5,
+  "downloads": 9,
   "icon_url": "https://raw.githubusercontent.com/ke46138/OC-MineOS-Geo2holo/main/Geo2holo.app/Icon.pic",
   "initial_description": "Port from OpenOS. This application scans the terrain and displays it on a holographic projector. Github: https://github.com/ke46138/OC-MineOS-Geo2holo",
   "license_id": 1,
@@ -5289,7 +4782,7 @@
    108,
    2270
   ],
-  "downloads": 1,
+  "downloads": 3,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Palette.app/Icon.pic",
   "initial_description": "Default MineOS color picker",
   "license_id": 1,
@@ -5310,7 +4803,7 @@
  },
  "2271": {
   "category_id": 2,
-  "downloads": 3,
+  "downloads": 5,
   "initial_description": "\u043f\u0435\u0440\u0435\u0437\u0430\u043b\u0438\u0432 \u043e\u0440\u0438\u0433\u0438\u043d\u0430\u043b\u044c\u043d\u044b\u0439 \u0430\u0432\u0442\u043e\u0440 0leshe",
   "license_id": 1,
   "path": "opengames.lua",
@@ -5337,7 +4830,7 @@
   "dependencies": [
    2300
   ],
-  "downloads": 3,
+  "downloads": 4,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Wallpapers/Snow.wlp/Icon.pic",
   "initial_description": "Beautiful animated snow wallpaper",
   "license_id": 1,
@@ -5451,7 +4944,7 @@
    2323,
    2324
   ],
-  "downloads": 9,
+  "downloads": 12,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Wallpapers/Static%20picture.wlp/Icon.pic",
   "initial_description": "Allows you to set picture as desktop background",
   "license_id": 1,
@@ -5475,7 +4968,7 @@
   "dependencies": [
    2310
   ],
-  "downloads": 3,
+  "downloads": 4,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Wallpapers/Solid%20color.wlp/Icon.pic",
   "initial_description": "Allows you to select your favourite color as desktop background",
   "license_id": 1,
@@ -5633,7 +5126,7 @@
    391,
    2329
   ],
-  "downloads": 7,
+  "downloads": 9,
   "icon_url": "https://raw.githubusercontent.com/Bumer-32/MineOSPrograms/main/JUST%20CLICK.app/Icon.pic",
   "initial_description": "Just Click Game! You should just to click!\nSumm of all clicks (off all players) you can see\nMost geniuosly game in the market\nGithub: https://github.com/Bumer-32/MineOSPrograms/tree/main/JUST%20CLICK.app",
   "license_id": 1,
@@ -5684,7 +5177,7 @@
    2333,
    2334
   ],
-  "downloads": 15,
+  "downloads": 19,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Wallpapers/DVD.wlp/Icon.pic",
   "initial_description": "floating dvd logo?",
   "license_id": 1,
@@ -5718,7 +5211,7 @@
    2337,
    2338
   ],
-  "downloads": 8,
+  "downloads": 11,
   "icon_url": "https://github.com/ke46138/OC-MineOS-Geoglasses/raw/main/Geoglasses.app/icon.pic",
   "initial_description": "\u041f\u043e\u0440\u0442 \u0438\u0437 Openos. \u0421\u043a\u0430\u043d\u0438\u0440\u0443\u0435\u0442 \u043e\u0431\u043b\u0430\u0441\u0442\u044c \u0432\u043e\u043a\u0440\u0443\u0433 \u043a\u043e\u043c\u043f\u0430 \u0438 \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u0435\u0442 \u0440\u0443\u0434\u044b \u043d\u0430 \u043e\u0447\u043a\u0430\u0445 \u0438\u0437 \u043c\u043e\u0434\u0430 openglasses 2. Port from OpenOS. Scans area around computer and displays ores on glasses from opensglasses 2 mod.",
   "license_id": 1,
@@ -5786,7 +5279,7 @@
   "dependencies": [
    2351
   ],
-  "downloads": 5,
+  "downloads": 6,
   "icon_url": "http://c29844y4.beget.tech/coloredshiticon.pic",
   "initial_description": "Wallpaper. Epilepsy warning!",
   "license_id": 1,
@@ -5818,7 +5311,7 @@
    2271,
    2272
   ],
-  "downloads": 6,
+  "downloads": 10,
   "icon_url": "https://github.com/matvey-mayner/MineOS-APPS/raw/main/Coin%20Combat.app/Icon.pic",
   "initial_description": "\u0418\u0433\u0440\u0430 \u043a\u043e\u043f\u0438\u0440\u0443\u044e\u0442 \u0438\u0434\u0435\u044e hamster combat \u043f\u0440\u043e\u0441\u0442\u043e \u0435\u0433\u043e \u0432\u0441\u0435 \u0442\u0430\u043f\u0430\u044e\u0442 \u0432\u043e\u0442 \u044f \u0441\u0434\u0435\u043b\u0430\u043b \u0442\u0430\u043a\u0443\u044e \u0438\u0433\u0440\u0443 \u0440\u0430\u0434\u0438 \u043f\u0440\u0438\u043a\u043e\u043b\u0430",
   "license_id": 2,
@@ -5876,7 +5369,7 @@
   "dependencies": [
    2365
   ],
-  "downloads": 13,
+  "downloads": 14,
   "icon_url": "https://raw.githubusercontent.com/Smok1e/MineOS-apps/main/Matrix/Icon.pic",
   "initial_description": "Matrix wallpaper",
   "license_id": 1,
@@ -5902,7 +5395,7 @@
   "dependencies": [
    2367
   ],
-  "downloads": 5,
+  "downloads": 9,
   "icon_url": "https://raw.githubusercontent.com/Smok1e/MineOS-apps/main/Wallpaper%20test/Icon.pic",
   "initial_description": "Useful application for testing and debugging live MineOS wallpapers\n\nYou can easily reload wallpaper, see FPS and runtime errors",
   "license_id": 1,
@@ -5971,7 +5464,7 @@
    1901,
    1902
   ],
-  "downloads": 4,
+  "downloads": 12,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Weather.app/Icon.pic",
   "initial_description": "This application allows you to see online weather forecast for any world location. It supports temperature, humidity, pressure and wind speed/direction, giving accurate forecast up to 9 days. Works only with MineOS.",
   "license_id": 1,
@@ -5988,7 +5481,7 @@
    2405,
    2409
   ],
-  "downloads": 10,
+  "downloads": 14,
   "icon_url": "https://github.com/CACKE/OCBios-Installer/raw/main/Icon.pic",
   "initial_description": "\u0422\u0430 \u0441\u0430\u043c\u0430\u044f \u043b\u0435\u0433\u0435\u043d\u0434\u0430\u0440\u043d\u0430\u044f \u043f\u0440\u043e\u0448\u0438\u0432\u043a\u0430. \u0412\u0430\u0440\u043d\u0438\u043d\u0433: \u0442\u0440\u0435\u0431\u0443\u0435\u0442 \u0438\u043d\u0435\u0442!",
   "license_id": 2,
@@ -6024,7 +5517,7 @@
    2412,
    2413
   ],
-  "downloads": 4,
+  "downloads": 8,
   "icon_url": "https://github.com/ke46138/OC-MineOS-Very-sigma-translator/raw/main/SigmaTranslator.app/Icon.pic",
   "initial_description": "\u041f\u0440\u043e\u0441\u0442\u043e \u043f\u0435\u0440\u0435\u0432\u043e\u0434\u0447\u0438\u043a. Text translator. Github: https://github.com/ke46138",
   "license_id": 1,
@@ -6068,7 +5561,7 @@
    2416,
    2417
   ],
-  "downloads": 12,
+  "downloads": 21,
   "icon_url": "https://github.com/ke46138/OC-MineOS-ModemChat/raw/main/ModemChat.app/Icon.pic",
   "initial_description": "\u0427\u0430\u0442 \u0447\u0435\u0440\u0435\u0437 \u043c\u043e\u0434\u0435\u043c. Chat via modem. Github: https://github.com/ke46138",
   "license_id": 1,
@@ -6114,7 +5607,7 @@
    2437,
    2438
   ],
-  "downloads": 2,
+  "downloads": 5,
   "icon_url": "https://www.dropbox.com/scl/fi/mbdlazsk6typmtppnt4v3/Icon.pic?rlkey=sc4x0nyb6cpvc94s3why0nr79&st=0f9maynl&dl=1",
   "initial_description": "About\nthe program https://github.com/IgorTimofeev/MineOS/tree/master/Applications/Stargate.app this is the author of this program, I just wanted to publish his work in the App Market for more convenient use, because there it disappeared for download. These are programs for convenient use of portals from the sgcraft mod",
   "license_id": 1,
@@ -6195,7 +5688,7 @@
  },
  "2445": {
   "category_id": 2,
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "advancedLua.lua",
   "license_id": 1,
   "path": "advancedLua.lua",
@@ -6248,6 +5741,7 @@
    2451,
    2452
   ],
+  "downloads": 2,
   "icon_url": "https://github.com/ke46138/OC-MineOS-Self-destruct/raw/refs/heads/main/Self_destruct.app/Icon.pic",
   "initial_description": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u043a\u043e\u0442\u043e\u0440\u043e\u0435 \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0430\u0435\u0442 \u043a\u043e\u043c\u043f.\nApplication which destructing computer.\nGithub: https://github.com/ke46138/OC-MineOS-Self-destruct",
   "license_id": 1,
@@ -6264,7 +5758,7 @@
    262,
    263
   ],
-  "downloads": 6,
+  "downloads": 8,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Translate.app/Icon.pic",
   "initial_description": "Fully functional online-translator based on Yandex.API allows you to translate complex text information to almost any language. Language auto-detection and APIKey changing features also included. Have a fun!",
   "license_id": 1,
@@ -6306,44 +5800,46 @@
    2455,
    2456
   ],
-  "downloads": 3,
+  "downloads": 9,
   "icon_url": "https://github.com/ke46138/OC-MineOS-Black-EFI/raw/refs/heads/main/Black_EFI.app/Icon.pic",
-  "initial_description": "\u0422\u0451\u043c\u043d\u0430\u044f \u0442\u0435\u043c\u0430 \u0434\u043b\u044f eeprom (bios, efi, \u043d\u0430\u0437\u044b\u0432\u0430\u0439\u0442\u0435 \u043a\u0430\u043a \u0445\u043e\u0442\u0438\u0442\u0435).\nDark theme for eeprom.\nGithub: https://github.com/ke46138/OC-MineOS-Black-EFI\n\u0421\u0443\u043a\u0430 \u043f\u0440\u0438\u0448\u043b\u043e\u0441\u044c \u0441\u043e\u0437\u0434\u0430\u0442\u044c \u043d\u043e\u0432\u044b\u0439 \u0430\u043a\u043a \u0434\u043b\u044f \u0442\u043e\u0433\u043e \u0447\u0442\u043e\u0431\u044b \u0432\u044b\u043f\u0443\u0441\u0442\u0438\u0442\u044c \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435, \u044f \u0435\u0431\u0430\u043b \u043b\u0438\u043c\u0438\u0442 \u0432 8 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0439.\nPS. \u042f \u043f\u0440\u043e\u0431\u043e\u0432\u0430\u043b sosat pisos \u043a\u0430\u043a \u0441\u043e\u0432\u0435\u0442\u043e\u0432\u0430\u043b App Market \u043d\u043e \u043d\u0435 \u043f\u043e\u043c\u043e\u0433\u043b\u043e\nPS PS. \u042d\u0442\u043e \u0435\u0441\u043b\u0438 \u0447\u0442\u043e \u044d\u0442\u043e \u0432\u0442\u043e\u0440\u043e\u0439 \u0430\u043a\u043a, \u043f\u0435\u0440\u0432\u044b\u0439 \u0430\u043a\u043a kirbest1000.\nPS PS PS. \u0422\u0435\u043f\u0435\u0440\u044c \u043d\u0435\u043b\u044c\u0437\u044f \u043e\u043f\u0443\u0431\u043a\u0438\u043a\u043e\u0432\u0430\u0442\u044c \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u043f\u043e\u0434 \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u0435\u043c Black EFI, \u0438\u0437 \u0437\u0430 \u0431\u0430\u0433\u0430",
+  "initial_description": "\u0422\u0451\u043c\u043d\u0430\u044f \u0442\u0435\u043c\u0430 \u0434\u043b\u044f eeprom (bios, efi, \u043d\u0430\u0437\u044b\u0432\u0430\u0439\u0442\u0435 \u043a\u0430\u043a \u0445\u043e\u0442\u0438\u0442\u0435). Dark theme for eeprom.",
   "license_id": 1,
   "path": "Main.lua",
   "publication_name": "Dark EFI",
   "source_url": "https://github.com/ke46138/OC-MineOS-Black-EFI/raw/refs/heads/main/Black_EFI.app/Main.lua",
-  "timestamp": 1735069982,
+  "timestamp": 1746382552,
   "user_name": "ke46138",
-  "version": 1
+  "version": 1.01,
+  "whats_new": "\u0422\u0435\u043f\u0435\u0440\u044c \u043c\u043e\u0436\u043d\u043e \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u0437\u0430\u0433\u0440\u0443\u0437\u043e\u0447\u043d\u044b\u0439 \u044d\u043a\u0440\u0430\u043d MineOS \u0442\u0451\u043c\u043d\u044b\u043c. \u041a\u0441\u0442\u0430\u0442\u0438, \u044f \u0437\u0430\u0431\u044b\u043b \u043f\u0430\u0440\u043e\u043b\u044c \u043e\u0442 \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430, \u043d\u0438\u043a\u0442\u043e \u043d\u0435 \u043f\u043e\u0434\u0441\u043a\u0430\u0436\u0435\u0442 \u043a\u0430\u043a \u0435\u0433\u043e \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c (\u0441\u043c. issue \u043d\u0430 github)?",
+  "whats_new_version": 1.01
  },
  "2454": {
   "path": "Localizations/Russian.lang",
   "source_url": "https://github.com/ke46138/OC-MineOS-Black-EFI/raw/refs/heads/main/Black_EFI.app/Localizations/Russian.lang",
-  "timestamp": 1735069982,
+  "timestamp": 1746382552,
   "type_id": 4,
   "user_name": "ke46138",
-  "version": 1
+  "version": 1.01
  },
  "2455": {
   "path": "Localizations/English.lang",
   "source_url": "https://github.com/ke46138/OC-MineOS-Black-EFI/raw/refs/heads/main/Black_EFI.app/Localizations/English.lang",
-  "timestamp": 1735069982,
+  "timestamp": 1746382552,
   "type_id": 4,
   "user_name": "ke46138",
-  "version": 1
+  "version": 1.01
  },
  "2456": {
   "path": "Icon.pic",
   "source_url": "https://github.com/ke46138/OC-MineOS-Black-EFI/raw/refs/heads/main/Black_EFI.app/Icon.pic",
-  "timestamp": 1735069982,
+  "timestamp": 1746382552,
   "type_id": 3,
   "user_name": "ke46138",
-  "version": 1
+  "version": 1.01
  },
  "2457": {
   "category_id": 3,
-  "downloads": 1,
+  "downloads": 4,
   "initial_description": "Openfetch - \u044d\u0442\u043e \u0441\u0430\u043c\u044b\u0439 \u043f\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0443\u0442\u0438\u043b\u0438\u0442\u044b neofetch",
   "license_id": 1,
   "path": "openfetch.lua",
@@ -6352,6 +5848,341 @@
   "timestamp": 1737805251,
   "user_name": "KranioV_1221",
   "version": 1.01
+ },
+ "2466": {
+  "category_id": 1,
+  "dependencies": [
+   2468
+  ],
+  "downloads": 6,
+  "icon_url": "https://raw.githubusercontent.com/misha99fr/PochtaRUOpencomputers/refs/heads/main/Icon.pic",
+  "initial_description": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0434\u043b\u044f \u043e\u0442\u043f\u0440\u0430\u0432\u043a\u0438 \u0422\u0430\u043b\u043e\u043d\u043e\u0432 \u041f\u043e\u0447\u0442\u044b \u0420\u043e\u0441\u0441\u0438\u0438(\u041d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c \u0441\u043a\u0440\u0438\u043f\u0442 \u043d\u0430 \u043c\u043e\u043d\u0438\u0442\u043e\u0440\u0435 \u0441 \u0422\u0430\u0431\u043b\u0438\u0447\u043a\u043e\u0439",
+  "license_id": 1,
+  "path": "Main.lua",
+  "publication_name": "\u0413\u0414\u0415 \u0422\u0410\u041b\u041e\u041d",
+  "source_url": "https://raw.githubusercontent.com/misha99fr/PochtaRUOpencomputers/refs/heads/main/Main.lua",
+  "timestamp": 1745582393,
+  "user_name": "CACKE",
+  "version": 1.04
+ },
+ "2468": {
+  "path": "Icon.pic",
+  "source_url": "https://raw.githubusercontent.com/misha99fr/PochtaRUOpencomputers/refs/heads/main/Icon.pic",
+  "timestamp": 1745582393,
+  "type_id": 3,
+  "user_name": "CACKE",
+  "version": 1.02
+ },
+ "2469": {
+  "category_id": 1,
+  "dependencies": [
+   2470
+  ],
+  "downloads": 3,
+  "icon_url": "https://github.com/ke46138/OC-MineOS-SKALA/raw/refs/heads/main/SKALA-installer.app/Icon.pic",
+  "initial_description": "\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0449\u0438\u043a \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0440\u0435\u0430\u043a\u0442\u043e\u0440\u043e\u043c \u0420\u0411\u041c\u041a \u0438\u0437 \u043c\u043e\u0434\u0430 HBM Nuclear Tech Mod. \u0417\u0430\u043c\u0435\u043d\u044f\u0435\u0442 \u043a\u043e\u043d\u0441\u043e\u043b\u044c \u0420\u0411\u041c\u041a \u043f\u043e\u043b\u043d\u043e\u0441\u0442\u044c\u044e \u0438 \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u0442 \u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0444\u0443\u043d\u043a\u0446\u0438\u043e\u043d\u0430\u043b. \u041f\u043e\u043a\u0430 \u0447\u0442\u043e \u0422\u041e\u041b\u042c\u041a\u041e \u041d\u0410 \u0420\u0423\u0421\u0421\u041a\u041e\u041c \u042f\u0417\u042b\u041a\u0415. ONLY IN RUSSIAN LANGUAGE. \u041e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e \u043f\u0440\u043e\u0447\u0438\u0442\u0430\u0439\u0442\u0435 \u0433\u0430\u0439\u0434 \u043f\u043e \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0435: https://github.com/ke46138/OC-MineOS-SKALA/blob/main/INSTALLING.md",
+  "license_id": 1,
+  "path": "Main.lua",
+  "publication_name": "SKALA installer",
+  "source_url": "https://github.com/ke46138/OC-MineOS-SKALA/raw/refs/heads/main/SKALA-installer.app/Main.lua",
+  "timestamp": 1746622465,
+  "user_name": "kirbest1000",
+  "version": 1.01,
+  "whats_new": "\u041f\u043e\u043f\u0440\u0430\u0432\u0438\u043b \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435",
+  "whats_new_version": 1.01
+ },
+ "2470": {
+  "path": "Icon.pic",
+  "source_url": "https://github.com/ke46138/OC-MineOS-SKALA/raw/refs/heads/main/SKALA-installer.app/Icon.pic",
+  "timestamp": 1746622465,
+  "type_id": 3,
+  "user_name": "kirbest1000",
+  "version": 1.01
+ },
+ "2471": {
+  "category_id": 4,
+  "dependencies": [
+   2472
+  ],
+  "downloads": 2,
+  "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/refs/heads/master/Wallpapers/NyanCat.wlp/Icon.pic",
+  "initial_description": "Restored old Nyan Cat screensaver",
+  "license_id": 1,
+  "path": "Main.lua",
+  "publication_name": "Nyan Cat",
+  "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/refs/heads/master/Wallpapers/NyanCat.wlp/Main.lua",
+  "timestamp": 1748486279,
+  "user_name": "Smok1e",
+  "version": 1
+ },
+ "2472": {
+  "path": "Icon.pic",
+  "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/refs/heads/master/Wallpapers/NyanCat.wlp/Icon.pic",
+  "timestamp": 1748486279,
+  "type_id": 3,
+  "user_name": "Smok1e",
+  "version": 1
+ },
+ "2473": {
+  "category_id": 1,
+  "dependencies": [
+   2474
+  ],
+  "downloads": 3,
+  "icon_url": "https://raw.githubusercontent.com/marius123-oss/mineos-bios-destroy/refs/heads/main/Bios%20destroyer.app/Icon.pic",
+  "initial_description": "This application will destroy your efi chip from your computer! Please get a recover efi chip before using this!",
+  "license_id": 1,
+  "path": "Main.lua",
+  "publication_name": "Bios Killer",
+  "source_url": "https://raw.githubusercontent.com/marius123-oss/mineos-bios-destroy/refs/heads/main/Bios%20destroyer.app/Main.lua",
+  "timestamp": 1749111766,
+  "user_name": "Marius",
+  "version": 1
+ },
+ "2474": {
+  "path": "Icon.pic",
+  "source_url": "https://raw.githubusercontent.com/marius123-oss/mineos-bios-destroy/refs/heads/main/Bios%20destroyer.app/Icon.pic",
+  "timestamp": 1749111766,
+  "type_id": 3,
+  "user_name": "Marius",
+  "version": 1
+ },
+ "2475": {
+  "category_id": 1,
+  "dependencies": [
+   2476,
+   2480,
+   2481,
+   2482
+  ],
+  "downloads": 1,
+  "icon_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/WoodClicker.app/Icon.pic",
+  "initial_description": "Simple wood clicker. Take on the role of a lumberjack and experience being a slave. Also available to bring wood to real life!",
+  "license_id": 1,
+  "path": "Main.lua",
+  "publication_name": "WoodClicker",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/WoodClicker.app/Main.lua",
+  "timestamp": 1750095279,
+  "user_name": "dleuiajs",
+  "version": 1.05
+ },
+ "2476": {
+  "path": "Icon.pic",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/WoodClicker.app/Icon.pic",
+  "timestamp": 1750095279,
+  "type_id": 3,
+  "user_name": "dleuiajs",
+  "version": 1.05
+ },
+ "2480": {
+  "path": "Localizations/English.lang",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/WoodClicker.app/Localizations/English.lang",
+  "timestamp": 1750095279,
+  "type_id": 4,
+  "user_name": "dleuiajs",
+  "version": 1.01
+ },
+ "2481": {
+  "path": "Localizations/Russian.lang",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/WoodClicker.app/Localizations/Russian.lang",
+  "timestamp": 1750095279,
+  "type_id": 4,
+  "user_name": "dleuiajs",
+  "version": 1.01
+ },
+ "2482": {
+  "path": "Localizations/Ukrainian.lang",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/WoodClicker.app/Localizations/Ukrainian.lang",
+  "timestamp": 1750095279,
+  "type_id": 4,
+  "user_name": "dleuiajs",
+  "version": 1.01
+ },
+ "2483": {
+  "category_id": 1,
+  "dependencies": [
+   2484,
+   2485,
+   2486,
+   2487,
+   2488,
+   2489,
+   2490,
+   2491,
+   2492,
+   2493,
+   2494,
+   2495,
+   2496,
+   2497,
+   2498,
+   2499,
+   2500,
+   2501,
+   2502
+  ],
+  "downloads": 4,
+  "icon_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Icon.pic",
+  "initial_description": "Play preset songs on the built-in PC Speaker into your computer!",
+  "license_id": 1,
+  "path": "Main.lua",
+  "publication_name": "MusicSpeaker",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Main.lua",
+  "timestamp": 1750094491,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2484": {
+  "path": "Localizations/English.lang",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Localizations/English.lang",
+  "timestamp": 1750094491,
+  "type_id": 4,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2485": {
+  "path": "Localizations/Russian.lang",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Localizations/Russian.lang",
+  "timestamp": 1750094491,
+  "type_id": 4,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2486": {
+  "path": "Localizations/Ukrainian.lang",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Localizations/Ukrainian.lang",
+  "timestamp": 1750094491,
+  "type_id": 4,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2487": {
+  "path": "Localizations/Slovak.lang",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Localizations/Slovak.lang",
+  "timestamp": 1750094491,
+  "type_id": 4,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2488": {
+  "path": "Songs/Doom.lua",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Songs/Doom.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2489": {
+  "path": "Songs/Happy Birthday.lua",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Songs/Happy%20Birthday.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2490": {
+  "path": "Songs/Hymn for the weekend.lua",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Songs/Hymn%20for%20the%20weekend.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2491": {
+  "path": "Songs/Kerosene.lua",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Songs/Kerosene.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2492": {
+  "path": "Songs/Keyboard Cat.lua",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Songs/Keyboard%20Cat.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2493": {
+  "path": "Songs/Merry Christmas.lua",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Songs/Merry%20Christmas.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2494": {
+  "path": "Songs/Never Gonna Give You Up.lua",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Songs/Never%20Gonna%20Give%20You%20Up.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2495": {
+  "path": "Songs/Nokia.lua",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Songs/Nokia.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2496": {
+  "path": "Songs/Pacman.lua",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Songs/Pacman.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2497": {
+  "path": "Songs/Pink Panther Theme.lua",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Songs/Pink%20Panther%20Theme.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2498": {
+  "path": "Songs/Subway Surfers.lua",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Songs/Subway%20Surfers.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2499": {
+  "path": "Songs/Take on me.lua",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Songs/Take%20on%20me.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2500": {
+  "path": "Songs/Tetris.lua",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Songs/Tetris.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2501": {
+  "path": "Songs/Was wollen wir trinken.lua",
+  "source_url": "https://raw.githubusercontent.com/dleuiajs/mineos-apps/refs/heads/main/MusicSpeaker.app/Songs/Was%20wollen%20wir%20trinken.lua",
+  "timestamp": 1750094491,
+  "type_id": 2,
+  "user_name": "dleuiajs",
+  "version": 1
+ },
+ "2502": {
+  "path": "Icon.pic",
+  "source_url": "https://github.com/dleuiajs/mineos-apps/raw/refs/heads/main/MusicSpeaker.app/Icon.pic",
+  "timestamp": 1750094491,
+  "type_id": 3,
+  "user_name": "dleuiajs",
+  "version": 1
  },
  "253": {
   "category_id": 2,
@@ -6374,7 +6205,7 @@
    341,
    520
   ],
-  "downloads": 4,
+  "downloads": 9,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/3D%20Test.app/Icon.pic",
   "initial_description": "This is a program for demostration of the capabilities of our 3D-engine, created specifically for low-performance computers. It embodies almost all the achievements of our team: rendering complex 3D-objects, dynamic lighting, texturing and user interface based on a powerful GUI library.",
   "license_id": 1,
@@ -6563,7 +6394,7 @@
  },
  "391": {
   "category_id": 2,
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "This library extends double buffering library for drawing big letters and digits via console pseudo-graphics",
   "license_id": 1,
   "path": "BigLetters.lua",
@@ -6634,7 +6465,7 @@
   "dependencies": [
    407
   ],
-  "downloads": 2,
+  "downloads": 3,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Print%20Image.app/Icon.pic",
   "initial_description": "This appliactions allows you to open OCIF images and print them via 3D-printer. It's time to decorate your house!",
   "license_id": 1,
@@ -6682,6 +6513,7 @@
   "dependencies": [
    413
   ],
+  "downloads": 2,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Christmas%20Tree.app/Icon.pic",
   "initial_description": "Connect holoprojector and relax viewing snowflakes falling on beautiful christmas tree. Happy holidays!",
   "license_id": 1,
@@ -6736,7 +6568,7 @@
    2153,
    2154
   ],
-  "downloads": 9,
+  "downloads": 20,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/RayWalk.app/Icon.pic",
   "initial_description": "Simple raycasting pseudo-3D-game that allows you to walk in world as playable character holding sprite weapons. There is day/night cycle, environment block colors, compass and analog clock items. And some cool UI settings as bonus. Have fun!",
   "license_id": 1,
@@ -6930,7 +6762,7 @@
   "dependencies": [
    507
   ],
-  "downloads": 3,
+  "downloads": 5,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Fuck%20the%20Rain.app/Icon.pic",
   "initial_description": "If minecraft rain fucks your mind, it's time to fuck the rain. This application works as background daemon and checks rain condition around computer. Note: debug card is required to run this application.",
   "license_id": 1,
@@ -6976,7 +6808,7 @@
    1984,
    1985
   ],
-  "downloads": 12,
+  "downloads": 17,
   "icon_url": "https://github.com/pronoua/MineOS-Tanks.app/raw/master/Icon.pic",
   "initial_description": "\u0421\u044b\u0440\u0430\u044f \u0432\u0435\u0440\u0441\u0438\u044f \u0442\u0430\u043d\u0447\u0438\u043a\u043e\u0432. \u0415\u0449\u0451 \u043d\u0435 \u0432\u0441\u0451 \u0433\u043e\u0442\u043e\u0432\u043e.",
   "license_id": 1,
@@ -6992,7 +6824,7 @@
  "553": {
   "path": "/Localizations/Russian.lang",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Localizations/Russian.lang",
-  "timestamp": 1706532690,
+  "timestamp": 1706532772,
   "type_id": 4,
   "user_name": "ECS",
   "version": 1.83
@@ -7000,7 +6832,7 @@
  "554": {
   "path": "/Localizations/English.lang",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Localizations/English.lang",
-  "timestamp": 1706532719,
+  "timestamp": 1652893110,
   "type_id": 4,
   "user_name": "ECS",
   "version": 1.83
@@ -7046,7 +6878,7 @@
   "dependencies": [
    571
   ],
-  "downloads": 9,
+  "downloads": 15,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Camera.app/Icon.pic",
   "initial_description": "This is UI application for external raycasting-camera block from Computronix mod. It supports different rendering options, FOV customization and auto-shoot with specified delay",
   "license_id": 1,
@@ -7102,34 +6934,6 @@
   "whats_new": "\u041f\u043e\u043b\u043d\u043e\u0441\u0442\u044c\u044e \u043f\u0435\u0440\u0435\u043f\u0438\u0441\u0430\u043b \u043f\u043e\u0434 MineOS Standalone",
   "whats_new_version": 1.04
  },
- "698": {
-  "category_id": 1,
-  "dependencies": [
-   108,
-   690,
-   1061,
-   1058,
-   1246,
-   1247,
-   1248,
-   1249,
-   1250,
-   1251,
-   1252
-  ],
-  "downloads": 7,
-  "icon_url": "https://github.com/FelixBanan/OpenSecurity/raw/master/MineOS/Applications/OpenSecurity.app/Icon.pic/",
-  "initial_description": "\u041b\u0435\u0433\u043a\u043e\u0435 \u0438 \u0443\u0434\u043e\u0431\u043d\u043e\u0435 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0434\u043b\u044f \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435\u043c \u0431\u043b\u043e\u043a\u0430\u043c\u0438 \u043c\u043e\u0434\u0430 OpenSecurity. \u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 Mag,RFID,Card Writer, Door Controller, Door-roll controller.\u0418 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e \u0432 \u0431\u0443\u0434\u0443\u0449\u0435\u043c \u043e\u0441\u0442\u0430\u043b\u044c\u043d\u044b\u0445 \u0431\u043b\u043e\u043a\u043e\u0432 \u0432 \u044d\u0442\u043e\u043c \u043c\u043e\u0434\u0435.",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "OpenSecurity",
-  "source_url": "https://raw.githubusercontent.com/FelixBanan/OpenSecurity/master/MineOS/Applications/OpenSecurity.app/Main.lua",
-  "timestamp": 1570661554,
-  "user_name": "FelixBanan",
-  "version": 1.07,
-  "whats_new": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u043f\u043e\u043b\u043d\u043e\u0441\u0442\u044c\u044e \u043f\u0435\u0440\u0435\u043f\u0438\u0441\u0430\u043d\u043e. \u041d\u043e\u0432\u044b\u0439 \u0434\u0438\u0437\u0430\u0439\u043d. \u0414\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u0430 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u043b\u0435\u0440\u043e\u0432 \u0434\u0432\u0435\u0440\u0435\u0439. \u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u0430\u043d\u0433\u043b\u0438\u0439\u0441\u043a\u043e\u0433\u043e \u044f\u0437\u044b\u043a\u0430. \u0414\u0430 \u0441\u043f\u0443\u0441\u0442\u044f 2 \u0433\u043e\u0434\u0430, \u043d\u043e \u043b\u0443\u0447\u0448\u0435 \u043f\u043e\u0437\u0434\u043d\u043e \u0447\u0435\u043c \u043d\u0438\u043a\u043e\u0433\u0434\u0430.",
-  "whats_new_version": 1.07
- },
  "73": {
   "category_id": 2,
   "dependencies": [
@@ -7145,44 +6949,6 @@
   "version": 1.18,
   "whats_new": "Added icons preview for grid list",
   "whats_new_version": 1.18
- },
- "791": {
-  "category_id": 1,
-  "dependencies": [
-   792,
-   97
-  ],
-  "downloads": 1,
-  "icon_url": "https://raw.githubusercontent.com/localChicken/OpenComputers/master/Applications/EFI%20Flasher/Icon.pic",
-  "initial_description": "A simple MineOS app that can flash and dump OpenComputers EEPROM",
-  "license_id": 1,
-  "path": "Main.lua",
-  "publication_name": "EFI Flasher",
-  "source_url": "https://raw.githubusercontent.com/localChicken/OpenComputers/master/Applications/EFI%20Flasher/Main.lua",
-  "timestamp": 1525790024,
-  "user_name": "localChicken",
-  "version": 1.04
- },
- "796": {
-  "category_id": 1,
-  "dependencies": [
-   1218,
-   108,
-   1058,
-   1061
-  ],
-  "downloads": 3,
-  "icon_url": "https://dl.switchware.io/Minecraft/MineOS/reactor/Icon.pic",
-  "initial_description": "Allows basic automatic control over the Extreme Reactor.",
-  "license_id": 5,
-  "path": "Main.lua",
-  "publication_name": "Reactor Ctrl",
-  "source_url": "https://dl.switchware.io/Minecraft/MineOS/reactor/Main.lua",
-  "timestamp": 1562243273,
-  "user_name": "BSteurful",
-  "version": 1.11,
-  "whats_new": "EVEN MORE FIXES :D",
-  "whats_new_version": 1.11
  },
  "798": {
   "category_id": 1,
@@ -7202,7 +6968,7 @@
    1624,
    1625
   ],
-  "downloads": 2,
+  "downloads": 4,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Picture%20Edit.app/Icon.pic",
   "initial_description": "This is a powerful application to edit MineOS pictures format. It has a lot of tools: from classic brush, eraser and text to Braille font renderer and area selector. It allows you to crop and expand pictures, to create beautiful pseudographics icons, to rasterize lines, ellipses, etc. It also supports hotkeys, recent colors and tool properties. Every tool is a standalone .lua module, so you can easily develop your own tools. Have fun!",
   "license_id": 1,
@@ -7322,7 +7088,7 @@
  "848": {
   "path": "/Localizations/French.lang",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Localizations/French.lang",
-  "timestamp": 1706532728,
+  "timestamp": 1704527248,
   "type_id": 4,
   "user_name": "ECS",
   "version": 1.61
@@ -7332,6 +7098,7 @@
   "dependencies": [
    854
   ],
+  "downloads": 2,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Symbols.app/Icon.pic",
   "initial_description": "This is simple UTF-8 symbols table application. It allows you to view existing characters as separate pages, to search data by symbol codes, and to view the history of recent symbols used.",
   "license_id": 1,
@@ -7369,7 +7136,7 @@
    1261,
    1262
   ],
-  "downloads": 2,
+  "downloads": 3,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/3D%20Print.app/Icon.pic",
   "initial_description": "This application allows you to design unique voxel prints for 3D-printer machine. It allows you to view result on screen or holographic projector, to edit textures for each shape and to store your creations on disk. It allows you to rotate/flip your model by any of 3 axis, to switch active/passive state of a model in realtime and to change scale/offset/color scheme of a projector.",
   "license_id": 1,
@@ -7422,7 +7189,7 @@
   "dependencies": [
    880
   ],
-  "downloads": 1,
+  "downloads": 2,
   "initial_description": "Dont use",
   "license_id": 1,
   "path": "WANNACRY",
@@ -7465,7 +7232,7 @@
  },
  "901": {
   "category_id": 2,
-  "downloads": 2,
+  "downloads": 3,
   "initial_description": "Fast Base64 encoding/decoding library especially designed for OpenComputers",
   "license_id": 1,
   "path": "base64.lua",
@@ -7507,6 +7274,7 @@
    1210,
    1231
   ],
+  "downloads": 2,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Settings.app/Icon.pic",
   "initial_description": "This application is specially designed to combine a single control center for all the features of the OS. Wallpapers, screensavers, network functions, language packs, color schemes, user management, disks utility - all this is concentrated here.",
   "license_id": 1,
@@ -7715,7 +7483,7 @@
  "932": {
   "path": "/Localizations/Ukrainian.lang",
   "source_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Localizations/Ukrainian.lang",
-  "timestamp": 1706532772,
+  "timestamp": 1719919130,
   "type_id": 4,
   "user_name": "ECS",
   "version": 1.37
@@ -7754,7 +7522,7 @@
    943,
    1234
   ],
-  "downloads": 2,
+  "downloads": 3,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/Nanomachines.app/Icon.pic",
   "initial_description": "Beta version of Nanomachines control application. It allows you to manage biocontacts and gather some cool buffs/debuffs to save and use them later.",
   "license_id": 1,
@@ -7822,7 +7590,7 @@
    103,
    1230
   ],
-  "downloads": 3,
+  "downloads": 9,
   "icon_url": "https://raw.githubusercontent.com/IgorTimofeev/MineOS/master/Applications/VK.app/Icon.pic",
   "initial_description": "\u042d\u0442\u043e \u043f\u043e\u043b\u043d\u043e\u0446\u0435\u043d\u043d\u044b\u0439 \u043a\u043b\u0438\u0435\u043d\u0442 \u0434\u043b\u044f \u0441\u0430\u0439\u0442\u0430 vk.com, \u043f\u043e\u0437\u0432\u043e\u043b\u044f\u044e\u0449\u0438\u0439 \u0432\u0430\u043c \u0447\u0438\u0442\u0430\u0442\u044c \u043d\u043e\u0432\u043e\u0441\u0442\u043d\u0443\u044e \u043b\u0435\u043d\u0442\u0443, \u043e\u0431\u0449\u0430\u0442\u044c\u0441\u044f \u0441 \u0434\u0440\u0443\u0437\u044c\u044f\u043c\u0438, \u043f\u0440\u043e\u0441\u043c\u0430\u0442\u0440\u0438\u0432\u0430\u0442\u044c \u0438\u0441\u0442\u043e\u0440\u0438\u044e \u043f\u0435\u0440\u0435\u043f\u0438\u0441\u043a\u0438, \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044e \u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044f\u0445 \u0438 \u0441\u043f\u0438\u0441\u043a\u0430\u0445 \u0434\u0440\u0443\u0437\u0435\u0439, \u0437\u0430\u0433\u0440\u0443\u0436\u0430\u0442\u044c \u0444\u0430\u0439\u043b\u044b \u0432 \u043b\u0438\u0447\u043d\u044b\u0435 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b \u0438 \u0434\u0435\u043b\u0438\u0442\u044c\u0441\u044f \u0438\u043c\u0438. \u0418\u043c\u0435\u0435\u0442\u0441\u044f \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430 \u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0438 \u043a\u043e\u043d\u0442\u0435\u043d\u0442\u0430 \u043f\u0440\u0438 \u0434\u043e\u0441\u0442\u0438\u0436\u0435\u043d\u0438\u0438 \u043a\u043e\u043d\u0446\u0430 \u0438\u043c\u0435\u044e\u0449\u0435\u0433\u043e\u0441\u044f. \u0412 \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0435 \u043f\u0440\u0438\u044f\u0442\u043d\u043e\u0433\u043e \u0431\u043e\u043d\u0443\u0441\u0430 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u044e\u0442\u0441\u044f \u043a\u0430\u0441\u0442\u043e\u043c\u043d\u044b\u0435 \u0446\u0432\u0435\u0442\u043e\u0432\u044b\u0435 \u0441\u0445\u0435\u043c\u044b, \u0430 \u0442\u0430\u043a\u0436\u0435 \u0438\u043c\u0435\u0435\u0442\u0441\u044f \u0434\u0432\u0435 \u0443\u0436\u0435 \u0433\u043e\u0442\u043e\u0432\u044b\u0445 - \u0442\u0435\u043c\u043d\u0430\u044f \u0438 \u0441\u0432\u0435\u0442\u043b\u0430\u044f.",
   "license_id": 1,
@@ -7933,30 +7701,12 @@
   "user_name": "ECS",
   "version": 1.09
  },
- "980": {
-  "category_id": 1,
-  "dependencies": [
-   981,
-   983,
-   984
-  ],
-  "downloads": 2,
-  "icon_url": "https://gitlab.com/FiveSeven/gmods/raw/master/Icon.pic",
-  "initial_description": "Default Windows XP Screensaver",
-  "license_id": 6,
-  "path": "Main.lua",
-  "publication_name": "Windows XP Screensaver",
-  "source_url": "https://gitlab.com/FiveSeven/gmods/raw/master/Main.lua",
-  "timestamp": 1540621928,
-  "user_name": "FiveSeven",
-  "version": 1.03
- },
  "986": {
   "category_id": 1,
   "dependencies": [
    987
   ],
-  "downloads": 8,
+  "downloads": 16,
   "icon_url": "https://github.com/alexexe82/HIPOSAV/blob/master/apps/Katalog3d/Icon.pic?raw=true",
   "initial_description": "\u041a\u0430\u0442\u0430\u043b\u043e\u0433 \u0433\u043e\u0442\u043e\u0432\u044b\u0445 3\u0434 \u043c\u043e\u0434\u0435\u043b\u0435\u0439 \u0434\u043b\u044f \u043f\u0435\u0447\u0430\u0442\u0438 \u043d\u0430 \u043f\u0440\u0438\u043d\u0442\u0435\u0440\u0435 \u0432 \u0444\u043e\u0440\u043c\u0430\u0442\u0435 3dm. \u0414\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u043e \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u043f\u043e \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0430\u043c (\u0432\u043c\u0435\u0441\u0442\u043e \u0441\u043a\u0440\u043e\u043b\u043b\u0438\u043d\u0433\u0430). \u041c\u043e\u0434\u0435\u043b\u0438 \u043f\u043e\u043f\u043e\u043b\u043d\u044f\u044e\u0442\u0441\u044f, \u043f\u0435\u0440\u0435\u0443\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u0439\u0442\u0435 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0434\u043b\u044f \u0431\u043e\u043b\u0435\u0435 \u043f\u043e\u043b\u043d\u043e\u0433\u043e \u0441\u043f\u0438\u0441\u043a\u0430. \u0414\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u0430 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0441\u0442\u044c \u0437\u0430\u043a\u0430\u0447\u043a\u0438 \u043c\u043d\u043e\u0433\u043e\u0431\u043b\u043e\u0447\u043d\u044b\u0445 \u043c\u043e\u0434\u0435\u043b\u0435\u0439, \u0442\u0435\u043f\u0435\u0440\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u0431\u0443\u0434\u0435\u0442 \u043f\u043e\u043f\u043e\u043b\u043d\u044f\u0442\u044c\u0441\u044f \u0438 \u0438\u043c\u0438. \u041e\u0441\u0442\u0430\u0432\u043b\u044f\u0439\u0442\u0435 \u0432 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u044f\u0445 \u0441\u0432\u043e\u0438 \u043f\u043e\u0436\u0435\u043b\u0430\u043d\u0438\u044f, \u043f\u043e\u0441\u0442\u0430\u0440\u0430\u044e\u0441\u044c \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043c\u043e\u0434\u0435\u043b\u0438 \u043d\u0430 \u0437\u0430\u043a\u0430\u0437. \u041d\u0430 \u0434\u0430\u043d\u043d\u044b\u0439 \u043c\u043e\u043c\u0435\u043d\u0442 \u0438\u043c\u0435\u0435\u0442\u0441\u044f \u0431\u043e\u043b\u0435\u0435 40 \u043c\u043e\u0434\u0435\u043b\u0435\u0439.",
   "license_id": 1,
