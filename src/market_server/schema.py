@@ -670,7 +670,7 @@ applications and evaluating existing ones.
 
 
 Follow this link to verify your MineOS account:
-http://<server_url>/MineOSAPI/2.04/verify.php?token={users[name]['verify_token']}
+http://<server_url>/MineOSAPI/2.04/verify.php?token={users[name]["verify_token"]}
 
 
 Here is your registration data:
@@ -1613,11 +1613,12 @@ MineOS Dev Team""",
         # Do NOT write ANYTHING unless all dependencies are ok, we have to be able to roll back changes.
         deps_to_write: list[tuple[str | None, dict[str, str | float]]] = []
         for dependency in dependencies_data:
-            dep_write_data, api_response = (
-                await self.publication_dependency_edit(
-                    dependency,
-                    username,
-                )
+            (
+                dep_write_data,
+                api_response,
+            ) = await self.publication_dependency_edit(
+                dependency,
+                username,
             )
             if api_response is not None:
                 return api_response
