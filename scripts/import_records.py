@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 # Import Records - Import records from remote MineOS Market API.
-# Copyright (C) 2024  CoolCat467
+# Copyright (C) 2024-2025  CoolCat467
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ __version__ = "0.0.0"
 __license__ = "GNU General Public License Version 3"
 
 
+import traceback
 from typing import Any, Final
 
 import httpx
@@ -167,23 +168,32 @@ async def save_info(
     publications[str(file_id)] = pub
 
     # Record reviews
-    async with request_limiter:
-        reviews_response = await market_api.get_reviews(
-            client,
-            file_id,
-            # TODO: Add offset to handle overloads
-        )
-        await trio.sleep(request_delay)
+    offset = 0
+    all_review_responses: list[market_api.Review] = []
+    while True:
+        async with request_limiter:
+            reviews_response = await market_api.get_reviews(
+                client,
+                file_id,
+                offset=offset,
+                count=100,
+            )
+            await trio.sleep(request_delay)
 
-    if len(reviews) == 100:
-        print(f"{file_id = } Likely review overload")
+        all_review_responses.extend(reviews_response)
+        if not reviews_response:
+            break
+        offset += 100
 
     pub_reviews = reviews.get(str(file_id), {})
 
-    for review in reviews_response:
+    for review in all_review_responses:
         review_dict = review._asdict()
         review_dict.update({"votes": review_dict["votes"]._asdict()})
-        pub_reviews[str(review.id)] = review_dict
+        review_id = str(review.id)
+        if review_id not in pub_reviews:
+            print(f"New review {review_id} on {file_id}")
+        pub_reviews[review_id] = review_dict
 
     if pub_reviews:
         reviews[str(file_id)] = pub_reviews
@@ -241,6 +251,8 @@ async def save_info(
 async def async_run() -> None:
     """Run program."""
     records = market_server.get_records_path()
+    # from pathlib import Path
+    # records = Path(__file__).absolute().parent
     request_limiter = trio.CapacityLimiter(8)
     request_delay = 0.5
 
@@ -294,7 +306,10 @@ async def async_run() -> None:
 
 def run() -> None:
     """Entry point."""
-    trio.run(async_run)
+    try:
+        trio.run(async_run)
+    except Exception:  # ExceptionGroup
+        traceback.print_exc()
 
 
 if __name__ == "__main__":
