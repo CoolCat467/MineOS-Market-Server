@@ -205,7 +205,7 @@ app: Final = QuartTrio(  # pylint: disable=invalid-name
 schema_v_2_04 = schema.Version_2_04(DATA_PATH)
 
 
-@app.route("/MineOSAPI/<version>/<script>.php", methods=("POST", "GET"))  # type: ignore[type-var]
+@app.route("/MineOSAPI/<version>/<script>.php", methods=("POST", "GET"))
 async def handle_script(
     version: str,
     script: str,
@@ -276,7 +276,7 @@ except ImportError:
         return text
 
 
-@app.post("/debug")  # type: ignore[type-var]
+@app.post("/debug")
 async def handle_debug_post() -> (
     tuple[AsyncIterator[str], int] | AsyncIterator[str]
 ):
