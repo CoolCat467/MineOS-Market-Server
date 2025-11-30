@@ -22,7 +22,7 @@ __title__ = "HTML Generation"
 __author__ = "CoolCat467"
 __license__ = "GNU General Public License Version 3"
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeAlias
 
 if TYPE_CHECKING:  # pragma: nocover
     from collections.abc import Generator, Iterable, Mapping
@@ -40,7 +40,7 @@ def deindent(level: int, text: str) -> str:
     return "\n".join(line.removeprefix(prefix) for line in text.splitlines())
 
 
-TagArg = str | int | float | bool
+TagArg: TypeAlias = str | int | float | bool
 
 
 def _quote_strings(values: Iterable[TagArg]) -> Generator[str, None, None]:
@@ -67,7 +67,7 @@ def _generate_css_declarations(
     """Yield declarations."""
     for key, values in properties.items():
         property_ = _key_to_html_property(key)
-        wrap = values if isinstance(values, list | tuple) else (values,)
+        wrap = values if isinstance(values, (list, tuple)) else (values,)
         value = " ".join(_quote_strings(wrap))
         yield f"{property_}: {value}"
 
@@ -84,7 +84,7 @@ def css_block(
     content: str,
 ) -> str:
     """Return CSS block."""
-    if isinstance(selector, list | tuple):
+    if isinstance(selector, (list, tuple)):
         selector = ", ".join(selector)
     properties = indent(2, content)
     return f"{selector} {{\n{properties}\n}}"
@@ -92,11 +92,11 @@ def css_block(
 
 def css(
     selector: str | list[str] | tuple[str, ...],
-    /,
+    *subblocks: str,
     **kwargs: TagArg | list[TagArg] | tuple[TagArg, ...],
 ) -> str:
     """Return CSS block."""
-    properties = "\n".join(css_style(**kwargs))
+    properties = "\n".join((*subblocks, *css_style(**kwargs)))
     return css_block(selector, properties)
 
 

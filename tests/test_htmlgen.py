@@ -66,6 +66,19 @@ def test_css_multi() -> None:
     )
 
 
+def test_css_subblock() -> None:
+    assert (
+        htmlgen.css(
+            "@media (prefers-color-scheme: dark)",
+            htmlgen.css(
+                ("h1", "footer"),
+                text_align=("center", "left"),
+            ),
+        )
+        == "@media (prefers-color-scheme: dark) {\n  h1, footer {\n    text-align: center left;\n  }\n}"
+    )
+
+
 @pytest.mark.parametrize(
     ("type_", "args", "expect"),
     [

@@ -1555,9 +1555,8 @@ MineOS Dev Team""",
             return api.failure("dependencies are invalid")
         assert isinstance(raw_dependencies, dict)
 
-        icon_url: str | None = (
-            None  # TODO: Remove once inferred from dependencies
-        )
+        # TODO: Remove once inferred from dependencies
+        icon_url: str | None = None
 
         parsed_dependencies_table = raw_dependencies
         dependencies_data: list[UploadDependency] = []
@@ -1566,9 +1565,8 @@ MineOS Dev Team""",
             if not parsed_entry:
                 continue
             if parsed_entry.path == "Icon.pic":
-                icon_url = (
-                    parsed_entry.source_url
-                )  # TODO: Remove once inferred from dependencies
+                # TODO: Remove once inferred from dependencies
+                icon_url = parsed_entry.source_url
             dependencies_data.append(parsed_entry)
 
         # if icon_url is None and category in {
