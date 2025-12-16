@@ -1331,8 +1331,8 @@ MineOS Dev Team""",
         path: str,
         description: str,
         license_id: str,
-        dependencies: str | dict[str, dict[str, str]],
         category_id: str,
+        dependencies: str | dict[str, dict[str, str]] | None = None,
         whats_new: str | None = None,
     ) -> api.Response:
         """Handle updating a publication."""
@@ -1343,8 +1343,8 @@ MineOS Dev Team""",
             path=path,
             description=description,
             license_id=license_id,
-            raw_dependencies=dependencies,
             category_id=category_id,
+            raw_dependencies=dependencies,
             whats_new=whats_new,
             new=False,
             raw_file_id=file_id,
@@ -1358,8 +1358,8 @@ MineOS Dev Team""",
         path: str,
         description: str,
         license_id: str,
-        dependencies: str | dict[str, dict[str, str]],
         category_id: str,
+        dependencies: str | dict[str, dict[str, str]] | None = None,
         whats_new: str | None = None,
     ) -> api.Response:
         """Handle uploading a new publication."""
@@ -1370,8 +1370,8 @@ MineOS Dev Team""",
             path=path,
             description=description,
             license_id=license_id,
-            raw_dependencies=dependencies,
             category_id=category_id,
+            raw_dependencies=dependencies,
             whats_new=whats_new,
             new=True,
             raw_file_id=None,
@@ -1496,8 +1496,8 @@ MineOS Dev Team""",
         path: str,
         description: str,
         license_id: str,
-        raw_dependencies: str | dict[str, dict[str, str]],
         category_id: str,
+        raw_dependencies: str | dict[str, dict[str, str]] | None = None,
         whats_new: str | None = None,
         new: bool = True,
         raw_file_id: str | None = None,
@@ -1551,6 +1551,8 @@ MineOS Dev Team""",
         if isinstance(src_url, tuple):  # Error
             return src_url
 
+        if raw_dependencies is None:
+            raw_dependencies = {}
         if isinstance(raw_dependencies, str):
             return api.failure("dependencies are invalid")
         assert isinstance(raw_dependencies, dict)

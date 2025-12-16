@@ -1,6 +1,5 @@
 import json
 import uuid
-from collections.abc import Generator
 from pathlib import Path
 
 import pytest
@@ -9,7 +8,7 @@ from market_server.database import Database, Records
 
 
 @pytest.fixture
-def temp_db_file(tmp_path: Path) -> Generator[Path, None, None]:
+def temp_db_file(tmp_path: Path) -> Path:
     filename = uuid.uuid4()
     return tmp_path / f"{filename}.json"
 

@@ -53,7 +53,10 @@ def test_parse_int(string: str | int, expect: int | None) -> None:
         ),
     ],
 )
-def test_parse_table(string: dict[str, str], expect: dict[str, Any]) -> None:
+def test_parse_table(  # type: ignore[misc]
+    string: dict[str, str],
+    expect: dict[str, Any],
+) -> None:
     assert schema.parse_table(string, None) == expect
 
 
