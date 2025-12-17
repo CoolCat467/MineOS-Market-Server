@@ -346,55 +346,6 @@ def parse_int(string: str | int) -> int | None:
         return None
 
 
-##def parse_table(string: str, limit: int | None = None) -> dict[str, Any]:
-##    """Parse encoded table from string.
-##
-##    If limit is not None, limits how many recursive layers in to go at most.
-##    """
-##
-##    def set_key(
-##        dict_: dict[str, Any],
-##        keys: list[str],
-##        value: str,
-##        n: int | None = None,
-##    ) -> None:
-##        if n is not None and n < 0:
-##            return
-##        key = keys[0].removesuffix("]")
-##        if len(keys) == 1:
-##            dict_[key] = value
-##            return
-##        dict_.setdefault(key, {})
-##        set_key(dict_[key], keys[1:], value, None if n is None else n - 1)
-##
-##    root: dict[str, Any] = {}
-##    for part in string.split("&"):
-##        if "=" not in part:
-##            continue
-##        key_data, value = part.split("=", 1)
-##        set_key(root, key_data.split("["), value, limit)
-##
-##    return root
-
-
-##def parse_int_list(string: str) -> list[int]:
-##    """Parse integer list.
-##
-##    ex `[0]=27&[1]=49` -> [27, 49]
-##    ex `[3]=27&[1]=49` -> [49, 27]
-##    """
-##    table = parse_table(string, 1)
-##    result: list[int] = []
-##    if "" not in table:
-##        return result
-##    for key in sorted(table[""].keys()):
-##        parsed = parse_int(table[""][key])
-##        if parsed is None:
-##            continue
-##        result.append(parsed)
-##    return result
-
-
 def parse_table(
     incoming: dict[str, str],
     limit: int | None = 3,
@@ -453,6 +404,14 @@ class Version_2_04:  # noqa: N801
 
     __slots__ = ("records_root",)
 
+    def __init__(self, root_path: str | trio.Path) -> None:
+        """Initialize records path."""
+        self.records_root = trio.Path(root_path) / "records"
+
+    def __repr__(self) -> str:
+        """Return representation of self."""
+        return f"{self.__class__.__name__}(root_path = {self.records_root.parent!r})"
+
     @property
     def users_path(self) -> trio.Path:
         """User records path."""
@@ -487,14 +446,6 @@ class Version_2_04:  # noqa: N801
     def downloads_path(self) -> trio.Path:
         """Download records path."""
         return self.records_root / "downloads.json"
-
-    def __init__(self, root_path: str | trio.Path) -> None:
-        """Initialize records path."""
-        self.records_root = trio.Path(root_path) / "records"
-
-    def __repr__(self) -> str:
-        """Return representation of self."""
-        return f"{self.__class__.__name__}(root_path = {self.records_root.parent!r})"
 
     async def create_login_cookie_data(self, username: str) -> str:
         """Generate UUID associated with a specific user.
