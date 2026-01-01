@@ -4,7 +4,6 @@ Python MineOS App Market Server Reimplementation
 [![CI](https://github.com/CoolCat467/MineOS-Market-Server/actions/workflows/ci.yml/badge.svg)](https://github.com/CoolCat467/MineOS-Market-Server/actions/workflows/ci.yml)
 <!-- BADGIE TIME -->
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/CoolCat467/MineOS-Market-Server/main.svg)](https://results.pre-commit.ci/latest/github/CoolCat467/MineOS-Market-Server/main)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
 <!-- END BADGIE TIME -->
