@@ -92,7 +92,7 @@ def get_password_hash_for_compare(
 ) -> tuple[str, str]:
     """Return tuple of database hash and password hash."""
     hash_name, rest = database_value.split("$", 1)
-    if hash_name in {"sha3_256"}:
+    if hash_name == "sha3_256":
         # If hash algorithm in set of ones that store salt with database value
         salt = rest.split("$", 1)[0]
         return database_value, hash_login(password, salt, hash_name, pepper)
