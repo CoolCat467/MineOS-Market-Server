@@ -64,3 +64,24 @@ input[type="submit"] {
   margin-right: 0.5rem;
   min-width: min-content;
 }
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #181818;
+    color: #e0e0e0;
+  }
+  .box {
+    background-color: #1e1e1e;
+    border: 2px solid #444;
+  }
+  code {
+    background-color: "rgba(255, 255, 255, 0.1)";
+  }
+  input, button {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 2px solid #444;
+  }
+  input:hover, button:hover {
+    background-color: #4a4a4a;
+  }
+}

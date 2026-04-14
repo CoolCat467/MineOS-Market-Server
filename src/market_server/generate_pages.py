@@ -1,27 +1,28 @@
-"""Generate pages for the web server."""
+#!/usr/bin/env python3
 
-# Programmed by CoolCat467
+"""Generate pages for the MineOS app market web server.
+
+Copyright (C) 2022-2026  CoolCat467
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
 
 from __future__ import annotations
 
-# Generate pages for the web server
-# Copyright (C) 2023-2024  CoolCat467
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 __title__ = "Generate Pages"
 __author__ = "CoolCat467"
+__license__ = "GNU General Public License Version 3"
 
 
 import argparse
@@ -159,19 +160,40 @@ def generate_style_css() -> str:
                 margin_right="0.5rem",
                 min_width="min-content",
             ),
+            htmlgen.css(
+                "@media (prefers-color-scheme: dark)",
+                htmlgen.css(
+                    "body",
+                    background_color="#181818",
+                    color="#e0e0e0",
+                ),
+                htmlgen.css(
+                    ".box",
+                    background_color="#1e1e1e",
+                    border=("2px", "solid", "#444"),
+                ),
+                htmlgen.css(
+                    "code",
+                    background_color="rgba(255, 255, 255, 0.1)",
+                ),
+                htmlgen.css(
+                    ("input", "button"),
+                    background_color="#1e1e1e",
+                    color="#e0e0e0",
+                    border=("2px", "solid", "#444"),
+                ),
+                htmlgen.css(
+                    ("input:hover", "button:hover"),
+                    background_color="#4a4a4a",
+                ),
+            ),
         ),
     )
 
 
-def template(
-    title: str,
-    body: str,
-    *,
-    head: str = "",
-    body_tag: dict[str, htmlgen.TagArg] | None = None,
-    lang: str = "en",
-) -> str:
-    """HTML Template for application."""
+@save_template_as("base")
+def base_template() -> str:
+    """Generate base HTML Template for application."""
     head_data = "\n".join(
         (
             htmlgen.tag(
@@ -221,13 +243,8 @@ def template(
                 type_="text/css",
                 href="/style.css",
             ),
-            head,
+            htmlgen.jinja_block("head", scoped=True, block=False),
         ),
-    )
-
-    join_body = (
-        htmlgen.wrap_tag("h1", title, False),
-        body,
     )
 
     footer = f"{server.__title__} v{server.__version__} © {server.__author__}"
@@ -236,7 +253,21 @@ def template(
         (
             htmlgen.wrap_tag(
                 "div",
-                "\n".join(join_body),
+                "\n".join(
+                    (
+                        htmlgen.wrap_tag(
+                            "h1",
+                            htmlgen.jinja_expression("self.title()"),
+                            False,
+                        ),
+                        htmlgen.jinja_block(
+                            "body",
+                            scoped=True,
+                            required=True,
+                            block=False,
+                        ),
+                    ),
+                ),
                 class_="content",
             ),
             htmlgen.wrap_tag(
@@ -261,12 +292,45 @@ def template(
     )
 
     return htmlgen.template(
-        title,
+        htmlgen.jinja_block(
+            "title",
+            scoped=True,
+            required=True,
+            block=False,
+        ),
         body_data,
         head=head_data,
-        body_tag=body_tag,
-        lang=lang,
+        lang=htmlgen.jinja_block(
+            "lang",
+            "en",
+            scoped=True,
+            block=False,
+        ),
     )
+
+
+def template(
+    title: str,
+    body: str,
+    *,
+    head: str = "",
+    lang: str = "en",
+) -> str:
+    """Use base HTML Template for application."""
+    sections = [
+        htmlgen.jinja_extends("base.html.jinja"),
+        htmlgen.jinja_block("title", title, block=False),
+    ]
+
+    if head:
+        sections.append(htmlgen.jinja_block("head", head))
+
+    if lang != "en":
+        sections.append(htmlgen.jinja_block("lang", lang))
+
+    sections.append(htmlgen.jinja_block("body", body))
+
+    return "\n".join(sections)
 
 
 @save_template_as("error_page")
@@ -335,7 +399,7 @@ def generate_verify_page() -> str:
     )
 
 
-@save_static_as("root.html")
+@save_template_as("root")
 def generate_root_page() -> str:
     """Generate root page."""
     content = htmlgen.bullet_list(
@@ -357,7 +421,7 @@ def generate_root_page() -> str:
     )
 
 
-@save_static_as("debug.html")
+@save_template_as("debug")
 def generate_debug_page() -> str:
     """Generate debug page."""
     form_contents = "<br>\n".join(

@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="{% block lang scoped %}en{% endblock lang %}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MineOS Market Webserver</title>
+    <title>{% block title scoped required %}{% endblock title %}</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -12,21 +12,17 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" type="text/css" href="/style.css">
+    {% block head scoped %}{% endblock head %}
   </head>
   <body>
     <div class="content">
-      <h1>MineOS Market Webserver</h1>
-      <div class="box">
-        <ul>
-          <li><a href="/MineOSAPI/2.04/statistics.php">View Statistics</a></li>
-          <li><a href="/debug">Debug</a></li>
-        </ul>
-      </div>
+      <h1>{{ self.title() }}</h1>
+      {% block body scoped required %}{% endblock body %}
     </div>
     <footer>
       <i>If you're reading this, the web server was installed correctly.™</i>
       <hr>
-      <p>MineOS Market Webserver v1.0.2 © CoolCat467</p>
+      <p>MineOS Market Webserver v1.0.3 © CoolCat467</p>
     </footer>
   </body>
 </html>

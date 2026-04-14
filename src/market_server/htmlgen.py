@@ -1,6 +1,6 @@
 """HTML Generation - Generate HTML & CSS programmatically.
 
-Copyright (C) 2022-2025  CoolCat467
+Copyright (C) 2022-2026  CoolCat467
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,10 +22,11 @@ __title__ = "HTML Generation"
 __author__ = "CoolCat467"
 __license__ = "GNU General Public License Version 3"
 
-from typing import TYPE_CHECKING, TypeAlias
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: nocover
     from collections.abc import Generator, Iterable, Mapping
+    from typing import TypeAlias
 
 
 def indent(level: int, text: str) -> str:
@@ -339,7 +340,7 @@ def link_list(links: dict[str, str], **kwargs: TagArg) -> str:
 def form(
     form_id: str,
     contents: str,
-    submit_display: str,
+    submit_display: str | None = None,
     form_title: str | None = None,
 ) -> str:
     """Return an HTML form.
@@ -366,17 +367,17 @@ def form(
             strings.
 
     """
-    submit = input_field(
-        f"{form_id}_submit_button",
-        None,
-        field_type="submit",
-        attrs={
-            "value": submit_display,
-        },
-    )
-    html = f"""{contents}
-<br>
-{submit}"""
+    html = contents
+    if submit_display is not None:
+        submit = input_field(
+            f"{form_id}_submit_button",
+            None,
+            field_type="submit",
+            attrs={
+                "value": submit_display,
+            },
+        )
+        html += f"\n<br>\n{submit}"
     title = ""
     if form_title is not None:
         title = wrap_tag("b", form_title, block=False) + "\n"
@@ -464,12 +465,18 @@ def jinja_arg_tag(
     /,
     **kwargs: TagArg,
 ) -> str:
-    """Return HTML tag. Removes trailing underscore from argument names."""
+    """Return HTML tag. Removes trailing underscore from argument names.
+
+    For properties, make sure jinja expression value ends with a space
+    if tag arguments are to follow.
+    """
     args = "".join(jinja_properties)
     if args:
         args = f" {args}"
     if kwargs:
-        args = f"{args} " + " ".join(_generate_html_attributes(kwargs))
+        if not args:
+            args += " "
+        args += " ".join(_generate_html_attributes(kwargs))
     return f"<{type_}{args}>"
 
 
@@ -490,12 +497,9 @@ def jinja_radio_select(
     }
     jinja_properties: tuple[str, ...] = ()
     if default is not None:
-        default_tag = " ".join(
-            _generate_html_attributes({"checked": "checked"}),
-        )
         jinja_properties = (
             jinja_if_block(
-                {f"value == {default}": default_tag},
+                {f"value == {default}": 'checked="checked" '},
                 block=False,
             ),
         )
@@ -540,7 +544,7 @@ def jinja_bullet_list(
 
 def jinja_block(
     title: str,
-    content: str,
+    content: str | None = None,
     scoped: bool = False,
     required: bool = False,
     block: bool = True,
@@ -554,21 +558,27 @@ def jinja_block(
     if " " in title or not title:
         raise ValueError("Title must not contain spaces and must not be blank")
 
-    join = "\n" if block else ""
-    extra_tags = []
+    block_tags = [title]
     if scoped:
-        extra_tags.append("scoped")
+        block_tags.append("scoped")
+
     if required:
-        extra_tags.append("required")
-    tag_data = " " + " ".join(extra_tags) if extra_tags else ""
+        if content:
+            raise ValueError("jinja `required` blocks must not have content")
+        block_tags.append("required")
+
+    block_data = " ".join(block_tags)
+
+    sections = [
+        jinja_statement(f"block {block_data}"),
+    ]
+    if content:
+        sections.append(content)
     # Title not required for endblock statement but nice for readability
-    return join.join(
-        (
-            jinja_statement(f"block {title}{tag_data}"),
-            content,
-            jinja_statement(f"endblock {title}"),
-        ),
-    )
+    sections.append(jinja_statement(f"endblock {title}"))
+
+    join = "\n" if block else ""
+    return join.join(sections)
 
 
 def jinja_extends(template_filename: str | Iterable[str]) -> str:
@@ -606,3 +616,97 @@ def jinja_number_plural(
         },
         block=False,
     )
+
+
+def jinja_table_row_elements(
+    row_results: Iterable[str],
+    row_iterate: str,
+    row_content: str,
+    row_filter: str | None = None,
+    row_else_content: str | None = None,
+    is_header: bool = False,
+) -> str:
+    """Generate jinja table row for loop block.
+
+    Ends up being something like:
+    for {results} in {iterate} [if {filter_}]:
+        <[th or td]>{content}</[th or td]>
+    else: # If no results that matched filter
+        {else_content}
+    """
+    tag_type = "th" if is_header else "td"
+    return wrap_tag(
+        "tr",
+        jinja_for_loop(
+            results=row_results,
+            iterate=row_iterate,
+            content=wrap_tag(tag_type, row_content, block=False),
+            filter_=row_filter,
+            else_content=(
+                wrap_tag(tag_type, row_else_content, block=False)
+                if row_else_content
+                else None
+            ),
+        ),
+    )
+
+
+def jinja_table_row(
+    row_results: Iterable[str],
+    row_iterate: str,
+    row_content: str,
+    row_filter: str | None = None,
+) -> str:
+    """Generate jinja table row for loop block.
+
+    Ends up being something like:
+    for {results} in {iterate} [if {filter_}]:
+        <tr>
+            {content}
+        </tr>
+    """
+    return jinja_for_loop(
+        results=row_results,
+        iterate=row_iterate,
+        content=wrap_tag("tr", row_content),
+        filter_=row_filter,
+    )
+
+
+def jinja_table(
+    caption: str | None = None,
+    header_iterate: str | None = None,
+    body: str | None = None,
+    footer_iterate: str | None = None,
+) -> str:
+    """Generate jinja table nested for loop blocks."""
+    table_contents = []
+    if caption is not None:
+        table_contents.append(wrap_tag("caption", caption, False))
+    if header_iterate is not None:
+        table_contents.append(
+            wrap_tag(
+                "thead",
+                jinja_table_row_elements(
+                    ("header_element",),
+                    header_iterate,
+                    jinja_expression("header_element"),
+                    is_header=True,
+                ),
+            ),
+        )
+    if body is not None:
+        table_contents.append(wrap_tag("tbody", body))
+    if footer_iterate is not None:
+        table_contents.append(
+            wrap_tag(
+                "tfoot",
+                jinja_table_row_elements(
+                    ("footer_element",),
+                    footer_iterate,
+                    jinja_expression("footer_element"),
+                    is_header=True,
+                ),
+            ),
+        )
+    return wrap_tag("table", "\n".join(table_contents))

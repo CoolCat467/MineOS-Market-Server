@@ -1,20 +1,15 @@
 {% extends "base.html.jinja" %}
-{% block title %}Debug Response{% endblock title %}
+{% block title %}Debug Form{% endblock title %}
 {% block body %}
 <div class="box">
   <b>Debug Form</b>
   <form name="debug_form" method="post">
     <label for="script">Script</label>
-    <input id="script" name="script" value="{{ script_autofill }}" required=""><br>
+    <input id="script" name="script" required=""><br>
     <label for="post_area">Post Data</label>
-    <textarea name="post_data" id="post_area" rows="5" cols="80">{{ post_autofill }}</textarea>
+    <textarea name="post_data" id="post_area" rows="5" cols="80"></textarea>
     <br>
     <input type="submit" id="debug_form_submit_button" name="debug_form_submit_button" value="Post">
   </form>
-</div>
-<div class="box">
-  <span>Response (code {{ response_code }})</span>
-  <br>
-  {{ response }}
 </div>
 {% endblock body %}

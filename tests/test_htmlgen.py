@@ -393,6 +393,15 @@ def test_form_no_title() -> None:
     )
 
 
+def test_form_no_submit_display() -> None:
+    assert (
+        htmlgen.form("form_id", "dis content woo")
+        == """<form name="form_id" method="post">
+  dis content woo
+</form>"""
+    )
+
+
 def test_jinja_statement() -> None:
     assert htmlgen.jinja_statement("jinja exp") == "{% jinja exp %}"
 
@@ -502,7 +511,7 @@ There are no cat elements
     [
         ("p", ("jinja",), {}, "<p jinja>"),
         ("p", (), {"fish": "false"}, '<p fish="false">'),
-        ("p", ("jinja",), {"fish": "false"}, '<p jinja fish="false">'),
+        ("p", ("jinja ",), {"fish": "false"}, '<p jinja fish="false">'),
         ("i", (), {}, "<i>"),
         (
             "input",
@@ -512,7 +521,7 @@ There are no cat elements
         ),
         (
             "input",
-            ("jinja",),
+            ("jinja ",),
             {"type": "radio", "id": "0", "name": "test", "value_": "Example"},
             '<input jinja type="radio" id="0" name="test" value="Example">',
         ),
@@ -542,7 +551,7 @@ def test_jinja_radio_select_default() -> None:
     assert (
         htmlgen.jinja_radio_select("submits", "option_data", "default text")
         == """{% for display, value in option_data.items() %}
-<input {% if value == default text %}checked="checked"{% endif %} type="radio" id="submits_{{ loop.index0 }}" name="submits" value="{{ value }}">
+<input {% if value == default text %}checked="checked" {% endif %}type="radio" id="submits_{{ loop.index0 }}" name="submits" value="{{ value }}">
 <label for="submits_{{ loop.index0 }}">{{ display }}</label>
 <br>
 {% endfor %}"""
@@ -596,9 +605,17 @@ hallos content
 def test_jinja_block_invalid_title() -> None:
     with pytest.raises(
         ValueError,
-        match="Title must not contain spaces and must not be blank",
+        match=r"^Title must not contain spaces and must not be blank$",
     ):
         htmlgen.jinja_block("name with spaces", "content")
+
+
+def test_jinja_block_required_has_content_error() -> None:
+    with pytest.raises(
+        ValueError,
+        match=r"^jinja `required` blocks must not have content$",
+    ):
+        htmlgen.jinja_block("title", "content", required=True)
 
 
 def test_jinja_block_invalid_blank_title() -> None:
@@ -626,11 +643,9 @@ def test_jinja_block_required() -> None:
     assert (
         htmlgen.jinja_block(
             "title_here",
-            "hallos content",
             required=True,
         )
         == """{% block title_here required %}
-hallos content
 {% endblock title_here %}"""
     )
 
@@ -639,12 +654,10 @@ def test_jinja_block_required_scoped() -> None:
     assert (
         htmlgen.jinja_block(
             "title_here",
-            "hallos content",
             required=True,
             scoped=True,
         )
         == """{% block title_here scoped required %}
-hallos content
 {% endblock title_here %}"""
     )
 
@@ -686,4 +699,119 @@ def test_jinja_number_plural() -> None:
     assert (
         htmlgen.jinja_number_plural(3, "second")
         == "second{% if 3 > 1 %}s{% elif 3 == 0 %}s{% endif %}"
+    )
+
+
+def test_jinja_table_row_elements() -> None:
+    assert (
+        (
+            htmlgen.jinja_table_row_elements(
+                ("one", "two"),
+                "row_iterate",
+                "row_content",
+                "row_filter",
+                "row_else",
+            )
+        )
+        == """<tr>
+  {% for one, two in row_iterate if row_filter %}
+  <td>row_content</td>
+  {% else %}
+  <td>row_else</td>
+  {% endfor %}
+</tr>"""
+    )
+
+
+def test_jinja_table_row_elements_title() -> None:
+    assert (
+        (
+            htmlgen.jinja_table_row_elements(
+                ("one", "two"),
+                "row_iterate",
+                "row_content",
+                "row_filter",
+                "row_else",
+                True,
+            )
+        )
+        == """<tr>
+  {% for one, two in row_iterate if row_filter %}
+  <th>row_content</th>
+  {% else %}
+  <th>row_else</th>
+  {% endfor %}
+</tr>"""
+    )
+
+
+def test_jinja_table_row() -> None:
+    assert (
+        (
+            htmlgen.jinja_table_row(
+                ("one", "two"),
+                "row_iterate",
+                "row_content",
+                "row_filter",
+            )
+        )
+        == """{% for one, two in row_iterate if row_filter %}
+<tr>
+  row_content
+</tr>
+{% endfor %}"""
+    )
+
+
+def test_jinja_table_empty() -> None:
+    assert htmlgen.jinja_table() == "<table></table>"
+
+
+def test_jinja_table_caption() -> None:
+    assert (
+        htmlgen.jinja_table("look ma is caption")
+        == """<table>
+  <caption>look ma is caption</caption>
+</table>"""
+    )
+
+
+def test_jinja_table_header() -> None:
+    assert (
+        htmlgen.jinja_table(header_iterate="header_iterate")
+        == """<table>
+  <thead>
+    <tr>
+      {% for header_element in header_iterate %}
+      <th>{{ header_element }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+</table>"""
+    )
+
+
+def test_jinja_table_body() -> None:
+    assert (
+        htmlgen.jinja_table(body="table body content")
+        == """<table>
+  <tbody>
+    table body content
+  </tbody>
+</table>"""
+    )
+
+
+def test_jinja_table_footer_iterate() -> None:
+    assert (
+        htmlgen.jinja_table(footer_iterate="footer_iterate")
+        == """<table>
+  <tfoot>
+    <tr>
+      {% for footer_element in footer_iterate %}
+      <th>{{ footer_element }}</th>
+      {% endfor %}
+    </tr>
+  </tfoot>
+</table>"""
     )

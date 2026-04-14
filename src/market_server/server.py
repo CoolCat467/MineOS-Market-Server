@@ -1,6 +1,6 @@
 """Market Server - MineOS App Market Server.
 
-Copyright (C) 2024  CoolCat467
+Copyright (C) 2024-2026  CoolCat467
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,26 +21,26 @@ from __future__ import annotations
 __title__ = "MineOS Market Webserver"
 __author__ = "CoolCat467"
 __license__ = "GNU General Public License Version 3"
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 
-import functools
-import socket
+import argparse
 import sys
 import time
-import traceback
 from collections import ChainMap
-from collections.abc import AsyncIterator, Awaitable, Callable, Iterable
+from collections.abc import AsyncIterator, Iterable
 from os import getenv, makedirs, path
 from typing import TYPE_CHECKING, Any, Final, TypeVar, cast
 
 import trio
 from hypercorn.config import Config
 from hypercorn.trio import serve
-from quart import Response, request
+from quart import request
 from quart.templating import stream_template
 from quart_trio import QuartTrio
-from werkzeug.exceptions import HTTPException
+
+from market_server import api, backups, database, htmlgen, schema
+from market_server.server_utils import find_ip, pretty_exception
 
 if sys.version_info < (3, 11):
     import tomli as tomllib
@@ -52,8 +52,6 @@ if TYPE_CHECKING:
     from typing_extensions import ParamSpec
 
     PS = ParamSpec("PS")
-
-from market_server import api, backups, database, htmlgen, schema
 
 HOME: Final = trio.Path(getenv("HOME", path.expanduser("~")))
 XDG_DATA_HOME: Final = trio.Path(
@@ -79,122 +77,6 @@ def combine_end(data: Iterable[str], final: str = "and") -> str:
     return " ".join(data)
 
 
-async def send_error(
-    page_title: str,
-    error_body: str,
-    return_link: str | None = None,
-) -> AsyncIterator[str]:
-    """Stream error page."""
-    return await stream_template(
-        "error_page.html.jinja",
-        page_title=page_title,
-        error_body=error_body,
-        return_link=return_link,
-    )
-
-
-async def get_exception_page(
-    code: int,
-    name: str,
-    desc: str,
-) -> tuple[AsyncIterator[str], int]:
-    """Return Response for exception."""
-    resp_body = await send_error(
-        page_title=f"{code} {name}",
-        error_body=desc,
-    )
-    return (resp_body, code)
-
-
-def pretty_exception_name(exc: BaseException) -> str:
-    """Make exception into pretty text (split by spaces)."""
-    exc_str, reason = repr(exc).split("(", 1)
-    reason = reason[1:-2]
-    words = []
-    last = 0
-    for idx, char in enumerate(exc_str):
-        if char.islower():
-            continue
-        word = exc_str[last:idx]
-        if not word:
-            continue
-        words.append(word)
-        last = idx
-    words.append(exc_str[last:])
-    error = " ".join(w for w in words if w not in {"Error", "Exception"})
-    return f"{error} ({reason})"
-
-
-def pretty_exception(
-    function: Callable[PS, Awaitable[T]],
-) -> Callable[PS, Awaitable[T | tuple[AsyncIterator[str], int]]]:
-    """Make exception pages pretty."""
-
-    @functools.wraps(function)
-    async def wrapper(  # type: ignore[misc]
-        *args: PS.args,
-        **kwargs: PS.kwargs,
-    ) -> T | tuple[AsyncIterator[str], int]:
-        code = 500
-        name = "Exception"
-        desc = (
-            "The server encountered an internal error and "
-            + "was unable to complete your request. "
-            + "Either the server is overloaded or there is an error "
-            + "in the application."
-        )
-        try:
-            return await function(*args, **kwargs)
-        except Exception as exception:
-            traceback.print_exception(exception)
-
-            if isinstance(exception, HTTPException):
-                code = exception.code or code
-                desc = exception.description or desc
-                name = exception.name or name
-            else:
-                exc_name = pretty_exception_name(exception)
-                name = f"Internal Server Error ({exc_name})"
-
-        return await get_exception_page(
-            code,
-            name,
-            desc,
-        )
-
-    return wrapper
-
-
-# Stolen from WOOF (Web Offer One File), Copyright (C) 2004-2009 Simon Budig,
-# available at http://www.home.unix-ag.org/simon/woof
-# with modifications
-
-# Utility function to guess the IP (as a string) where the server can be
-# reached from the outside. Quite nasty problem actually.
-
-
-def find_ip() -> str:
-    """Guess the IP where the server can be found from the network."""
-    # we get a UDP-socket for the TEST-networks reserved by IANA.
-    # It is highly unlikely, that there is special routing used
-    # for these networks, hence the socket later should give us
-    # the IP address of the default route.
-    # We're doing multiple tests, to guard against the computer being
-    # part of a test installation.
-
-    candidates: list[str] = []
-    for test_ip in ("192.0.2.0", "198.51.100.0", "203.0.113.0"):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.connect((test_ip, 80))
-        ip_addr: str = sock.getsockname()[0]
-        sock.close()
-        if ip_addr in candidates:
-            return ip_addr
-        candidates.append(ip_addr)
-
-    return candidates[0]
-
-
 app: Final = QuartTrio(  # pylint: disable=invalid-name
     __name__,
     static_folder="static",
@@ -206,6 +88,7 @@ schema_v_2_04 = schema.Version_2_04(DATA_PATH)
 
 
 @app.route("/MineOSAPI/<version>/<script>.php", methods=("POST", "GET"))
+@pretty_exception
 async def handle_script(
     version: str,
     script: str,
@@ -245,15 +128,17 @@ async def handle_script(
 
 
 @app.get("/")
-async def handle_root() -> Response:
+@pretty_exception
+async def handle_root() -> AsyncIterator[str]:
     """Send root file."""
-    return await app.send_static_file("root.html")
+    return await stream_template("root.html.jinja")
 
 
 @app.get("/debug")
-async def handle_debug_get() -> Response:
+@pretty_exception
+async def handle_debug_get() -> AsyncIterator[str]:
     """Send debug file."""
-    return await app.send_static_file("debug.html")
+    return await stream_template("debug.html.jinja")
 
 
 try:
@@ -277,6 +162,7 @@ except ImportError:
 
 
 @app.post("/debug")
+@pretty_exception
 async def handle_debug_post() -> (
     tuple[AsyncIterator[str], int] | AsyncIterator[str]
 ):
@@ -453,14 +339,7 @@ def server_market(
             raise
 
 
-def run() -> None:
-    """Run scanner server."""
-    if not path.exists(CONFIG_PATH):
-        makedirs(CONFIG_PATH)
-    if not path.exists(MAIN_CONFIG):
-        with open(MAIN_CONFIG, "w", encoding="utf-8") as fp:
-            fp.write(
-                """[main]
+DEFAULT_CONFIG_TOML: Final = """[main]
 # Port server should run on.
 # You might want to consider changing this to 80
 port = 3004
@@ -479,13 +358,56 @@ use_reloader = false
 # SSL configuration details
 #certfile = "/home/<your_username>/letsencrypt/config/live/<your_domain_name>.duckdns.org/fullchain.pem"
 #keyfile = "/home/<your_username>/letsencrypt/config/live/<your_domain_name>.duckdns.org/privkey.pem"
-""",
-            )
+"""
 
-    print(f"Reading configuration file {str(MAIN_CONFIG)!r}...\n")
 
-    with open(MAIN_CONFIG, "rb") as fp:
-        config = tomllib.load(fp)
+def run() -> None:
+    """Run scanner server."""
+    parser = argparse.ArgumentParser(
+        description="Python MineOS App Market Server Reimplementation.",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"{__title__} v{__version__}",
+        help="Show the program version and exit.",
+    )
+    parser.add_argument(
+        "--create-default-config",
+        action="store_true",
+        help="Create or overwrite the default configuration file.",
+    )
+    parser.add_argument(
+        "--local",
+        action="store_true",
+        help="Bind to localhost (127.0.0.1) instead of public ip address.",
+    )
+
+    args = parser.parse_args()
+
+    if args.create_default_config:
+        print(
+            f"Creating/overwriting configuration file located at {str(MAIN_CONFIG)!r} with default...",
+        )
+        if not path.exists(CONFIG_PATH):
+            makedirs(CONFIG_PATH)
+
+        with open(MAIN_CONFIG, "w", encoding="utf-8") as fp:
+            fp.write(DEFAULT_CONFIG_TOML)
+
+        print("Action complete.")
+        return
+
+    if path.exists(MAIN_CONFIG):
+        print(f"Reading configuration file {str(MAIN_CONFIG)!r}...\n")
+
+        with open(MAIN_CONFIG, "rb") as fp:
+            config = tomllib.load(fp)
+    else:
+        print(
+            f"Configuration file {str(MAIN_CONFIG)!r} not found, loading default.",
+        )
+        config = tomllib.loads(DEFAULT_CONFIG_TOML)
 
     main_section = config.get("main", {})
 
@@ -494,10 +416,15 @@ use_reloader = false
 
     hypercorn: dict[str, object] = config.get("hypercorn", {})
 
+    ip_address: str | None = None
+    if args.local:
+        ip_address = "127.0.0.1"
+
     try:
         server_market(
             secure_bind_port=secure_bind_port,
             insecure_bind_port=insecure_bind_port,
+            ip_addr=ip_address,
             hypercorn=hypercorn,
         )
     finally:

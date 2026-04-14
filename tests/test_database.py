@@ -1,10 +1,15 @@
+from __future__ import annotations
+
 import json
 import uuid
-from pathlib import Path
+from typing import TYPE_CHECKING, cast
 
 import pytest
 
 from market_server.database import Database, Records
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @pytest.fixture
@@ -109,5 +114,13 @@ async def test_records(temp_db_file: str) -> None:
 
         # Test setting column data
         records["key3"] = {"column1": "value5", "column2": "value6"}
-        assert table["column1"] == ("value1", "value3", "value5")
-        assert table["column2"] == ("value2", "value4", "value6")
+        assert cast("tuple[str, str, str]", table["column1"]) == (
+            "value1",
+            "value3",
+            "value5",
+        )
+        assert cast("tuple[str, str, str]", table["column2"]) == (
+            "value2",
+            "value4",
+            "value6",
+        )
