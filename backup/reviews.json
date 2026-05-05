@@ -86,8 +86,8 @@
    "timestamp": 1545732381,
    "user_name": "Fronun",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "651": {
@@ -367,8 +367,8 @@
    "timestamp": 1519565747,
    "user_name": "chaika",
    "votes": {
-    "positive": 3,
-    "total": 6
+    "positive": 2,
+    "total": 5
    }
   }
  },
@@ -425,17 +425,6 @@
    "rating": 1,
    "timestamp": 1719152796,
    "user_name": "hungry011ship",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  },
-  "1690": {
-   "comment": "This library is key for MineOS and it's subordinates. However it is a good base system for my project, and I love it!",
-   "id": 1690,
-   "rating": 5,
-   "timestamp": 1757515421,
-   "user_name": "NeonKatVT",
    "votes": {
     "positive": 0,
     "total": 0
@@ -604,7 +593,7 @@
    "user_name": "Fronun",
    "votes": {
     "positive": 8,
-    "total": 19
+    "total": 18
    }
   },
   "859": {
@@ -614,8 +603,8 @@
    "timestamp": 1585804481,
    "user_name": "DanShkr",
    "votes": {
-    "positive": 5,
-    "total": 5
+    "positive": 4,
+    "total": 4
    }
   },
   "886": {
@@ -625,8 +614,8 @@
    "timestamp": 1588413514,
    "user_name": "SemenZheldak",
    "votes": {
-    "positive": 4,
-    "total": 4
+    "positive": 3,
+    "total": 3
    }
   }
  },
@@ -966,8 +955,8 @@
    "timestamp": 1654000814,
    "user_name": "Zink_",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "1365": {
@@ -977,8 +966,8 @@
    "timestamp": 1669351332,
    "user_name": "mogusman",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   },
   "1452": {
@@ -988,8 +977,8 @@
    "timestamp": 1690927281,
    "user_name": "TheZayach",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "1476": {
@@ -999,8 +988,8 @@
    "timestamp": 1695604720,
    "user_name": "YourDLCMaster",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "940": {
@@ -1052,71 +1041,115 @@
    }
   }
  },
- "1357": {
-  "1025": {
-   "comment": "perfect!",
-   "id": 1025,
+ "1335": {
+  "1043": {
+   "comment": "Best BIOS ever!!!!!!!",
+   "id": 1043,
    "rating": 5,
-   "timestamp": 1609765831,
-   "user_name": "ballsun",
+   "timestamp": 1613924665,
+   "user_name": "pawwse1111",
    "votes": {
     "positive": 1,
     "total": 1
    }
   },
-  "1028": {
-   "comment": "Incredible!",
-   "id": 1028,
+  "1080": {
+   "comment": "\u041d\u0430\u0432\u0435\u0440\u043d\u043e\u0435 \u0441\u0430\u043c\u044b\u0439 \u043b\u0443\u0447\u0448\u0438\u0439 \u0431\u0438\u043e\u0441 \u0434\u043b\u044f MineOS",
+   "id": 1080,
    "rating": 5,
-   "timestamp": 1610289580,
-   "user_name": "GamingStuff30",
-   "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  },
-  "1252": {
-   "comment": "\u041d\u0435 \u043f\u043b\u043e\u0445\u043e, \u043d\u043e \u043b\u0430\u0433\u0430\u043d\u043e :/",
-   "id": 1252,
-   "rating": 4,
-   "timestamp": 1639714533,
-   "user_name": "XderStep",
-   "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  },
-  "1407": {
-   "comment": "\u0420\u0430\u0437\u0440\u0430\u0431\u0443 \u0443\u0432\u0430\u0436\u0435\u043d\u0438\u0435 \u043a\u0440\u0443\u0442\u0430\u044f \u043f\u0440\u0438\u043b\u043e\u0436\u0443\u0445\u0430",
-   "id": 1407,
-   "rating": 5,
-   "timestamp": 1677634925,
-   "user_name": "Eblan211",
-   "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  },
-  "955": {
-   "comment": "\u0412\u0441\u0435 \u043e\u0442\u043b\u0438\u0447\u043d\u043e",
-   "id": 955,
-   "rating": 5,
-   "timestamp": 1592427996,
-   "user_name": "Stepanlom",
-   "votes": {
-    "positive": 2,
-    "total": 4
-   }
-  },
-  "977": {
-   "comment": "\u0420\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u043d\u043e \u043e\u0447\u0435\u043d\u044c \u043a\u0440\u0438\u0432\u043e. #thisisnotscam",
-   "id": 977,
-   "rating": 3,
-   "timestamp": 1595515267,
-   "user_name": "SashaTalk",
+   "timestamp": 1619378441,
+   "user_name": "DragonWolfOfficial",
    "votes": {
     "positive": 2,
     "total": 2
+   }
+  },
+  "1129": {
+   "comment": "very good",
+   "id": 1129,
+   "rating": 5,
+   "timestamp": 1624772514,
+   "user_name": "markverb1",
+   "votes": {
+    "positive": 1,
+    "total": 1
+   }
+  },
+  "1162": {
+   "comment": "\u041f\u043e\u043b\u0435\u0437\u043d\u043e\u0435 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u043a\u043e\u0433\u0434\u0430 MineOS EFI \u043b\u0435\u0433\u043a\u043e \u0438 \u043f\u0440\u043e\u0441\u0442\u043e \u043f\u043e\u043b\u043e\u0436\u0438\u0442\u044c. \u0421yan BIOS \u0441\u043f\u0430\u0441\u0430\u0435\u0442",
+   "id": 1162,
+   "rating": 5,
+   "timestamp": 1626255612,
+   "user_name": "kogtyv",
+   "votes": {
+    "positive": 1,
+    "total": 1
+   }
+  },
+  "1173": {
+   "comment": "\u041d\u0415 \u043c\u043e\u0433\u0443 \u0437\u0430\u0439\u0442\u0438 \u0432 bootloader \u041d\u0415 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u043a\u043b\u0430\u0432\u0438\u0448\u0430 ALT \u041d\u0415 \u043f\u0440\u043e\u0448\u0438\u0432\u0430\u0435\u0442\u0441\u044f",
+   "id": 1173,
+   "rating": 1,
+   "timestamp": 1629305544,
+   "user_name": "lexaphonegreat11ek",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "1197": {
+   "comment": "It's the best bios ever!!!",
+   "id": 1197,
+   "rating": 5,
+   "timestamp": 1631367828,
+   "user_name": "Nikolas_500",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "1262": {
+   "comment": "\u041e\u0442\u043b\u0438\u0447\u043d\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442! \u041b\u0443\u0447\u0448\u0435\u0435 BIOS! Great work! Best BIOS!",
+   "id": 1262,
+   "rating": 5,
+   "timestamp": 1644050032,
+   "user_name": "Sotelugres",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "1326": {
+   "comment": "\u0425\u043e\u0440\u043e\u0448\u0438\u0439 EFI \u0434\u043b\u044f \u0434\u0443\u0430\u043b \u0431\u0443\u0442\u0430!",
+   "id": 1326,
+   "rating": 5,
+   "timestamp": 1654289751,
+   "user_name": "xerix123456",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "1372": {
+   "comment": "\u041e\u0434\u043d\u043e \u0438\u0437 \u0445\u043e\u0440\u043e\u0448\u0438\u0445 \u0440\u0435\u0448\u0435\u043d\u0438\u0439 \u0434\u043b\u044f \u0434\u0443\u0430\u043b \u0431\u0443\u0442\u0430, \u0441\u043e\u0432\u0435\u0442\u0443\u044e, \u0430 \u0435\u0449\u0435 \u0442\u0430\u043c \u0442\u0435\u043c\u0430 \u043f\u0440\u0438\u043a\u043e\u043b)0)0",
+   "id": 1372,
+   "rating": 5,
+   "timestamp": 1672351098,
+   "user_name": "OLESHE",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "922": {
+   "comment": "\u0427\u0435\u043a\u043d\u0438 \u043e\u0442\u0437\u044b\u0432 \u043f\u043e\u0434 \u0431\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u043e\u0439",
+   "id": 922,
+   "rating": 5,
+   "timestamp": 1589888446,
+   "user_name": "TheSainEyereg",
+   "votes": {
+    "positive": 1,
+    "total": 5
    }
   }
  },
@@ -1128,8 +1161,8 @@
    "timestamp": 1617109981,
    "user_name": "SashaTalk",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   },
   "1662": {
@@ -1345,8 +1378,8 @@
    "timestamp": 1617109789,
    "user_name": "SashaTalk",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 2,
+    "total": 2
    }
   }
  },
@@ -1637,19 +1670,54 @@
    "timestamp": 1705165542,
    "user_name": "Dimsk",
    "votes": {
-    "positive": 4,
-    "total": 5
+    "positive": 2,
+    "total": 3
+   }
+  }
+ },
+ "1436": {
+  "1095": {
+   "comment": "\u0422\u043e\u0436\u0435 \u0434\u0435\u043b\u0430\u043b \u0442\u0430\u043a\u0438\u0435  \u0418\u0420\u041b \u0447\u0430\u0441\u044b. \u0422\u044b \u043c\u0435\u043d\u044f \u043e\u043f\u0435\u0440\u0435\u0434\u0438\u043b. ))",
+   "id": 1095,
+   "rating": 5,
+   "timestamp": 1622872513,
+   "user_name": "MineCR",
+   "votes": {
+    "positive": 0,
+    "total": 0
    }
   },
-  "1681": {
-   "comment": "\u0438\u043c\u0431\u0430",
-   "id": 1681,
-   "rating": 5,
-   "timestamp": 1752220647,
-   "user_name": "LissyenoK",
+  "1216": {
+   "comment": "zegar",
+   "id": 1216,
+   "rating": 4,
+   "timestamp": 1633273891,
+   "user_name": "SewoPilaYT",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "1311": {
+   "comment": "\u041b\u043e\u043c\u0430\u043d\u043e\u0435 \u0434\u0435\u0440\u044c\u043c\u043e",
+   "id": 1311,
+   "rating": 2,
+   "timestamp": 1649510323,
+   "user_name": "Egli",
    "votes": {
     "positive": 0,
     "total": 1
+   }
+  },
+  "1363": {
+   "comment": "\u0420\u0430\u0431\u043e\u0442\u0430\u0435\u0442, \u0441\u043f\u0430\u0441\u0438\u0431\u043e.",
+   "id": 1363,
+   "rating": 5,
+   "timestamp": 1667938128,
+   "user_name": "BikutaNeko",
+   "votes": {
+    "positive": 0,
+    "total": 0
    }
   }
  },
@@ -1914,6 +1982,30 @@
    }
   }
  },
+ "1504": {
+  "1231": {
+   "comment": "\u0432\u0435\u043d\u0442\u0435\u043b\u044f\u0442\u043e\u0440\u044b",
+   "id": 1231,
+   "rating": 4,
+   "timestamp": 1636018912,
+   "user_name": "karimokpirat",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
+  "1261": {
+   "comment": "\u043a\u0438\u043d\u043e \u0438\u0437 \u0432\u043e\u0441\u044c\u043c\u0438 \u043a\u0430\u0434\u0440\u043e\u0432, \u043d\u043e\u0440\u043c. \u043d\u0430\u0434\u0435\u044e\u0441\u044c \u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440 \u0430\u043d\u0438\u043c\u0430\u0446\u0438\u0439 \u0431\u0443\u0434\u0435\u0442!",
+   "id": 1261,
+   "rating": 5,
+   "timestamp": 1643993851,
+   "user_name": "victor15",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  }
+ },
  "1515": {
   "1127": {
    "comment": "\u041e\u043d\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u0442\u043e\u0433\u0434\u0430, \u043a\u043e\u0433\u0434\u0430 \u043f\u0435\u0440\u0435\u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0448 \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440",
@@ -1935,8 +2027,8 @@
    "timestamp": 1624986196,
    "user_name": "Hatryy",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 2,
+    "total": 2
    }
   },
   "1187": {
@@ -1978,17 +2070,6 @@
    "rating": 5,
    "timestamp": 1696171982,
    "user_name": "evidentwig",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  },
-  "1678": {
-   "comment": "\u041a\u0440\u0443\u0442\u043e \u0442\u043e\u043b\u044c\u043a\u043e \u043a\u0430\u043a \u0432\u044b\u0439\u0442\u0438 ",
-   "id": 1678,
-   "rating": 5,
-   "timestamp": 1750871944,
-   "user_name": "naem",
    "votes": {
     "positive": 0,
     "total": 0
@@ -2063,17 +2144,6 @@
     "positive": 0,
     "total": 0
    }
-  },
-  "1670": {
-   "comment": "eeee",
-   "id": 1670,
-   "rating": 4,
-   "timestamp": 1750599026,
-   "user_name": "secondnrovs",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
   }
  },
  "1579": {
@@ -2119,8 +2189,8 @@
    "timestamp": 1625649103,
    "user_name": "Darkaness2",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "1153": {
@@ -2141,8 +2211,8 @@
    "timestamp": 1645980619,
    "user_name": "victor15",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   },
   "1465": {
@@ -2152,8 +2222,8 @@
    "timestamp": 1693072327,
    "user_name": "matveyminer",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "1488": {
@@ -2163,8 +2233,8 @@
    "timestamp": 1699092372,
    "user_name": "Andrey625",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   }
  },
@@ -2296,8 +2366,8 @@
    "timestamp": 1603293636,
    "user_name": "Desoroxxx",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 0,
+    "total": 0
    }
   },
   "107": {
@@ -2308,7 +2378,7 @@
    "user_name": "ctrlCctrlV",
    "votes": {
     "positive": 1,
-    "total": 4
+    "total": 3
    }
   },
   "1072": {
@@ -2395,8 +2465,8 @@
    "timestamp": 1708259731,
    "user_name": "X_Ghost_X",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "161": {
@@ -2406,38 +2476,16 @@
    "timestamp": 1520509785,
    "user_name": "fSHARP",
    "votes": {
-    "positive": 5,
-    "total": 5
+    "positive": 4,
+    "total": 4
    }
   },
-  "1694": {
-   "comment": 0,
-   "id": 1694,
+  "1674": {
+   "comment": "\u0424\u0435\u0434\u044f \u0441\u043b\u043e\u043c\u0430\u043b(",
+   "id": 1674,
    "rating": 4,
-   "timestamp": 1760628266,
-   "user_name": "assripper",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  },
-  "1696": {
-   "comment": "undefined",
-   "id": 1696,
-   "rating": 5,
-   "timestamp": 1760632380,
-   "user_name": "dnrovs",
-   "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  },
-  "1714": {
-   "comment": "Awesome app",
-   "id": 1714,
-   "rating": 5,
-   "timestamp": 1760885041,
-   "user_name": "secondnrovs",
+   "timestamp": 1773532766,
+   "user_name": "Xylic",
    "votes": {
     "positive": 0,
     "total": 0
@@ -2582,8 +2630,8 @@
    "timestamp": 1549129275,
    "user_name": "GoodBoy",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "692": {
@@ -2972,17 +3020,6 @@
    "timestamp": 1645697842,
    "user_name": "victor15",
    "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  },
-  "1677": {
-   "comment": "Underrated app. So cool 2 games at once",
-   "id": 1677,
-   "rating": 5,
-   "timestamp": 1750870885,
-   "user_name": "naem",
-   "votes": {
     "positive": 0,
     "total": 0
    }
@@ -3017,19 +3054,6 @@
    "rating": 5,
    "timestamp": 1643993607,
    "user_name": "victor15",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  }
- },
- "1748": {
-  "1689": {
-   "comment": "The download does not work anymore, and gives a GUI Alert instead.",
-   "id": 1689,
-   "rating": 1,
-   "timestamp": 1757515307,
-   "user_name": "NeonKatVT",
    "votes": {
     "positive": 0,
     "total": 0
@@ -3077,8 +3101,8 @@
    "timestamp": 1698952905,
    "user_name": "Zac0511",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "1644": {
@@ -3088,8 +3112,8 @@
    "timestamp": 1723128797,
    "user_name": "CACKE",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "272": {
@@ -3179,7 +3203,7 @@
    "user_name": "ABOBUS",
    "votes": {
     "positive": 0,
-    "total": 1
+    "total": 0
    }
   },
   "1317": {
@@ -3200,8 +3224,8 @@
    "timestamp": 1654332198,
    "user_name": "xerix123456",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   }
  },
@@ -3497,8 +3521,8 @@
    "timestamp": 1688585386,
    "user_name": "CACKE",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 2,
+    "total": 2
    }
   },
   "1575": {
@@ -3507,17 +3531,6 @@
    "rating": 5,
    "timestamp": 1704830958,
    "user_name": "Carl",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  },
-  "1675": {
-   "comment": "\u0415\u0434\u0438\u043d\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u043c\u043d\u0435 \u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0439 \u043f\u043e\u0440\u0442\u0430\u043b \u0438\u0437 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u0438 \u0432 Mine OS",
-   "id": 1675,
-   "rating": 5,
-   "timestamp": 1750791008,
-   "user_name": "ScaredFive",
    "votes": {
     "positive": 0,
     "total": 0
@@ -3565,8 +3578,8 @@
    "timestamp": 1699777404,
    "user_name": "Misha2311Pro",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 2,
+    "total": 2
    }
   }
  },
@@ -3670,8 +3683,8 @@
    "timestamp": 1703955340,
    "user_name": "CACKE",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   },
   "1592": {
@@ -3681,8 +3694,8 @@
    "timestamp": 1705668782,
    "user_name": "matveyminer",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "1597": {
@@ -3692,8 +3705,8 @@
    "timestamp": 1706707681,
    "user_name": "HappyWindinkg",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "1617": {
@@ -3703,8 +3716,8 @@
    "timestamp": 1716994350,
    "user_name": "DUXA",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 0,
+    "total": 0
    }
   }
  },
@@ -3733,6 +3746,17 @@
   }
  },
  "2219": {
+  "1576": {
+   "comment": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0442\u043e\u043f! \u0415\u0441\u043b\u0438 \u0432\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u043c\u0430\u0433\u0438\u0447\u0435\u0441\u043a\u0443\u044e \u043e\u043f\u0435\u0440\u0430\u0442\u0438\u0432\u043a\u0443 \u0442\u043e \u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 64 \u043c\u0431 \u043e\u0437\u0443",
+   "id": 1576,
+   "rating": 5,
+   "timestamp": 1704874822,
+   "user_name": "kirbest1000",
+   "votes": {
+    "positive": 1,
+    "total": 1
+   }
+  },
   "1596": {
    "comment": "\u041d\u0430 \u0434\u0440\u0443\u0433\u0438\u0445 \u043f\u043a \u0443 \u043c\u0435\u043d\u044f \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430 \u0443\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u0435\u0442\u0441\u044f, \u0430 \u043a\u043e\u0433\u0434\u0430 \u0443\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u044e \u043d\u0430 \u0441\u0432\u043e\u0439 \u0442\u043e \u0432\u044b\u0434\u0430\u0451\u0442 \u043e\u0448\u0438\u0431\u043a\u0443 \u0438 \u0441\u043e\u0437\u0434\u0430\u0451\u0442 \u043f\u0440\u043e\u0441\u0442\u043e\u0439 \u044f\u0440\u043b\u044b\u043a \u0431\u0435\u0437 \u0444\u0430\u0439\u043b\u043e\u0432 \u043d\u0430 \u0440\u0430\u0431\u043e\u0447\u0435\u043c \u0441\u0442\u043e\u043b\u0435.",
    "id": 1596,
@@ -3751,8 +3775,8 @@
    "timestamp": 1708807674,
    "user_name": "Bumer_32",
    "votes": {
-    "positive": 2,
-    "total": 3
+    "positive": 3,
+    "total": 4
    }
   },
   "1611": {
@@ -3764,17 +3788,6 @@
    "votes": {
     "positive": 0,
     "total": 0
-   }
-  },
-  "1679": {
-   "comment": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0442\u043e\u043f! \u0415\u0441\u043b\u0438 \u0432\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u043c\u0430\u0433\u0438\u0447\u0435\u0441\u043a\u0443\u044e \u043e\u043f\u0435\u0440\u0430\u0442\u0438\u0432\u043a\u0443 \u0442\u043e \u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 64 \u043c\u0431 \u043e\u0437\u0443. \u041a\u0441\u0442\u0430\u0442\u0438 \u0445\u043e\u0442\u0435\u043b\u043e\u0441\u044c \u0431\u044b \u0432\u0438\u0434\u0435\u0442\u044c \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435 \u0437\u0430\u043d\u044f\u0442\u043e\u0439 \u0438 \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u043e\u0439 \u043e\u0437\u0443 \u0432 \u0438\u043c\u0435\u044e\u0449\u0435\u043c\u0441\u044f \u0432\u0438\u0434\u0436\u0435\u0442\u0435 \u0432\u0432\u0435\u0440\u0445\u0443 (\u0442\u0430\u043a\u043e\u0435 \u043c\u043e\u0436\u043d\u043e \u0441\u0434\u0435\u043b\u0430\u0442\u044c, \u0435\u0441\u043b\u0438 \u0438\u043d\u0442\u0435\u0440\u0435\u0441\u043d\u043e, \u0442\u043e \u043d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u043c\u043d\u0435)",
-   "id": 1679,
-   "rating": 5,
-   "timestamp": 1751454265,
-   "user_name": "kirbest1000",
-   "votes": {
-    "positive": 1,
-    "total": 1
    }
   }
  },
@@ -3845,8 +3858,8 @@
    "timestamp": 1711642079,
    "user_name": "CACKE",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   }
  },
@@ -3862,6 +3875,17 @@
     "total": 2
    }
   },
+  "1588": {
+   "comment": "\u043c\u044f\u0443",
+   "id": 1588,
+   "rating": 5,
+   "timestamp": 1705308431,
+   "user_name": "Smok1e",
+   "votes": {
+    "positive": 2,
+    "total": 2
+   }
+  },
   "1615": {
    "comment": "\u0433\u0435\u0439 \u0442\u0443 \u0445\u043e\u043b",
    "id": 1615,
@@ -3871,39 +3895,6 @@
    "votes": {
     "positive": 1,
     "total": 1
-   }
-  },
-  "1672": {
-   "comment": "\u041e\u0442\u043b\u0438\u0447\u043d\u043e\u0435 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435",
-   "id": 1672,
-   "rating": 4,
-   "timestamp": 1750599159,
-   "user_name": "secondnrovs",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  },
-  "1673": {
-   "comment": "\u043c\u044f\u0443",
-   "id": 1673,
-   "rating": 5,
-   "timestamp": 1750602912,
-   "user_name": "Smok1e",
-   "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  },
-  "1676": {
-   "comment": "i havent even downloaded it or read the description and i already love it",
-   "id": 1676,
-   "rating": 4,
-   "timestamp": 1750850921,
-   "user_name": "ReTylinate",
-   "votes": {
-    "positive": 0,
-    "total": 0
    }
   }
  },
@@ -3952,8 +3943,8 @@
    "timestamp": 1723308250,
    "user_name": "kirbest1000",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   }
  },
@@ -3978,8 +3969,8 @@
    "timestamp": 1719610157,
    "user_name": "CACKE",
    "votes": {
-    "positive": 3,
-    "total": 4
+    "positive": 2,
+    "total": 3
    }
   },
   "1638": {
@@ -3999,19 +3990,6 @@
    "rating": 1,
    "timestamp": 1721727251,
    "user_name": "HappyWindinkg",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  }
- },
- "2364": {
-  "1715": {
-   "comment": "good",
-   "id": 1715,
-   "rating": 3,
-   "timestamp": 1760992729,
-   "user_name": "Tilto",
    "votes": {
     "positive": 0,
     "total": 0
@@ -4039,8 +4017,8 @@
    "timestamp": 1603720303,
    "user_name": "JustM1les",
    "votes": {
-    "positive": 6,
-    "total": 7
+    "positive": 5,
+    "total": 6
    }
   },
   "1114": {
@@ -4117,7 +4095,7 @@
    "user_name": "_SAMET_TR_2",
    "votes": {
     "positive": 0,
-    "total": 2
+    "total": 1
    }
   },
   "142": {
@@ -4204,38 +4182,16 @@
    "timestamp": 1724450280,
    "user_name": "id1otina",
    "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  },
-  "1688": {
-   "comment": "\u043d\u0435 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442, \u043e\u0448\u0438\u0431\u043a\u0430",
-   "id": 1688,
-   "rating": 1,
-   "timestamp": 1753948714,
-   "user_name": "Gerser",
-   "votes": {
-    "positive": 1,
-    "total": 2
-   }
-  },
-  "1728": {
-   "comment": "\u0420\u0430\u0431\u043e\u0442\u0430\u0435\u0442...",
-   "id": 1728,
-   "rating": 5,
-   "timestamp": 1763921271,
-   "user_name": "secondnrovs",
-   "votes": {
     "positive": 0,
     "total": 0
    }
   },
-  "1736": {
-   "comment": "\u041a\u0440\u0443\u0442\u043e!",
-   "id": 1736,
+  "1668": {
+   "comment": "\u041e\u0442\u043b\u0438\u0447\u043d\u0430\u044f \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430, \u043b\u043e\u0436\u0438\u0442 \u0432\u0441\u044e \u0441\u0438\u0441\u0442\u0435\u043c\u0443!)",
+   "id": 1668,
    "rating": 5,
-   "timestamp": 1764092244,
-   "user_name": "Barsik0396",
+   "timestamp": 1771432502,
+   "user_name": "shar007i",
    "votes": {
     "positive": 0,
     "total": 0
@@ -4303,8 +4259,8 @@
    "timestamp": 1517160493,
    "user_name": "RamzesTheSecond",
    "votes": {
-    "positive": 4,
-    "total": 4
+    "positive": 3,
+    "total": 3
    }
   },
   "419": {
@@ -4468,8 +4424,8 @@
    "timestamp": 1559085209,
    "user_name": "Balle123",
    "votes": {
-    "positive": 3,
-    "total": 5
+    "positive": 2,
+    "total": 4
    }
   },
   "762": {
@@ -4524,7 +4480,7 @@
    "user_name": "RandomMac_520",
    "votes": {
     "positive": 0,
-    "total": 8
+    "total": 7
    }
   },
   "936": {
@@ -4583,53 +4539,31 @@
     "positive": 1,
     "total": 1
    }
-  },
-  "1664": {
-   "comment": "\u043f\u0440\u043e\u0441\u0442\u043e \u0438\u043c\u0431\u0430, \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u0440\u0438\u043b \u043a\u0430\u043a \u0443 \u043c\u0435\u043d\u044f \u043d\u0430 \u043f\u043a, \u0438\u0434\u0435\u0430\u043b\u044c\u043d\u043e",
-   "id": 1664,
-   "rating": 5,
-   "timestamp": 1738854587,
-   "user_name": "LissyenoK",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
   }
  },
- "2410": {
-  "1665": {
-   "comment": "\u0423\u043a\u0440\u0430\u0438\u043d\u0441\u043a\u043e\u0433\u043e \u043d\u0435\u0442\u0443",
-   "id": 1665,
-   "rating": 1,
-   "timestamp": 1743068304,
-   "user_name": "Bumer_32",
+ "2414": {
+  "1670": {
+   "comment": "\u043d\u0435 \u043f\u043e\u043d\u044f\u043b \u043a\u0430\u043a \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u0437\u0430\u0448\u043e\u043b \u0443 \u043c\u0435\u043d\u044f \u043e\u0448\u0438\u0431\u043a\u0430 \u0447\u0442\u043e \u043c\u043e\u0434\u0435\u043c \u043d\u0435 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d :(",
+   "id": 1670,
+   "rating": 5,
+   "timestamp": 1772026340,
+   "user_name": "Al9_11",
    "votes": {
     "positive": 1,
     "total": 1
-   }
-  },
-  "1666": {
-   "comment": "\u0438\u0437\u043c\u0435\u043d\u0438\u0442\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u044f \u043d\u0430 \u0441\u0438\u0433\u043c\u0430\u0431\u043e\u0439",
-   "id": 1666,
-   "rating": 4,
-   "timestamp": 1744014132,
-   "user_name": "CACKE",
-   "votes": {
-    "positive": 0,
-    "total": 0
    }
   }
  },
  "2449": {
-  "1674": {
-   "comment": "\u0420\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u0411\u0435\u0437\u043e\u0442\u043a\u0430\u0437\u043d\u043e!",
-   "id": 1674,
-   "rating": 5,
-   "timestamp": 1750780472,
-   "user_name": "ScaredFive",
+  "1676": {
+   "comment": "\u041c\u043e\u0439 \u043a\u043e\u043c\u043f \u0440\u0430\u0437\u044a\u0435\u0431\u0430\u043b\u043e",
+   "id": 1676,
+   "rating": 4,
+   "timestamp": 1774287549,
+   "user_name": "Kamerad10",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   }
  },
@@ -4757,158 +4691,36 @@
   }
  },
  "2453": {
-  "1738": {
-   "comment": "\u041a\u0440\u0443\u0442\u043e! \u041d\u043e \u0432\u043e\u0442 \u043a\u0430\u043a \u043e\u0431\u0440\u0430\u0442\u043d\u043e \u043d\u0430 \u0441\u0432\u0435\u0442\u043b\u0443\u044e \u043f\u043e\u043c\u0435\u043d\u044f\u0442\u044c?",
-   "id": 1738,
-   "rating": 5,
-   "timestamp": 1764094725,
-   "user_name": "Barsik0396",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  }
- },
- "2466": {
-  "1667": {
-   "comment": "\u041d\u0430 \u043a\u0430\u043a\u043e\u043c \u043f\u0440\u043e\u0435\u043a\u0442\u0435 \u044d\u0442\u043e \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u0442\u0441\u044f?",
-   "id": 1667,
-   "rating": 5,
-   "timestamp": 1745683957,
-   "user_name": "nobhkybsh",
-   "votes": {
-    "positive": 5,
-    "total": 5
-   }
-  }
- },
- "2469": {
-  "1685": {
-   "comment": "This should have language options (english) and be compatible wirh hbm (ntm) extended",
-   "id": 1685,
-   "rating": 3,
-   "timestamp": 1753385079,
-   "user_name": "Angelmelo",
-   "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  }
- },
- "2471": {
-  "1684": {
-   "comment": "very good",
-   "id": 1684,
-   "rating": 5,
-   "timestamp": 1752636762,
-   "user_name": "notabird",
-   "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  }
- },
- "2473": {
-  "1668": {
-   "comment": "\u041e\u0442\u043b\u0438\u0447\u043d\u043e\u0435 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438 \u0442\u0435\u043f\u0435\u0440\u044c \u0443 \u043c\u0435\u043d\u044f \u043d\u0435\u0442 \u043a\u043e\u043c\u043f\u0430:)",
-   "id": 1668,
-   "rating": 1,
-   "timestamp": 1749237462,
-   "user_name": "zroeoeerzero",
-   "votes": {
-    "positive": 1,
-    "total": 2
-   }
-  },
-  "1682": {
-   "comment": "\u0445\u0443\u0439\u043d\u044f \u043f\u0440\u0438\u043b\u0430\u0436\u0435\u043d\u0438\u0435 \u0443 \u043c\u0435\u043d\u044f \u0431\u0438\u0432\u0430\u0441 \u043d\u0430\u0445\u0443\u0439 \u0441\u0434\u043e\u0445",
-   "id": 1682,
-   "rating": 1,
-   "timestamp": 1752484057,
-   "user_name": "CACKE",
-   "votes": {
-    "positive": 0,
-    "total": 1
-   }
-  },
-  "1687": {
-   "comment": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430 \u0421\u0443\u043f\u0435\u0440! \u043d\u043e \u044f \u0437\u0430\u0431\u044b\u043b \u043a\u043b\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c EEPROM \u043c \u043c\u043d\u0435 \u043f\u0440\u0438\u0448\u043b\u043e\u0441\u044c \u043f\u0435\u0440\u0435\u0443\u0441\u0442\u0430\u0432\u0430\u0432\u043b\u0438\u0432\u0430\u0442\u044c \u041e\u0421",
-   "id": 1687,
-   "rating": 5,
-   "timestamp": 1753881203,
-   "user_name": "Gerser",
-   "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  },
-  "1737": {
-   "comment": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u043e\u0447\u0435\u043d\u044c \u043a\u0440\u0443\u0442\u043e\u0435 \u043f\u0440\u043e\u0441\u0442\u043e \u0443\u0431\u0438\u0432\u0430\u0435\u0442 BIOS! \u042f \u0438\u0437 \u043a\u0440\u0435\u0430\u0442\u0438\u0432\u0430 \u043f\u043e\u043f\u0440\u043e\u0431\u0430\u0432\u0430\u043b \u044d\u0442\u043e \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0438 \u043f\u0440\u043e\u0441\u0442\u043e *\u0430\u0445\u0443\u0435\u043b*",
-   "id": 1737,
-   "rating": 5,
-   "timestamp": 1764094609,
-   "user_name": "Barsik0396",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  }
- },
- "2475": {
   "1669": {
-   "comment": "\u0425\u043e\u0440\u043e\u0448\u0430\u044f \u0443\u0431\u0438\u0432\u0430\u043b\u043a\u0430 \u0432\u0440\u0435\u043c\u0435\u043d\u0438 \u043d\u043e \u043d\u0430 \u0434\u043e\u043b\u0433\u043e \u043d\u0435 \u0445\u0432\u0430\u0442\u0438\u0442",
+   "comment": "\u0438\u043c\u0431\u0430 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u0438\u0434\u0435\u0430\u043b\u044c\u043d\u043e",
    "id": 1669,
-   "rating": 3,
-   "timestamp": 1750443083,
-   "user_name": "Lolcatxaxaxa",
+   "rating": 5,
+   "timestamp": 1771591400,
+   "user_name": "abova12",
    "votes": {
     "positive": 0,
     "total": 0
    }
   },
-  "1683": {
-   "comment": "\u0412\u0410\u0429\u0415 \u0411\u041e\u041c\u0411\u0410",
-   "id": 1683,
+  "1673": {
+   "comment": "test",
+   "id": 1673,
    "rating": 5,
-   "timestamp": 1752495761,
-   "user_name": "CACKE",
+   "timestamp": 1772311499,
+   "user_name": "dnrovs",
    "votes": {
     "positive": 0,
     "total": 0
    }
   }
  },
- "2483": {
-  "1686": {
-   "comment": "Simple app but it does freeze the whole PC while playing the music.",
-   "id": 1686,
-   "rating": 3,
-   "timestamp": 1753649943,
-   "user_name": "inteltoasters",
-   "votes": {
-    "positive": 2,
-    "total": 2
-   }
-  }
- },
- "2507": {
-  "1680": {
-   "comment": "\u041f\u0438\u0437\u0434\u0430\u0442\u043e!",
-   "id": 1680,
-   "rating": 5,
-   "timestamp": 1751857934,
-   "user_name": "ECS",
-   "votes": {
-    "positive": 2,
-    "total": 2
-   }
-  },
-  "1720": {
-   "comment": "\u0412\u0441\u0451 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442, \u0442\u043e\u043b\u044c\u043a\u043e \u0441\u0442\u043e\u0438\u0442 \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0441\u0442\u044c \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u044f SSD(Server Self Destructor) \u0434\u043b\u044f \u0445\u0430\u0440\u0434\u043a\u043e\u0440\u043d\u043e\u0433\u043e \u0440\u0435\u0436\u0438\u043c\u0430.",
-   "id": 1720,
-   "rating": 5,
-   "timestamp": 1762692036,
-   "user_name": "Mainy85",
+ "2485": {
+  "1672": {
+   "comment": "\u043f\u0440\u0438\u043a\u043e\u043b\u044c\u043d\u0430\u044f \u0430\u043d\u0438\u043c\u0430\u0446\u0438\u044f \u0432\u0437\u0440\u044b\u0432\u0430, \u0442\u0435\u043f\u0435\u0440\u044c \u043c\u043e\u0433\u0443 \u0438\u0433\u0440\u0430\u0442\u044c \u0432 \u0441\u0430\u043f\u0435\u0440 \u0434\u0430\u0436\u0435 \u0432 \u043c\u0430\u0439\u043d\u043a\u0440\u0430\u0444\u0442\u0435 \u043f\u043e\u043a\u0430 \u043e\u0431\u043e\u0433\u043e\u0449\u0430\u044e \u0443\u0440\u0430\u043d :) PS. \u043d\u0430\u0448\u0435\u043b \u0431\u0430\u0433 \u0433\u0434\u0435 \u0447\u0438\u0441\u043b\u043e \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u0435\u0442 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u043c\u0438\u043d \u043d\u0435\u0432\u0435\u0440\u043d\u043e",
+   "id": 1672,
+   "rating": 4,
+   "timestamp": 1772127144,
+   "user_name": "finalER2000",
    "votes": {
     "positive": 0,
     "total": 0
@@ -5006,17 +4818,6 @@
     "total": 0
    }
   },
-  "1718": {
-   "comment": "works well",
-   "id": 1718,
-   "rating": 5,
-   "timestamp": 1761159707,
-   "user_name": "secondnrovs",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  },
   "402": {
    "comment": "\u041d\u0435 \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u0442\u0441\u044f",
    "id": 402,
@@ -5025,7 +4826,7 @@
    "user_name": "Fpol",
    "votes": {
     "positive": 0,
-    "total": 3
+    "total": 2
    }
   },
   "43": {
@@ -5046,8 +4847,8 @@
    "timestamp": 1517544711,
    "user_name": "Xylic",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   },
   "490": {
@@ -5079,8 +4880,8 @@
    "timestamp": 1546793411,
    "user_name": "LoxPoZhisny",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   },
   "652": {
@@ -5148,7 +4949,7 @@
    "user_name": "speedmastere",
    "votes": {
     "positive": 1,
-    "total": 3
+    "total": 2
    }
   }
  },
@@ -5160,8 +4961,8 @@
    "timestamp": 1589002475,
    "user_name": "RandomMac_520",
    "votes": {
-    "positive": 1,
-    "total": 2
+    "positive": 0,
+    "total": 0
    }
   }
  },
@@ -5467,17 +5268,6 @@
    "votes": {
     "positive": 0,
     "total": 1
-   }
-  },
-  "1709": {
-   "comment": "Absolutely awesome application! ",
-   "id": 1709,
-   "rating": 5,
-   "timestamp": 1760641104,
-   "user_name": "secondnrovs",
-   "votes": {
-    "positive": 0,
-    "total": 0
    }
   },
   "413": {
@@ -6168,17 +5958,6 @@
     "total": 0
    }
   },
-  "1719": {
-   "comment": "\u0410 \u043c\u043e\u0436\u043d\u043e \u043b\u0438 \u0441\u0432\u0435\u0440\u043d\u0443\u0442\u044c \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0442\u0430\u043a, \u0447\u0442\u043e\u0431\u044b \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0440 \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0430\u043b \u043f\u0440\u043e\u0435\u0446\u0438\u0440\u043e\u0432\u0430\u0442\u044c, \u0430 \u044f \u043c\u043e\u0433 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u044c \u0434\u0440\u0443\u0433\u0438\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b?",
-   "id": 1719,
-   "rating": 5,
-   "timestamp": 1762630693,
-   "user_name": "Mainy85",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  },
   "432": {
    "comment": "\u041c\u043d\u0435 \u043f\u043e\u043d\u0440\u0430\u0432\u0438\u043b\u043e\u0441\u044c",
    "id": 432,
@@ -6232,8 +6011,8 @@
    "timestamp": 1522753390,
    "user_name": "xjboss",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 3,
+    "total": 3
    }
   },
   "494": {
@@ -6374,6 +6153,17 @@
     "total": 0
    }
   },
+  "1667": {
+   "comment": "\u041e\u0442\u043b\u0438\u0447\u043d\u044b\u0439 \u0431\u0438\u0432\u0430\u0441 ( \u042d\u043c\u043e\u0434\u0437\u0438 \u043b\u0430\u0439\u043a\u0430 )",
+   "id": 1667,
+   "rating": 5,
+   "timestamp": 1771432201,
+   "user_name": "shar007i",
+   "votes": {
+    "positive": 0,
+    "total": 0
+   }
+  },
   "211": {
    "comment": "Very nice EFI, the most important thing for me on it is the ability of changing boot disk !",
    "id": 211,
@@ -6416,8 +6206,8 @@
    "timestamp": 1544350914,
    "user_name": "Fronun",
    "votes": {
-    "positive": 5,
-    "total": 5
+    "positive": 4,
+    "total": 4
    }
   }
  },
@@ -6442,8 +6232,8 @@
    "timestamp": 1625037424,
    "user_name": "kogtyv",
    "votes": {
-    "positive": 3,
-    "total": 3
+    "positive": 2,
+    "total": 2
    }
   },
   "1657": {
@@ -6452,17 +6242,6 @@
    "rating": 4,
    "timestamp": 1727474233,
    "user_name": "SuperWaffle64",
-   "votes": {
-    "positive": 1,
-    "total": 1
-   }
-  },
-  "1725": {
-   "comment": "Love this .",
-   "id": 1725,
-   "rating": 5,
-   "timestamp": 1763301003,
-   "user_name": "secondnrovs",
    "votes": {
     "positive": 0,
     "total": 0
@@ -6476,7 +6255,7 @@
    "user_name": "BSteurful",
    "votes": {
     "positive": 0,
-    "total": 1
+    "total": 0
    }
   },
   "428": {
@@ -6497,8 +6276,8 @@
    "timestamp": 1523615631,
    "user_name": "RamzesTheSecond",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "430": {
@@ -6509,7 +6288,7 @@
    "user_name": "ZPMPowered",
    "votes": {
     "positive": 0,
-    "total": 1
+    "total": 0
    }
   },
   "478": {
@@ -6519,8 +6298,8 @@
    "timestamp": 1529596177,
    "user_name": "WattanaGaming",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "648": {
@@ -6530,8 +6309,8 @@
    "timestamp": 1548267083,
    "user_name": "Pidorok",
    "votes": {
-    "positive": 1,
-    "total": 3
+    "positive": 0,
+    "total": 2
    }
   }
  },
@@ -6751,8 +6530,8 @@
    "timestamp": 1617111060,
    "user_name": "SashaTalk",
    "votes": {
-    "positive": 1,
-    "total": 1
+    "positive": 0,
+    "total": 0
    }
   },
   "709": {
@@ -7001,8 +6780,8 @@
    "timestamp": 1688067321,
    "user_name": "Romanin",
    "votes": {
-    "positive": 2,
-    "total": 3
+    "positive": 1,
+    "total": 2
    }
   },
   "1436": {
@@ -7012,8 +6791,8 @@
    "timestamp": 1689154666,
    "user_name": "CACKE",
    "votes": {
-    "positive": 2,
-    "total": 2
+    "positive": 1,
+    "total": 1
    }
   },
   "1480": {
@@ -7022,17 +6801,6 @@
    "rating": 1,
    "timestamp": 1696958317,
    "user_name": "Flashluck",
-   "votes": {
-    "positive": 0,
-    "total": 0
-   }
-  },
-  "1711": {
-   "comment": "un que un grrr",
-   "id": 1711,
-   "rating": 5,
-   "timestamp": 1760642135,
-   "user_name": "secondnrovs",
    "votes": {
     "positive": 0,
     "total": 0
@@ -7247,17 +7015,6 @@
    "votes": {
     "positive": 2,
     "total": 2
-   }
-  },
-  "1721": {
-   "comment": "\u041e\u0442\u043b\u0438\u0447\u043d\u043e",
-   "id": 1721,
-   "rating": 5,
-   "timestamp": 1763058324,
-   "user_name": "secondnrovs",
-   "votes": {
-    "positive": 0,
-    "total": 0
    }
   },
   "600": {
