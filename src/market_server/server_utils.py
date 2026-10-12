@@ -101,7 +101,7 @@ def pretty_exception(
     """Make exception pages pretty."""
 
     @functools.wraps(function)
-    async def wrapper(  # type: ignore[misc]
+    async def wrapper(
         *args: PS.args,
         **kwargs: PS.kwargs,
     ) -> T | tuple[AsyncIterator[str], int]:

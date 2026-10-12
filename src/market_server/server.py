@@ -21,7 +21,7 @@ from __future__ import annotations
 __title__ = "MineOS Market Webserver"
 __author__ = "CoolCat467"
 __license__ = "GNU General Public License Version 3"
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 
 
 import argparse
@@ -29,9 +29,10 @@ import sys
 import time
 from collections import ChainMap
 from collections.abc import AsyncIterator, Iterable
-from os import getenv, makedirs, path
+from os import makedirs, path
 from typing import TYPE_CHECKING, Any, Final, TypeVar, cast
 
+import platformdirs
 import trio
 from hypercorn.config import Config
 from hypercorn.trio import serve
@@ -53,15 +54,13 @@ if TYPE_CHECKING:
 
     PS = ParamSpec("PS")
 
-HOME: Final = trio.Path(getenv("HOME", path.expanduser("~")))
-XDG_DATA_HOME: Final = trio.Path(
-    getenv("XDG_DATA_HOME", HOME / ".local" / "share"),
-)
-XDG_CONFIG_HOME: Final = trio.Path(getenv("XDG_CONFIG_HOME", HOME / ".config"))
-
 FILE_TITLE: Final = __title__.lower().replace(" ", "-").replace("-", "_")
-CONFIG_PATH: Final = XDG_CONFIG_HOME / FILE_TITLE
-DATA_PATH: Final = XDG_DATA_HOME / FILE_TITLE
+CONFIG_PATH: Final = trio.Path(
+    platformdirs.user_config_path(FILE_TITLE, __author__),
+)
+DATA_PATH: Final = trio.Path(
+    platformdirs.user_data_path(FILE_TITLE, __author__),
+)
 MAIN_CONFIG: Final = CONFIG_PATH / "config.toml"
 
 T = TypeVar("T")
