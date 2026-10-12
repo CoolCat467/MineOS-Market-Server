@@ -53,4 +53,4 @@ repos:
         language: system
         entry: python src/market_server/generate_pages.py
         pass_filenames: false
-        files: ^src\/market_server\/(((htmlgen|generate_pages)\.py)|((static|templates)\/.+\.\w+))$
+        files: ^src\/market_server\/(((htmlgen|generate_pages|server)\.py)|((static|templates)\/.+\.\w+))$
