@@ -429,7 +429,7 @@ def generate_debug_page() -> str:
             htmlgen.input_field(
                 "script",
                 "Script",
-                attrs={"required": ""},
+                attrs={"required": True},
             ),
             "\n".join(
                 (
@@ -475,7 +475,7 @@ def generate_debug_post_page() -> str:
                 "Script",
                 attrs={
                     "value": htmlgen.jinja_expression("script_autofill"),
-                    "required": "",
+                    "required": True,
                 },
             ),
             "\n".join(

@@ -35,6 +35,7 @@ from collections import Counter, deque
 from email.headerregistry import Address
 from email.utils import parseaddr
 from enum import IntEnum
+from random import choice
 from secrets import token_urlsafe
 from typing import TYPE_CHECKING, Any, Final, NamedTuple, cast
 
@@ -1856,6 +1857,22 @@ MineOS Dev Team""",
             updated = True
 
         return api.success(updated=updated)
+
+    def cmd_test(self) -> api.Response:
+        """Return a random string to prove server is running.
+
+        Used for API server mirror host detection.
+        """
+        # Original does not do a proper response and literally just
+        # sends a string back, but client side never actually checks the
+        # response body so it should be fine.
+        options = (
+            "Nothing is working.",
+            "New command received. Thanks.",
+            "Awesome!",
+        )
+        # Random not used for cryptography
+        return api.success(text=choice(options))  # noqa: S311
 
     def index(self) -> list[str]:
         """Return list of valid scripts."""

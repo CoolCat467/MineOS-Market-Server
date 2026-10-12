@@ -381,7 +381,14 @@ def form(
     title = ""
     if form_title is not None:
         title = wrap_tag("b", form_title, block=False) + "\n"
-    return title + wrap_tag("form", html, True, name=form_id, method="post")
+    return title + wrap_tag(
+        "form",
+        html,
+        True,
+        id_=form_id,
+        name=form_id,
+        method="post",
+    )
 
 
 def jinja_statement(value: str) -> str:
@@ -397,6 +404,33 @@ def jinja_expression(value: str) -> str:
 def jinja_comment(value: str) -> str:
     """Wrap value in jinja comment block."""
     return f"{{# {value} #}}"
+
+
+def jinja_assign(key: str, value: object) -> str:
+    """Jinja variable assignment block."""
+    return jinja_statement(f"set {key} = {value}")
+
+
+def jinja_with_block(
+    content: str,
+    assignments: dict[str, object] | None = None,
+    block: bool = True,
+) -> str:
+    """Jinja with block with optional inline scoped variable assignments."""
+    with_open = "with"
+    if assignments:
+        assignment_text = ", ".join(
+            f"{k} = {v}" for k, v in assignments.items()
+        )
+        with_open = f"with {assignment_text}"
+    join = "\n" if block else ""
+    return join.join(
+        (
+            jinja_statement(with_open),
+            content,
+            jinja_statement("endwith"),
+        ),
+    )
 
 
 def jinja_if_block(conditions: dict[str, str], block: bool = True) -> str:

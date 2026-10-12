@@ -211,7 +211,7 @@ async def handle_debug_post() -> (
     response_html = htmlgen.wrap_tag(
         "textarea",
         "\n".join(line.replace(" ", "&nbsp;") for line in response_lines),
-        readonly="",
+        readonly=True,
         rows=len(response_lines),
         cols=90,
     )

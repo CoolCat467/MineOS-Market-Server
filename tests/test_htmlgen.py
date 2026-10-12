@@ -374,7 +374,7 @@ def test_form() -> None:
             "click to add title",
         )
         == """<b>click to add title</b>
-<form name="form_id" method="post">
+<form id="form_id" name="form_id" method="post">
   dis content woo
   <br>
   <input type="submit" id="form_id_submit_button" name="form_id_submit_button" value="hihi">
@@ -385,7 +385,7 @@ def test_form() -> None:
 def test_form_no_title() -> None:
     assert (
         htmlgen.form("form_id", "dis content woo", "hihi")
-        == """<form name="form_id" method="post">
+        == """<form id="form_id" name="form_id" method="post">
   dis content woo
   <br>
   <input type="submit" id="form_id_submit_button" name="form_id_submit_button" value="hihi">
@@ -396,7 +396,7 @@ def test_form_no_title() -> None:
 def test_form_no_submit_display() -> None:
     assert (
         htmlgen.form("form_id", "dis content woo")
-        == """<form name="form_id" method="post">
+        == """<form id="form_id" name="form_id" method="post">
   dis content woo
 </form>"""
     )
@@ -412,6 +412,68 @@ def test_jinja_expression() -> None:
 
 def test_jinja_comment() -> None:
     assert htmlgen.jinja_comment("comment") == "{# comment #}"
+
+
+def test_jinja_assign() -> None:
+    assert (
+        htmlgen.jinja_assign("waffle_count", 3) == "{% set waffle_count = 3 %}"
+    )
+
+
+def test_jinja_with_block() -> None:
+    assert (
+        htmlgen.jinja_with_block(
+            "click to add content",
+        )
+        == """{% with %}
+click to add content
+{% endwith %}"""
+    )
+
+
+def test_jinja_with_block_inline() -> None:
+    assert (
+        htmlgen.jinja_with_block(
+            "click to add content",
+            block=False,
+        )
+        == "{% with %}click to add content{% endwith %}"
+    )
+
+
+def test_jinja_with_block_inline_assignments() -> None:
+    assert (
+        htmlgen.jinja_with_block(
+            "click to {{ text }}",
+            {"text": "'test words'"},
+        )
+        == """{% with text = 'test words' %}
+click to {{ text }}
+{% endwith %}"""
+    )
+
+
+def test_jinja_with_block_multiple_inline_assignments() -> None:
+    assert (
+        htmlgen.jinja_with_block(
+            "click to {{ text }}",
+            {"text": "'test words'", "frog": "fish", "sea": "plants"},
+        )
+        == """{% with text = 'test words', frog = fish, sea = plants %}
+click to {{ text }}
+{% endwith %}"""
+    )
+
+
+def test_jinja_with_block_inline_assignments_inline() -> None:
+    assert (
+        htmlgen.jinja_with_block(
+            "click to {{ text }}",
+            {"text": "'test words'"},
+            block=False,
+        )
+        == "{% with text = 'test words' %}click to {{ text }}{% endwith %}"
+    )
 
 
 def test_jinja_if_block() -> None:
